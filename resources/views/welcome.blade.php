@@ -3,7 +3,7 @@
   <!-- [Head] start -->
 
   <head>
-    <title>Home | Datta Able Dashboard Template</title>
+    <title>Home | Datta Able Dashboard Template pia</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
