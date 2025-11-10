@@ -3,7 +3,7 @@
   <!-- [Head] start -->
 
   <head>
-    <title>Home | Datta Able Dashboard Template agus</title>
+    <title>Home | Datta Able Dashboard Template</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -48,114 +48,80 @@
   </div>
 </div>
 <!-- [ Pre-loader ] End -->
- <!-- [ Sidebar Menu ] start -->
+<!-- [ Sidebar Menu ] start -->
 <nav class="pc-sidebar">
   <div class="navbar-wrapper">
     <div class="m-header flex items-center py-4 px-6 h-header-height">
       <a href="../dashboard/index.html" class="b-brand flex items-center gap-3">
-        <!-- ========   Change your logo from here   ============ -->
         <img src="./admin/assets/images/logo-white.svg" class="img-fluid logo logo-lg" alt="logo" />
         <img src="./admin/assets/images/favicon.svg" class="img-fluid logo logo-sm" alt="logo" />
       </a>
     </div>
+
     <div class="navbar-content h-[calc(100vh_-_74px)] py-2.5">
       <ul class="pc-navbar">
+        <!-- Menu Utama -->
         <li class="pc-item pc-caption">
-          <label>Navigation</label>
+          <label>Menu Utama</label>
         </li>
         <li class="pc-item">
-        <li class="pc-item">
-          <a href="../dashboard/index.html" class="pc-link">
-            <span class="pc-micon">
-              <i data-feather="home"></i>
-            </span>
+          <a href="index.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="home"></i></span>
             <span class="pc-mtext">Dashboard</span>
           </a>
         </li>
+
+        <!-- Manajemen Event -->
         <li class="pc-item pc-caption">
-          <label>UI Components</label>
-          <i data-feather="feather"></i>
+          <label>Manajemen Event</label>
+          <i data-feather="calendar"></i>
         </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="../elements/bc_color.html" class="pc-link">
-            <span class="pc-micon"> <i data-feather="edit"></i></span>
-            <span class="pc-mtext">Color</span>
+        <li class="pc-item">
+          <a href="data-event.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="calendar"></i></span>
+            <span class="pc-mtext">Data Event</span>
           </a>
         </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="../elements/bc_typography.html" class="pc-link">
-            <span class="pc-micon"> <i data-feather="type"></i></span>
-            <span class="pc-mtext">Typography</span>
-          </a>
-        </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="../elements/icon-feather.html" class="pc-link">
-            <span class="pc-micon"> <i data-feather="feather"></i></span>
-            <span class="pc-mtext">Icons</span>
+        <li class="pc-item">
+          <a href="tambah-event.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="plus-circle"></i></span>
+            <span class="pc-mtext">Tambah Event</span>
           </a>
         </li>
 
+        <!-- Promosi & Partner -->
         <li class="pc-item pc-caption">
-          <label>Pages</label>
-          <i data-feather="monitor"></i>
-        </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="../pages/login-v1.html" class="pc-link" target="_blank">
-            <span class="pc-micon"> <i data-feather="lock"></i></span>
-            <span class="pc-mtext">Login</span>
-          </a>
-        </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="../pages/register-v1.html" class="pc-link" target="_blank">
-            <span class="pc-micon"> <i data-feather="user-plus"></i></span>
-            <span class="pc-mtext">Register</span>
-          </a>
-        </li>
-        <li class="pc-item pc-caption">
-          <label>Other</label>
-          <i data-feather="sidebar"></i>
-        </li>
-        <li class="pc-item pc-hasmenu">
-          <a href="#!" class="pc-link"><span class="pc-micon"> <i data-feather="align-right"></i> </span><span
-              class="pc-mtext">Menu levels</span><span class="pc-arrow"><i class="ti ti-chevron-right"></i></span></a>
-          <ul class="pc-submenu">
-            <li class="pc-item"><a class="pc-link" href="#!">Level 2.1</a></li>
-            <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link">Level 2.2<span class="pc-arrow"><i class="ti ti-chevron-right"></i></span></a>
-              <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                <li class="pc-item pc-hasmenu">
-                  <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i class="ti ti-chevron-right"></i></span></a>
-                  <ul class="pc-submenu">
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link">Level 2.3<span class="pc-arrow"><i class="ti ti-chevron-right"></i></span></a>
-              <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                <li class="pc-item pc-hasmenu">
-                  <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i class="ti ti-chevron-right"></i></span></a>
-                  <ul class="pc-submenu">
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                    <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <label>Promosi & Partner</label>
+          <i data-feather="users"></i>
         </li>
         <li class="pc-item">
-          <a href="../other/sample-page.html" class="pc-link">
-            <span class="pc-micon">
-              <i data-feather="sidebar"></i>
-            </span>
-            <span class="pc-mtext">Sample page</span>
+          <a href="paket-promosi.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="bell"></i></span>
+            <span class="pc-mtext">Paket Promosi</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="daftar-partner.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="handshake"></i></span>
+            <span class="pc-mtext">Daftar Partner</span>
+          </a>
+        </li>
+
+        <!-- Pengaturan -->
+        <li class="pc-item pc-caption">
+          <label>Pengaturan</label>
+          <i data-feather="settings"></i>
+        </li>
+        <li class="pc-item">
+          <a href="profil.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="user"></i></span>
+            <span class="pc-mtext">Profil Admin</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="logout.html" class="pc-link">
+            <span class="pc-micon"><i data-feather="log-out"></i></span>
+            <span class="pc-mtext">Logout</span>
           </a>
         </li>
       </ul>
@@ -163,6 +129,7 @@
   </div>
 </nav>
 <!-- [ Sidebar Menu ] end -->
+
  <!-- [ Header Topbar ] start -->
 <header class="pc-header">
   <div class="header-wrapper flex max-sm:px-[15px] px-[25px] grow"><!-- [Mobile Media Block] start -->
