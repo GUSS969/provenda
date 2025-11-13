@@ -649,7 +649,7 @@
             Selesai
           </div>
 
-          <img src="./admin/assets/images/event1.JPG" class="w-full h-44 object-cover">
+          <img src=".C:\laragon\www\provenda\public\festifa bahari.jpg" class="w-full h-44 object-cover">
 
           <div class="p-4">
             <h4 class="font-bold text-lg">Festival Budaya Bahari Bengkalis</h4>

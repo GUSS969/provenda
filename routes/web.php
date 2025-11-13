@@ -2,34 +2,31 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController; // kita ubah ke AuthController langsung (bukan Admin\AuthController)
 
+// =====================
+// HALAMAN DEPAN
+// =====================
 Route::get('/', function () {
     return view('welcome');
 });
 
 // =====================
-// ADMIN PANEL ROUTES
+// ADMIN AUTH (LOGIN TEMPLATE)
 // =====================
-Route::prefix('admin')->group(function () {
+Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-    // Dashboard utama
+// =====================
+// ADMIN PANEL (Protected Area)
+// =====================
+Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-    // Manajemen Event
     Route::get('/event', [AdminController::class, 'event'])->name('admin.event.index');
-
-    // Manajemen Promosi
     Route::get('/promosi', [AdminController::class, 'promosi'])->name('admin.promo.index');
-
-    // Data Pengguna
     Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('admin.user.index');
-
-    // Komentar & Ulasan
     Route::get('/komentar', [AdminController::class, 'komentar'])->name('admin.komentar.index');
-
-    // Laporan & Statistik
     Route::get('/laporan', [AdminController::class, 'laporan'])->name('admin.laporan');
-
-    // Pengaturan
     Route::get('/pengaturan', [AdminController::class, 'pengaturan'])->name('admin.settings');
 });
