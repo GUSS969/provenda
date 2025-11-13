@@ -2,14 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController; // kita ubah ke AuthController langsung (bukan Admin\AuthController)
+use App\Http\Controllers\AuthController;
 
 // =====================
 // HALAMAN DEPAN
 // =====================
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // =====================
 // ADMIN AUTH (LOGIN TEMPLATE)
