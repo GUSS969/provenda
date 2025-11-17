@@ -35,7 +35,8 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | EVENT MANAGEMENT
+    | EVENT MANAGEMENTT
+
     |--------------------------------------------------------------------------
     */
     Route::get('/event', [EventController::class, 'index'])->name('event.index');
