@@ -247,18 +247,18 @@
       </div>
 
       <!-- DAFTAR EVENT TERBARU -->
-      <!-- DAFTAR EVENT TERBARU – PREMIUM V2 -->
-<div class="col-span-12 xl:col-span-8 md:col-span-6">
+<!-- DAFTAR EVENT TERBARU – PREMIUM V3 -->
+<div class="col-span-12">
   <div class="card">
+
     <div class="card-header">
       <h5>Event Daerah Terbaru</h5>
     </div>
 
     <div class="card-body">
-
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        <!-- EVENT CARD -->
+        <!-- EVENT 1 -->
         <div class="relative overflow-hidden rounded-2xl shadow-xl backdrop-blur bg-white/60 border hover:scale-[1.02] transition">
           
           <!-- Ribbon -->
@@ -266,11 +266,11 @@
             Selesai
           </div>
 
-          <img src=".C:\laragon\www\provenda\public\festifa bahari.jpg" class="w-full h-44 object-cover">
+          <img src="{{ asset('admin/assets/images/event1.jpg') }}" class="w-full h-44 object-cover">
 
           <div class="p-4">
             <h4 class="font-bold text-lg">Festival Budaya Bahari Bengkalis</h4>
-            
+
             <div class="flex items-center gap-2 text-muted text-sm mt-2">
               <i class="ti ti-calendar"></i> 15 FEB 09:00
             </div>
@@ -287,13 +287,14 @@
           </div>
         </div>
 
-        <!-- EVENT CARD -->
+        <!-- EVENT 2 -->
         <div class="relative overflow-hidden rounded-2xl shadow-xl backdrop-blur bg-white/60 border hover:scale-[1.02] transition">
+
           <div class="absolute top-0 right-0 bg-theme-bg-1 text-white px-4 py-1 text-xs rounded-bl-xl shadow">
             Selesai
           </div>
 
-          <img src="./admin/assets/images/event2.jpg" class="w-full h-44 object-cover">
+          <img src="{{ asset('admin/assets/images/event2.jpg') }}" class="w-full h-44 object-cover">
 
           <div class="p-4">
             <h4 class="font-bold text-lg">Festival Lampu Colok Bengkalis</h4>
@@ -313,13 +314,14 @@
           </div>
         </div>
 
-        <!-- EVENT CARD -->
+        <!-- EVENT 3 -->
         <div class="relative overflow-hidden rounded-2xl shadow-xl backdrop-blur bg-white/60 border hover:scale-[1.02] transition">
+
           <div class="absolute top-0 right-0 bg-theme-bg-1 text-white px-4 py-1 text-xs rounded-bl-xl shadow">
             Selesai
           </div>
 
-          <img src="./admin/assets/images/event3.jpg" class="w-full h-44 object-cover">
+          <img src="{{ asset('admin/assets/images/event3.jpg') }}" class="w-full h-44 object-cover">
 
           <div class="p-4">
             <h4 class="font-bold text-lg">Bengkalis Expo &amp; UMKM Fair</h4>
@@ -339,13 +341,14 @@
           </div>
         </div>
 
-        <!-- EVENT CARD -->
+        <!-- EVENT 4 -->
         <div class="relative overflow-hidden rounded-2xl shadow-xl backdrop-blur bg-white/60 border hover:scale-[1.02] transition">
+
           <div class="absolute top-0 right-0 bg-theme-bg-1 text-white px-4 py-1 text-xs rounded-bl-xl shadow">
             Selesai
           </div>
 
-          <img src="./admin/assets/images/event4.jpg" class="w-full h-44 object-cover">
+          <img src="{{ asset('admin/assets/images/event4.jpg') }}" class="w-full h-44 object-cover">
 
           <div class="p-4">
             <h4 class="font-bold text-lg">Pawai Takbir Bengkalis</h4>
@@ -366,12 +369,12 @@
         </div>
 
       </div>
-
     </div>
+
   </div>
 </div>
+<!-- [ Main Content ] end -->
 
-    <!-- [ Main Content ] end -->
 
   </div>
 </div>
