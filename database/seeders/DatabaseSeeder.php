@@ -2,24 +2,27 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // ========== SEED USER DEFAULT ==========
+        User::firstOrCreate(
+            ['email' => 'provenda@gmail.com'], // Cek email dulu
+            [
+                'name' => 'Test User',
+                'password' => bcrypt('password'), // Password default
+                'email_verified_at' => now(),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'provenda@gmail.com',
-        ]);
+        // ========== SEED USER RANDOM ==========
+        User::factory(10)->create(); // 10 user random
     }
 }
