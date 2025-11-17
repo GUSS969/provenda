@@ -2,7 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PenyelenggaraController;
+use App\Http\Controllers\UMKMController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PartisipasiEventController;
+use App\Http\Controllers\InteraksiEventController;
+use App\Http\Controllers\StatistikPromosiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +22,7 @@ Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC ROUTE
+| PUBLIC ROUTE (Pengunjung tidak perlu login)
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
@@ -23,7 +31,7 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| PROTECTED ROUTES (Hanya untuk user login)
+| PROTECTED ROUTES (Hanya untuk yang sudah login)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -35,10 +43,58 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | EVENT MANAGEMENT
+    | EVENT CRUD
     |--------------------------------------------------------------------------
     */
-    Route::get('/event', [EventController::class, 'index'])->name('event.index');
-    Route::get('/event/create', [EventController::class, 'create'])->name('event.create');
-    Route::post('/event', [EventController::class, 'store'])->name('event.store');
+    Route::resource('events', EventController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('admins', AdminController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PENYELENGGARA CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('penyelenggaras', PenyelenggaraController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | UMKM CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('umkms', UMKMController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUK CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('produks', ProdukController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PARTISIPASI EVENT CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('partisipasi-events', PartisipasiEventController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | INTERAKSI EVENT CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('interaksi-events', InteraksiEventController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATISTIK PROMOSI CRUD
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('statistik-promosi', StatistikPromosiController::class);
+
 });
