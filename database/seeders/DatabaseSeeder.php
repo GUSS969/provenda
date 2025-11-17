@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // ========== SEED USER DEFAULT ==========
+        // ========== SEED USER DEFAULT ============
         User::firstOrCreate(
             ['email' => 'provenda@gmail.com'], // Cek email dulu
             [
