@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $table = 'event_app'; // <-- WAJIB agar tidak bentrok
+    protected $table = 'events'; // <-- WAJIB agar tidak bentrok
 
     protected $fillable = [
         'nama_event',

@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PenyelenggaraController;
 use App\Http\Controllers\UMKMController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PartisipasiEventController;
 use App\Http\Controllers\InteraksiEventController;
 use App\Http\Controllers\StatistikPromosiController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,7 @@ Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC ROUTE (Pengunjung tidak perlu login)
+| PUBLIC ROUTE
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
@@ -31,15 +33,13 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| PROTECTED ROUTES (Hanya untuk yang sudah login)
+| PROTECTED ROUTES (Hanya user login)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
 
     // DASHBOARD
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     /*
     |--------------------------------------------------------------------------
@@ -96,5 +96,15 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::resource('statistik-promosi', StatistikPromosiController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOGOUT (AMAN, via POST)
+    |--------------------------------------------------------------------------
+    */
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect('/login');
+    })->name('logout');
 
 });
