@@ -88,6 +88,9 @@ class DashboardController extends Controller
             'event_per_lokasi'      => $event_per_lokasi,
             'event_bulan_ini'       => $event_bulan_ini,
             'event_minggu_ini'      => $event_minggu_ini,
+            // TAMBAHKAN INI BIAR CHART.JS GAK ERROR
+            'chart_labels'          => $event_per_bulan->keys(),
+            'chart_data'            => $event_per_bulan->values(),
         ]);
     }
 }
