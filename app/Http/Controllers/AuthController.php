@@ -9,7 +9,10 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view('auth.login');
+        if(Auth()->check()){
+            return redirect('/admin/dashboard');
+        }
+        return view('admin.auth.login'); // bukan auth.login
     }
 
     public function loginPost(Request $request)
@@ -17,7 +20,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect('/dashboard');
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->with('error', 'Email atau password salah');

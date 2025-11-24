@@ -4,10 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
+    // ============================
+    // HALAMAN LOGIN ADMIN
+    // ============================
+    public function showLoginForm()
+    {
+        return view('admin.login'); // buat file view ini
+    }
+
+    // ============================
+    // PROSES LOGIN ADMIN
+    // ============================
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // Cek login pakai guard admin
+        if (Auth::guard('admin')->attempt($request->only('email', 'password'))) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
+    }
+
+    // ============================
+    // LOGOUT ADMIN
+    // ============================
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.login');
+    }
+
+    // ============================
+    // DASHBOARD ADMIN
+    // ============================
+    public function dashboard()
+    {
+        return view('admin.dashboard');
+    }
+
+    // ============================
+    // CRUD ADMIN (Punya Kamu)
+    // ============================
     public function index()
     {
         $data = Admin::latest()->get();

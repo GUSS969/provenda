@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Models\Penyelenggara;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 class PenyelenggaraController extends Controller
 {
     public function index()

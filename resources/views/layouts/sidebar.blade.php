@@ -5,7 +5,7 @@
         <!-- BRAND / LOGO SECTION -->
         <!-- ============================================ -->
         <div class="m-header">
-            <a href="{{ route('dashboard') }}" class="b-brand">
+            <a href="{{ route('admin.dashboard') }}" class="b-brand">
                 <div class="logo-container">
                     <div class="logo-icon">
                         <i class="ti ti-calendar-event"></i>
@@ -25,8 +25,8 @@
             <ul class="pc-navbar">
 
                 <!-- DASHBOARD -->
-                <li class="pc-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard') }}" class="pc-link">
+                <li class="pc-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
@@ -43,7 +43,7 @@
                     <span>Manajemen Event</span>
                 </li>
 
-                <li class="pc-item pc-hasmenu {{ request()->routeIs('events.*') ? 'active pc-trigger' : '' }}">
+                <li class="pc-item pc-hasmenu {{ request()->routeIs('admin.events.*') ? 'active pc-trigger' : '' }}">
                     <a href="#!" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-calendar-event"></i>
@@ -54,13 +54,13 @@
                         </span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item {{ request()->routeIs('events.index') ? 'active' : '' }}">
-                            <a class="pc-link" href="{{ route('events.index') }}">
+                        <li class="pc-item {{ request()->routeIs('admin.events.index') ? 'active' : '' }}">
+                            <a class="pc-link" href="{{ route('admin.events.index') }}">
                                 <i class="ti ti-list"></i> Semua Event
                             </a>
                         </li>
-                        <li class="pc-item {{ request()->routeIs('events.create') ? 'active' : '' }}">
-                            <a class="pc-link" href="{{ route('events.create') }}">
+                        <li class="pc-item {{ request()->routeIs('admin.events.create') ? 'active' : '' }}">
+                            <a class="pc-link" href="{{ route('admin.events.create') }}">
                                 <i class="ti ti-plus"></i> Tambah Event
                             </a>
                         </li>
@@ -76,8 +76,8 @@
                     <span>Pengaturan Akun</span>
                 </li>
 
-                <li class="pc-item {{ request()->routeIs('penyelenggaras.*') ? 'active' : '' }}">
-                    <a href="{{ route('penyelenggaras.index') }}" class="pc-link">
+                <li class="pc-item {{ request()->routeIs('admin.penyelenggaras.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.penyelenggaras.index') }}" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-users"></i>
                         </span>
@@ -91,8 +91,8 @@
                     </a>
                 </li>
 
-                <li class="pc-item {{ request()->routeIs('umkms.*') ? 'active' : '' }}">
-                    <a href="{{ route('umkms.index') }}" class="pc-link">
+                <li class="pc-item {{ request()->routeIs('admin.umkms.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.umkms.index') }}" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-building-store"></i>
                         </span>
@@ -124,7 +124,7 @@
 
                 <!-- LOGOUT -->
                 <li class="pc-item">
-                    <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                    <form method="POST" action="{{ route('admin.logout') }}" id="logout-form">
                         @csrf
                         <a href="#" class="pc-link logout-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span class="pc-micon">

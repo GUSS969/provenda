@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Models\StatistikPromosi;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 class StatistikPromosiController extends Controller
 {
     public function index()

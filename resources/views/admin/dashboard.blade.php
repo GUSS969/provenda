@@ -27,13 +27,13 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex gap-2 flex-wrap">
-                <a href="{{ route('events.create') }}" class="btn btn-primary btn-action">
+                <a href="{{ route('admin.events.create') }}" class="btn btn-primary btn-action">
                     <i class="ti ti-plus me-2"></i>Tambah Event Baru
                 </a>
                 <button class="btn btn-outline-primary btn-action" onclick="location.reload()">
                     <i class="ti ti-refresh me-2"></i>Refresh Data
                 </button>
-                <a href="{{ route('events.index') }}" class="btn btn-outline-secondary btn-action">
+                <a href="{{ route('admin.events.index') }}" class="btn btn-outline-secondary btn-action">
                     <i class="ti ti-list me-2"></i>Lihat Semua Event
                 </a>
             </div>
@@ -185,7 +185,7 @@
                             <h5 class="mb-0">Event Daerah Terbaru</h5>
                             <small class="text-muted">{{ $event_terbaru->count() }} event terbaru</small>
                         </div>
-                        <a href="{{ route('events.index') }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ route('admin.events.index') }}" class="btn btn-sm btn-outline-primary">
                             Lihat Semua <i class="ti ti-arrow-right ms-1"></i>
                         </a>
                     </div>
@@ -225,7 +225,7 @@
                                     @endif
                                 </div>
 
-                                <!-- Content -->
+                                <!-- Conten #t -->
                                 <div class="event-content">
                                     <h6 class="event-title">{{ Str::limit($ev->nama_event, 40) }}</h6>
 
@@ -259,11 +259,11 @@
 
                                     <!-- Actions -->
                                     <div class="event-actions">
-                                        <a href="{{ route('events.edit', $ev->id) }}" 
+                                        <a href="{{ route('admin.events.edit', $ev->id) }}" 
                                            class="btn btn-sm btn-outline-primary flex-fill">
                                             <i class="ti ti-edit"></i> Edit
                                         </a>
-                                        <a href="{{ route('events.show', $ev->id) }}" 
+                                        <a href="{{ route('admin.events.show', $ev->id) }}" 
                                            class="btn btn-sm btn-primary flex-fill">
                                             <i class="ti ti-eye"></i> Detail
                                         </a>
@@ -281,7 +281,7 @@
                         </div>
                         <h5>Belum Ada Event</h5>
                         <p>Mulai tambahkan event daerah pertama Anda!</p>
-                        <a href="{{ route('events.create') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.events.create') }}" class="btn btn-primary">
                             <i class="ti ti-plus me-2"></i>Tambah Event
                         </a>
                     </div>

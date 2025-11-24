@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers;
 
-use App\Models\Event;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Event;
 
 class DashboardController extends Controller
 {
@@ -22,10 +21,6 @@ class DashboardController extends Controller
             'event_aktif'   => $event_aktif,
             'event_selesai' => $event_selesai,
             'event_terbaru' => $event_terbaru,
-            'event_bulan_ini' => '',
-            'event_minggu_ini' => '',
-            'chart_labels'=>[],
-            'chart_data'=>[]
         ]);
     }
 }

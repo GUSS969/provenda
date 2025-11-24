@@ -5,57 +5,64 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PenyelenggaraController;
-use App\Http\Controllers\UMKMController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\PartisipasiEventController;
-use App\Http\Controllers\InteraksiEventController;
-use App\Http\Controllers\StatistikPromosiController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\admin\PenyelenggaraController;
+use App\Http\Controllers\admin\UMKMController;
+use App\Http\Controllers\admin\EventController;
+use App\Http\Controllers\admin\ProdukController;
+use App\Http\Controllers\admin\PartisipasiEventController;
+use App\Http\Controllers\admin\InteraksiEventController;
+use App\Http\Controllers\admin\StatistikPromosiController;
+use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\user\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
 | USER ROUTES (Public - Pengunjung Website)
 |--------------------------------------------------------------------------
 | Routes untuk pengunjung umum yang mengakses website
+| Tidak perlu login, siapa saja bisa akses
 | URL: / , /events, /events/{id}
 */
 Route::name('user.')->group(function () {
-    // Homepage - Landing page untuk pengunjung
+    // Homepage User - Landing page untuk pengunjung
     Route::get('/', [UserController::class, 'index'])->name('home');
     
-    // Events List - Daftar semua event dengan filter & search
+    // Daftar Event User - List semua event dengan filter & search
     Route::get('/events', [UserController::class, 'events'])->name('events');
     
-    // Event Detail - Detail lengkap event berdasarkan ID
+    // Detail Event User - Info lengkap 1 event
     Route::get('/events/{id}', [UserController::class, 'showEvent'])->name('event.show');
 });
 
+/*
+    |--------------------------------------------------------------------------
+    | AUTH ROUTES (Guest Only - Belum Login)
+    |--------------------------------------------------------------------------
+    | Route untuk login admin, hanya bisa diakses kalau belum login
+    */
+        // Halaman Login
+      Route::get('login', [AuthController::class, 'login'])->name('login');
+        
+        // Proses Login (POST)
+      Route::post('login', [AuthController::class, 'loginPost'])->name('login.post');
 /*
 |--------------------------------------------------------------------------
 | ADMIN ROUTES (Protected - Admin Panel)
 |--------------------------------------------------------------------------
 | Routes untuk admin panel dengan prefix /admin
-| URL: /admin, /admin/login, /admin/events, dll
+| Harus login sebagai admin untuk akses
+| URL: /admin/login, /admin/dashboard, /admin/events, dll
 */
 Route::prefix('admin')->name('admin.')->group(function () {
     
-    /*
-    |--------------------------------------------------------------------------
-    | AUTH ROUTES (Guest Only)
-    |--------------------------------------------------------------------------
-    */
-    Route::middleware('guest')->group(function () {
-        Route::get('/login', [AuthController::class, 'login'])->name('login');
-        Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
-    });
+    
 
     /*
     |--------------------------------------------------------------------------
-    | PROTECTED ROUTES (Auth Required)
+    | PROTECTED ROUTES (Auth Required - Harus Login)
     |--------------------------------------------------------------------------
+    | Semua route di sini butuh login dulu
     */
     Route::middleware('auth')->group(function () {
 
@@ -64,14 +71,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | DASHBOARD
         |--------------------------------------------------------------------------
         */
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+        // Dashboard Admin - Statistik & Overview
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         /*
         |--------------------------------------------------------------------------
         | EVENT CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Event untuk Admin
         Route::resource('events', EventController::class);
 
         /*
@@ -79,6 +87,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | ADMIN CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Admin (Kelola akun admin)
         Route::resource('admins', AdminController::class);
 
         /*
@@ -86,6 +95,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | PENYELENGGARA CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Penyelenggara Event
         Route::resource('penyelenggaras', PenyelenggaraController::class);
 
         /*
@@ -93,6 +103,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | UMKM CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD UMKM (Usaha Mikro Kecil Menengah)
         Route::resource('umkms', UMKMController::class);
 
         /*
@@ -100,6 +111,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | PRODUK CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Produk UMKM
         Route::resource('produks', ProdukController::class);
 
         /*
@@ -107,6 +119,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | PARTISIPASI EVENT CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Partisipasi Event
         Route::resource('partisipasi-events', PartisipasiEventController::class);
 
         /*
@@ -114,6 +127,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | INTERAKSI EVENT CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Interaksi Event
         Route::resource('interaksi-events', InteraksiEventController::class);
 
         /*
@@ -121,17 +135,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
         | STATISTIK PROMOSI CRUD
         |--------------------------------------------------------------------------
         */
+        // CRUD Statistik Promosi
         Route::resource('statistik-promosi', StatistikPromosiController::class);
 
         /*
         |--------------------------------------------------------------------------
-        | LOGOUT (via POST)
+        | LOGOUT
         |--------------------------------------------------------------------------
         */
+        // Logout Admin (POST method)
         Route::post('/logout', function () {
-            Auth::logout(); 
-            return redirect()->route('admin.login');
+            Auth::logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+            return redirect()->route('login')->with('success', 'Berhasil logout');
         })->name('logout');
 
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| FALLBACK ROUTE (Opsional)
+|--------------------------------------------------------------------------
+| Route ini akan handle semua URL yang tidak ditemukan
+| Redirect ke homepage user
+*/
+Route::fallback(function () {
+    return redirect()->route('user.home');
 });
