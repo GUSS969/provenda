@@ -6,7 +6,7 @@
 <div class="card p-4">
     <div class="d-flex justify-content-between mb-3">
         <h4>Data UMKM</h4>
-        <a href="{{ route('umkms.create') }}" class="btn btn-primary">+ Tambah UMKM</a>
+        <a href="{{ route('admin.umkms.create') }}" class="btn btn-primary">+ Tambah UMKM</a>
     </div>
 
     @if(session('success'))
@@ -41,7 +41,7 @@
                 </td>
                 <td>{{ $item->admin->nama ?? '-' }}</td>
                 <td>
-                    <a href="{{ route('umkms.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ route('admin.umkms.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
                     <form action="{{ route('umkms.destroy', $item->id) }}" method="POST"
                           style="display: inline-block"

@@ -35,8 +35,8 @@ class EventController extends Controller
             'deskripsi' => 'required',
             'kategori_event' => 'required',
             'status' => 'required',
-            'penyelenggara_id' => 'required',
-            'id_admin' => 'required',
+            'penyelenggara_id' => 'nullable',
+            'id_admin' => 'nullable',
         ]);
 
         Event::create($request->all());
@@ -64,6 +64,6 @@ class EventController extends Controller
     public function destroy($id)
     {
         Event::findOrFail($id)->delete();
-        return redirect()->route('events.index')->with('success', 'Event berhasil dihapus!');
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil dihapus!');
     }
 }

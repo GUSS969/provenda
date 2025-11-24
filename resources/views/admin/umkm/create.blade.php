@@ -6,7 +6,7 @@
 <div class="card p-4">
     <h4>Tambah UMKM</h4>
 
-    <form action="{{ route('umkms.store') }}" method="POST">
+    <form action="{{ route('admin.umkms.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">
@@ -57,7 +57,7 @@
         </div>
 
         <button class="btn btn-primary">Simpan</button>
-        <a href="{{ route('umkms.index') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('admin.umkms.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection

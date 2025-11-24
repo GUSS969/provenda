@@ -10,7 +10,7 @@
         <div class="page-block">
             <h5 class="mb-0 font-medium">Data Event</h5>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                 <li class="breadcrumb-item">Event</li>
             </ul>
         </div>
@@ -21,7 +21,7 @@
         <div class="flex justify-between items-center mb-4">
             <h5 class="font-bold">Daftar Event</h5>
 
-            <a href="{{ route('events.create') }}"
+            <a href="{{ route('admin.events.create') }}"
                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                + Tambah Event
             </a>

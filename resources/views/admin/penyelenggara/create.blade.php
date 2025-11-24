@@ -6,7 +6,7 @@
 <div class="card p-4">
     <h4 class="mb-3">Tambah Penyelenggara</h4>
 
-    <form action="{{ route('penyelenggaras.store') }}" method="POST">
+    <form action="{{ route('admin.penyelenggaras.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">

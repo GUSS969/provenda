@@ -12,7 +12,7 @@
 <div class="card">
     <div class="card-header flex justify-between items-center">
         <h5 class="mb-0">Daftar Penyelenggara</h5>
-        <a href="{{ route('penyelenggaras.create') }}" class="btn btn-primary">Tambah Penyelenggara</a>
+        <a href="{{ route('admin.penyelenggaras.create') }}" class="btn btn-primary">Tambah Penyelenggara</a>
     </div>
 
     <div class="card-body">
@@ -35,7 +35,7 @@
                     <td>{{ $p->no_hp }}</td>
                     <td>{{ $p->admin->nama ?? '-' }}</td>
                     <td class="flex gap-2">
-                        <a href="{{ route('penyelenggaras.edit', $p->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ route('admin.penyelenggaras.edit', $p->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
                         <form action="{{ route('penyelenggaras.destroy', $p->id) }}" 
                               method="POST" 

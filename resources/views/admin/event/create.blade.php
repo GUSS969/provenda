@@ -11,8 +11,8 @@
             <div class="page-block">
                 <h5 class="mb-0 font-medium">Tambah Event</h5>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Data Event</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.events.index') }}">Data Event</a></li>
                     <li class="breadcrumb-item">Tambah</li>
                 </ul>
             </div>
@@ -39,7 +39,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row g-4">
@@ -117,8 +117,8 @@
 
                         <!-- PENYELENGGARA -->
                         <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-users me-1"></i>Penyelenggara</label>
-                            <select name="penyelenggara_id" class="form-select" required>
+                            <label class="ti ti-users me-1"></i>Penyelenggara</label>
+                            <select name="penyelenggara_id" class="form-select" >
                                 <option value="">Pilih Penyelenggara</option>
                                 @foreach ($penyelenggaras as $p)
                                     <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -128,8 +128,8 @@
 
                         <!-- ADMIN -->
                         <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-user-shield me-1"></i>Admin</label>
-                            <select name="id_admin" class="form-select" required>
+                            <label class="ti ti-user-shield me-1"></i>Admin</label>
+                            <select name="id_admin" class="form-select" >
                                 <option value="">Pilih Admin</option>
                                 @foreach ($admins as $a)
                                     <option value="{{ $a->id }}">{{ $a->nama }}</option>
@@ -175,7 +175,7 @@
                     <!-- BUTTONS -->
                     <div class="row mt-4">
                         <div class="col-12 text-end">
-                            <a href="{{ route('events.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">
                                 <i class="ti ti-arrow-left me-2"></i>Kembali
                             </a>
                             <button class="btn btn-primary">
