@@ -21,7 +21,7 @@
 
         <div class="mb-3">
             <label class="form-label">Admin Pengelola</label>
-            <select name="admin_id" class="form-control" required>
+            <select name="admin_id" class="form-control" >
                 @foreach($admins as $a)
                     <option value="{{ $a->id }}">{{ $a->nama }}</option>
                 @endforeach

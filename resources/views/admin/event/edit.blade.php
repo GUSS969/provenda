@@ -4,272 +4,159 @@
 
 @section('content')
 
-<div class="pc-content">
+    <div class="pc-content">
 
-    <!-- =============== BREADCRUMB =============== -->
-    <div class="page-header">
-        <div class="page-block">
-            <h5 class="mb-0 font-medium">Edit Event</h5>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Data Event</a></li>
-                <li class="breadcrumb-item">Edit</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">
-                <i class="ti ti-edit me-2"></i>Form Edit Event
-            </h5>
+        <!-- =============== BREADCRUMB =============== -->
+        <div class="page-header">
+            <div class="page-block">
+                <h5 class="mb-0 font-medium">Edit Event</h5>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.events.index') }}">Data Event</a></li>
+                    <li class="breadcrumb-item">Edit</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="card-body p-4">
-            
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong><i class="ti ti-alert-circle me-2"></i>Terjadi Kesalahan!</strong>
-                    <ul class="mb-0 mt-2">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="ti ti-forms me-2"></i>Form Edit Event
+                </h5>
+            </div>
 
-            <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+            <div class="card-body p-4">
 
-                <div class="row g-4">
-
-                    <!-- NAMA EVENT -->
-                    <div class="col-md-12">
-                        <label class="form-label required">
-                            <i class="ti ti-writing me-1"></i>Nama Event
-                        </label>
-                        <input type="text" 
-                               name="nama_event" 
-                               class="form-control @error('nama_event') is-invalid @enderror" 
-                               value="{{ old('nama_event', $event->nama_event) }}"
-                               required>
-                        @error('nama_event')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- KATEGORI EVENT -->
-                    <div class="col-md-6">
-                        <label class="form-label required">
-                            <i class="ti ti-category me-1"></i>Kategori Event
-                        </label>
-                        <select name="kategori_event" 
-                                class="form-select @error('kategori_event') is-invalid @enderror"
-                                required>
-                            <option value="">Pilih Kategori</option>
-                            <option value="Festival" {{ old('kategori_event', $event->kategori_event) == 'Festival' ? 'selected' : '' }}>Festival</option>
-                            <option value="Pameran" {{ old('kategori_event', $event->kategori_event) == 'Pameran' ? 'selected' : '' }}>Pameran</option>
-                            <option value="Seminar" {{ old('kategori_event', $event->kategori_event) == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                            <option value="Workshop" {{ old('kategori_event', $event->kategori_event) == 'Workshop' ? 'selected' : '' }}>Workshop</option>
-                            <option value="Konser" {{ old('kategori_event', $event->kategori_event) == 'Konser' ? 'selected' : '' }}>Konser</option>
-                            <option value="Olahraga" {{ old('kategori_event', $event->kategori_event) == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
-                            <option value="Budaya" {{ old('kategori_event', $event->kategori_event) == 'Budaya' ? 'selected' : '' }}>Budaya</option>
-                            <option value="Kuliner" {{ old('kategori_event', $event->kategori_event) == 'Kuliner' ? 'selected' : '' }}>Kuliner</option>
-                            <option value="Lainnya" {{ old('kategori_event', $event->kategori_event) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                        </select>
-                        @error('kategori_event')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- STATUS -->
-                    <div class="col-md-6">
-                        <label class="form-label required">
-                            <i class="ti ti-circle-dot me-1"></i>Status
-                        </label>
-                        <select name="status" 
-                                class="form-select @error('status') is-invalid @enderror"
-                                required>
-                            <option value="aktif" {{ old('status', $event->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                            <option value="nonaktif" {{ old('status', $event->status) == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
-                        </select>
-                        @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- TANGGAL MULAI -->
-                    <div class="col-md-6">
-                        <label class="form-label required">
-                            <i class="ti ti-calendar-event me-1"></i>Tanggal Mulai
-                        </label>
-                        <input type="date" 
-                               name="tanggal_mulai" 
-                               class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                               value="{{ old('tanggal_mulai', $event->tanggal_mulai) }}"
-                               required>
-                        @error('tanggal_mulai')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- TANGGAL SELESAI -->
-                    <div class="col-md-6">
-                        <label class="form-label required">
-                            <i class="ti ti-calendar-check me-1"></i>Tanggal Selesai
-                        </label>
-                        <input type="date" 
-                               name="tanggal_selesai" 
-                               class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                               value="{{ old('tanggal_selesai', $event->tanggal_selesai) }}"
-                               required>
-                        @error('tanggal_selesai')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- LOKASI -->
-                    <div class="col-md-12">
-                        <label class="form-label required">
-                            <i class="ti ti-map-pin me-1"></i>Lokasi
-                        </label>
-                        <input type="text" 
-                               name="lokasi" 
-                               class="form-control @error('lokasi') is-invalid @enderror"
-                               value="{{ old('lokasi', $event->lokasi) }}"
-                               required>
-                        @error('lokasi')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- PENYELENGGARA -->
-                    <div class="col-md-6">
-                        <label class="form-label required">
-                            <i class="ti ti-users me-1"></i>Penyelenggara
-                        </label>
-                        <select name="penyelenggara_id" 
-                                class="form-select @error('penyelenggara_id') is-invalid @enderror"
-                                required>
-                            <option value="">Pilih Penyelenggara</option>
-                            @foreach($penyelenggaras as $p)
-                                <option value="{{ $p->id }}" 
-                                    {{ old('penyelenggara_id', $event->penyelenggara_id) == $p->id ? 'selected' : '' }}>
-                                    {{ $p->nama }}
-                                </option>
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="ti ti-alert-circle me-2"></i>Terjadi Kesalahan!</strong>
+                        <ul class="mb-0 mt-2">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
-                        </select>
-                        @error('penyelenggara_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
+                @endif
 
-                    <!-- ADMIN -->
-                    <div class="col-md-6">
-                        <label class="form-label required">
-                            <i class="ti ti-user-shield me-1"></i>Admin
-                        </label>
-                        <select name="id_admin" 
-                                class="form-select @error('id_admin') is-invalid @enderror"
-                                required>
-                            <option value="">Pilih Admin</option>
-                            @foreach($admins as $a)
-                                <option value="{{ $a->id }}" 
-                                    {{ old('id_admin', $event->id_admin) == $a->id ? 'selected' : '' }}>
-                                    {{ $a->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('id_admin')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <form action="{{ route('admin.events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                    <!-- UPLOAD POSTER -->
-                    <div class="col-md-12">
-                        <label class="form-label">
-                            <i class="ti ti-photo me-1"></i>Poster Event
-                            <small class="text-muted">(Opsional - Max: 2MB, Format: JPG, PNG, JPEG)</small>
-                        </label>
+                    <div class="row g-4">
 
-                        <!-- Current Image -->
-                        @if($event->poster)
-                        <div class="current-image mb-3">
-                            <p class="mb-2 text-muted small">
-                                <i class="ti ti-photo me-1"></i>Poster saat ini:
-                            </p>
-                            <img src="{{ asset('storage/event/'.$event->poster) }}" 
-                                 alt="Current Poster" 
-                                 class="img-thumbnail"
-                                 style="max-height: 200px;">
+                        <!-- NAMA EVENT -->
+                        <div class="col-md-12">
+                            <label class="form-label required"><i class="ti ti-writing me-1"></i>Nama Event</label>
+                            <input type="text" name="nama_event" class="form-control" value="{{ $event->nama_event }}" required>
                         </div>
-                        @endif
-                        
-                        <div class="upload-area" id="uploadArea">
-                            <input type="file" 
-                                   name="poster" 
-                                   id="posterInput" 
-                                   class="d-none @error('poster') is-invalid @enderror"
-                                   accept="image/jpeg,image/png,image/jpg"
-                                   onchange="previewImage(this)">
-                            
-                            <div id="uploadPlaceholder" class="upload-placeholder">
-                                <i class="ti ti-cloud-upload"></i>
-                                <p class="mb-1">Klik atau drag & drop untuk upload poster baru</p>
-                                <small class="text-muted">JPG, PNG atau JPEG (Max: 2MB)</small>
-                            </div>
 
-                            <div id="imagePreview" class="image-preview d-none">
-                                <img id="previewImg" src="" alt="Preview">
-                                <button type="button" class="btn-remove" onclick="removeImage()">
-                                    <i class="ti ti-x"></i>
-                                </button>
+                        <!-- KATEGORI -->
+                        <div class="col-md-6">
+                            <label class="form-label required"><i class="ti ti-category me-1"></i>Kategori Event</label>
+                            <select name="kategori_event" class="form-select" required>
+                                <option value="Festival" {{ $event->kategori_event == 'Festival' ? 'selected' : '' }}>Festival</option>
+                                <option value="Pameran" {{ $event->kategori_event == 'Pameran' ? 'selected' : '' }}>Pameran</option>
+                                <option value="Seminar" {{ $event->kategori_event == 'Seminar' ? 'selected' : '' }}>Seminar</option>
+                                <option value="Workshop" {{ $event->kategori_event == 'Workshop' ? 'selected' : '' }}>Workshop</option>
+                                <option value="Konser" {{ $event->kategori_event == 'Konser' ? 'selected' : '' }}>Konser</option>
+                                <option value="Olahraga" {{ $event->kategori_event == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                                <option value="Budaya" {{ $event->kategori_event == 'Budaya' ? 'selected' : '' }}>Budaya</option>
+                                <option value="Kuliner" {{ $event->kategori_event == 'Kuliner' ? 'selected' : '' }}>Kuliner</option>
+                                <option value="Lainnya" {{ $event->kategori_event == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                            </select>
+                        </div>
+
+                        <!-- STATUS -->
+                        <div class="col-md-6">
+                            <label class="form-label required"><i class="ti ti-circle-dot me-1"></i>Status</label>
+                            <select name="status" class="form-select" required>
+                                <option value="aktif" {{ $event->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                <option value="nonaktif" {{ $event->status == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
+                        </div>
+
+                        <!-- TANGGAL -->
+                        <div class="col-md-6">
+                            <label class="form-label required"><i class="ti ti-calendar-event me-1"></i>Tanggal Mulai</label>
+                            <input type="date" name="tanggal_mulai" class="form-control" value="{{ $event->tanggal_mulai }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required"><i class="ti ti-calendar-check me-1"></i>Tanggal Selesai</label>
+                            <input type="date" name="tanggal_selesai" class="form-control" value="{{ $event->tanggal_selesai }}" required>
+                        </div>
+
+                        <!-- LOKASI -->
+                        <div class="col-md-12">
+                            <label class="form-label required"><i class="ti ti-map-pin me-1"></i>Lokasi</label>
+                            <input type="text" name="lokasi" class="form-control" value="{{ $event->lokasi }}" required>
+                        </div>
+
+                        <!-- PENYELENGGARA -->
+                        <div class="col-md-6">
+                            <label class="ti ti-users me-1"></i>Penyelenggara</label>
+                            <select name="penyelenggara_id" class="form-select">
+                                <option value="">Pilih Penyelenggara</option>
+                                @foreach ($penyelenggaras as $p)
+                                    <option value="{{ $p->id }}" {{ $event->penyelenggara_id == $p->id ? 'selected' : '' }}>{{ $p->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- ADMIN -->
+                        <div class="col-md-6">
+                            <label class="ti ti-user-shield me-1"></i>Admin</label>
+                            <select name="id_admin" class="form-select">
+                                <option value="">Pilih Admin</option>
+                                @foreach ($admins as $a)
+                                    <option value="{{ $a->id }}" {{ $event->id_admin == $a->id ? 'selected' : '' }}>{{ $a->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- UPLOAD AREA + PREVIEW -->
+                        <div class="col-md-12">
+                            <label class="form-label"><i class="ti ti-photo me-1"></i>Poster Event</label>
+
+                            <div class="upload-area" id="uploadArea" onclick="document.getElementById('posterInput').click()">
+                                <input type="file" name="poster" id="posterInput" class="d-none" accept="image/*" onchange="previewImage()">
+
+                                <div id="uploadPlaceholder" class="upload-placeholder {{ $event->poster ? 'd-none' : '' }}">
+                                    <i class="ti ti-cloud-upload"></i>
+                                    <p class="mb-1">Klik atau drag & drop untuk upload poster</p>
+                                    <small class="text-muted">JPG, PNG atau JPEG (Max: 2MB)</small>
+                                </div>
+
+                                <div id="imagePreview" class="image-preview {{ $event->poster ? '' : 'd-none' }}">
+                                    @if ($event->poster)
+                                        <img id="previewImg" src="{{ asset('storage/' . $event->poster) }}" alt="Poster Lama">
+                                    @else
+                                        <img id="previewImg" class="d-none">
+                                    @endif
+                                </div>
                             </div>
                         </div>
 
-                        @error('poster')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
+                        <!-- DESKRIPSI -->
+                        <div class="col-md-12">
+                            <label class="form-label required"><i class="ti ti-file-text me-1"></i>Deskripsi</label>
+                            <textarea name="deskripsi" rows="5" class="form-control" required>{{ $event->deskripsi }}</textarea>
+                        </div>
+
                     </div>
 
-                    <!-- DESKRIPSI -->
-                    <div class="col-md-12">
-                        <label class="form-label required">
-                            <i class="ti ti-file-text me-1"></i>Deskripsi
-                        </label>
-                        <textarea name="deskripsi" 
-                                  rows="5" 
-                                  class="form-control @error('deskripsi') is-invalid @enderror"
-                                  required>{{ old('deskripsi', $event->deskripsi) }}</textarea>
-                        @error('deskripsi')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                </div>
-
-                <!-- BUTTONS -->
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="d-flex gap-2 justify-content-end">
-                            <a href="{{ route('events.index') }}" class="btn btn-secondary">
-                                <i class="ti ti-arrow-left me-2"></i>Kembali
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="ti ti-device-floppy me-2"></i>Update Event
-                            </button>
+                    <div class="row mt-4">
+                        <div class="col-12 text-end">
+                            <a href="{{ route('admin.events.index') }}" class="btn btn-secondary"><i class="ti ti-arrow-left me-2"></i>Kembali</a>
+                            <button class="btn btn-primary"><i class="ti ti-device-floppy me-2"></i>Update Event</button>
                         </div>
                     </div>
-                </div>
+                </form>
 
-            </form>
-
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 <style>
 .form-label {

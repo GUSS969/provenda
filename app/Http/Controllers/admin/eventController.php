@@ -41,7 +41,7 @@ class EventController extends Controller
 
         Event::create($request->all());
 
-        return redirect()->route('events.index')->with('success', 'Event berhasil ditambahkan!');
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -58,7 +58,7 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
         $event->update($request->all());
 
-        return redirect()->route('events.index')->with('success', 'Event berhasil diperbarui!');
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil diperbarui!');
     }
 
     public function destroy($id)

@@ -132,7 +132,7 @@
                         <span class="badge bg-success mb-2">{{ $event->kategori }}</span>
                         <h5 class="card-title fw-bold">{{ $event->nama_event }}</h5>
                         <p class="text-muted small mb-3">
-                            <i class="ti ti-user"></i> {{ $event->penyelenggara->nama }}
+                            {{ optional($event->penyelenggara)->nama ?? 'Penyelenggara tidak tersedia' }}
                         </p>
                         <p class="text-muted small mb-3">
                             <i class="ti ti-calendar"></i> {{ \Carbon\Carbon::parse($event->tanggal_event)->format('d M Y') }}

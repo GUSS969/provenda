@@ -57,10 +57,10 @@
                     <td>{{ $event->penyelenggara->nama ?? '-' }}</td>
 
                     <td>
-                        <a href="{{ route('events.edit', $event->id) }}"
+                        <a href="{{ route('admin.events.edit', $event->id) }}"
                            class="btn btn-sm btn-warning">Edit</a>
 
-                        <form action="{{ route('events.destroy', $event->id) }}"
+                        <form action="{{ route('admin.events.destroy', $event->id) }}"
                               method="POST" class="inline-block"
                               onsubmit="return confirm('Yakin hapus event ini?');">
                             @csrf
