@@ -13,21 +13,23 @@ class UserController extends Controller
     /**
      * Homepage - Landing page untuk pengunjung
      */
-    public function index()
-    {
-        // Hitung statistik (tanpa filter tanggal dulu)
-        $totalEvents = Event::count();
-        $totalOrganizers = Penyelenggara::count();
-        $upcomingEvents = Event::count(); // Sementara sama dengan total
-        
-        // Ambil 3 event terbaru (tanpa filter tanggal dulu)
-        $featuredEvents = Event::with('penyelenggara')
-            ->orderBy('id', 'desc')
-            ->limit(3)
-            ->get();
+   public function index()
+{
+    // Hitung statistik
+    $totalEvents = Event::count();
+    $totalOrganizers = Penyelenggara::count();
+    
+    // Hitung event mendatang (tanggal >= hari ini)
+    $upcomingEvents = Event::where('tanggal_event', '>=', Carbon::now()->format('Y-m-d'))->count();
+    
+    // Ambil 3 event terbaru untuk featured events
+    $featuredEvents = Event::with('penyelenggara')
+        ->orderBy('id', 'desc')
+        ->limit(3)
+        ->get();
 
-        return view('home', compact('totalEvents', 'totalOrganizers', 'upcomingEvents', 'featuredEvents'));
-    }
+    return view('home', compact('totalEvents', 'totalOrganizers', 'upcomingEvents', 'featuredEvents'));
+}
 
     /**
      * Daftar semua event dengan filter & search
@@ -51,8 +53,32 @@ class UserController extends Controller
             $query->where('kategori', $request->kategori);
         }
 
-        // Urutkan berdasarkan ID terbaru
-        $events = $query->orderBy('id', 'desc')->paginate(9);
+        // Sorting berdasarkan pilihan user
+        $sort = $request->get('sort', 'terbaru'); // Default: terbaru
+        
+        switch ($sort) {
+            case 'terlama':
+                $query->orderBy('id', 'asc');
+                break;
+            case 'nama_az':
+                $query->orderBy('nama_event', 'asc');
+                break;
+            case 'nama_za':
+                $query->orderBy('nama_event', 'desc');
+                break;
+            case 'tanggal_terdekat':
+                $query->orderBy('tanggal_event', 'asc');
+                break;
+            case 'tanggal_terjauh':
+                $query->orderBy('tanggal_event', 'desc');
+                break;
+            default: // terbaru
+                $query->orderBy('id', 'desc');
+                break;
+        }
+
+        // Pagination dengan 9 item per halaman + tetap menyimpan query string
+        $events = $query->paginate(9)->withQueryString();
 
         return view('events.index', compact('events'));
     }
@@ -69,6 +95,7 @@ class UserController extends Controller
         $relatedEvents = Event::with('penyelenggara')
             ->where('kategori', $event->kategori)
             ->where('id', '!=', $event->id)
+            ->orderBy('id', 'desc')
             ->limit(3)
             ->get();
 

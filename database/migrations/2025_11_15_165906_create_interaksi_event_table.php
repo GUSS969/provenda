@@ -6,25 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('interaksi_event', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-
-            $table->foreignUuid('event_id')
-                ->constrained('events')
-                ->onDelete('cascade');
-
-            $table->enum('jenis_interaksi', ['like', 'view']);
-            $table->string('ip_address')->nullable();
-            $table->dateTime('waktu_interaksi')->useCurrent();
-
-            $table->softDeletes();
+            $table->id();
+            
+            // ✅ PENTING: Harus unsignedBigInteger
+            $table->unsignedBigInteger('event_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            
+            $table->string('jenis_interaksi')->nullable(); // like, share, comment, dll
+            $table->text('komentar')->nullable();
             $table->timestamps();
+            
+            // Hapus foreign key constraint atau pastikan pakai onDelete cascade
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('interaksi_event');
     }

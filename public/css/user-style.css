@@ -1,0 +1,97 @@
+/* Custom Purple Gradient Theme */
+:root {
+    --primary-purple: #7c3aed;
+    --secondary-purple: #a855f7;
+    --light-purple: #f3e8ff;
+    --dark-purple: #5b21b6;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    color: white;
+}
+
+.text-purple {
+    color: #667eea;
+}
+
+/* Card Animations */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* Navbar Styling */
+.navbar-custom {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Hero Section Enhancement */
+.hero-icon-container {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Event Card Styling */
+.event-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+}
+
+.event-card img {
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover img {
+    transform: scale(1.1);
+}
+
+/* Badge Styling */
+.badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Statistics Counter */
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.stat-card:hover .text-purple,
+.stat-card:hover .text-muted {
+    color: white !important;
+}

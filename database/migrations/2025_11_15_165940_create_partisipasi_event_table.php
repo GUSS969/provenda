@@ -6,30 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('partisipasi_event', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-
-            $table->foreignUuid('umkm_id')
-                ->constrained('umkms')
-                ->onDelete('cascade');
-
-            $table->foreignUuid('event_id')
-                ->constrained('events')
-                ->onDelete('cascade');
-
-            $table->date('tanggal_bergabung')->nullable();
-
-            $table->enum('status_partisipasi', ['menunggu', 'disetujui', 'ditolak'])
-                ->default('menunggu');
-
-            $table->softDeletes();
+            $table->id();
+            
+            // ✅ PENTING: Harus unsignedBigInteger
+            $table->unsignedBigInteger('event_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            
+            $table->string('status')->nullable(); // hadir, tidak_hadir, dll
             $table->timestamps();
+            
+            // Hapus foreign key constraint
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('partisipasi_event');
     }

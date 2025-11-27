@@ -6,34 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('statistik_promosi', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-
-            $table->foreignUuid('event_id')
-                ->constrained('events')
-                ->onDelete('cascade');
-
-            $table->integer('total_view')->default(0);
-            $table->integer('total_like')->default(0);
-
-            $table->enum('periode', ['harian', 'mingguan', 'bulanan'])
-                ->default('harian');
-
-            $table->dateTime('tanggal_diperbarui')->useCurrent();
-
-            $table->softDeletes();
+            $table->id();
+            
+            // ✅ PENTING: Harus unsignedBigInteger
+            $table->unsignedBigInteger('event_id')->nullable();
+            
+            // Kolom lainnya
+            $table->integer('jumlah_klik')->default(0);
+            $table->integer('jumlah_view')->default(0);
             $table->timestamps();
+            
+            // Foreign key constraint (opsional, bisa dihapus kalau masih error)
+            $table->foreign('event_id')
+                  ->references('id')
+                  ->on('events')
+                  ->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('statistik_promosi');

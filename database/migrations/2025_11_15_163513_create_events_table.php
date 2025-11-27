@@ -6,40 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('nama_event');
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
-            $table->string('lokasi');
+            $table->string('kategori')->nullable();
+            $table->date('tanggal_event');
+            $table->string('waktu')->nullable();
+            $table->string('lokasi')->nullable();
             $table->text('deskripsi')->nullable();
-            $table->string('kategori_event');
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
-
-            // FK ke penyelenggara
-            $table->foreignUuid('penyelenggara_id')
-                  ->constrained('penyelenggaras')
-                  ->onDelete('cascade');
-
-            // FK ke admin
-            $table->foreignUuid('id_admin')
-                  ->constrained('admins')
-                  ->onDelete('cascade');
-
             $table->string('poster')->nullable();
-            $table->softDeletes();
+            
+            // ✅ PENTING: Harus unsignedBigInteger dan nullable
+            $table->unsignedBigInteger('penyelenggara_id')->nullable();
+            
+            // Foreign key constraint
+            $table->foreign('penyelenggara_id')
+                  ->references('id')
+                  ->on('penyelenggaras')
+                  ->onDelete('cascade');
+            
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('events');
