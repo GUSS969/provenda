@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.admin')
 
 @section('title', 'Tambah UMKM')
 
@@ -49,7 +49,7 @@
 
         <div class="mb-3">
             <label>Admin Penanggung Jawab</label>
-            <select name="admin_id" class="form-control" required>
+            <select name="admin_id" class="form-control" >
                 @foreach($admins as $admin)
                     <option value="{{ $admin->id }}">{{ $admin->nama }}</option>
                 @endforeach

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.admin')
 
 @section('content')
 <h4 class="mb-3">Edit Penyelenggara</h4>
