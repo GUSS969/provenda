@@ -37,7 +37,7 @@
                     <td class="flex gap-2">
                         <a href="{{ route('admin.penyelenggaras.edit', $p->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                        <form action="{{ route('penyelenggaras.destroy', $p->id) }}" 
+                        <form action="{{ route('admin.penyelenggaras.destroy', $p->id) }}" 
                               method="POST" 
                               onsubmit="return confirm('Hapus penyelenggara ini?')">
                             @csrf
