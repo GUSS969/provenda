@@ -18,17 +18,17 @@
     
     <!-- Custom CSS -->
     <style>
-        :root {
-            --primary-purple: #7C3AED;
-            --primary-dark: #6D28D9;
-            --primary-light: #A78BFA;
-            --secondary-pink: #EC4899;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
-            --shadow-sm: 0 2px 8px rgba(124, 58, 237, 0.1);
-            --shadow-md: 0 4px 16px rgba(124, 58, 237, 0.15);
-            --shadow-lg: 0 8px 32px rgba(124, 58, 237, 0.2);
-        }
+     :root {
+    --primary-teal: #0D9488;
+    --primary-orange: #F97316;
+    --primary-light: #14B8A6;
+    --secondary-coral: #FB923C;
+    --gradient-1: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+    --gradient-2: linear-gradient(135deg, #0D9488 0%, #06B6D4 100%);
+    --shadow-sm: 0 2px 8px rgba(13, 148, 136, 0.1);
+    --shadow-md: 0 4px 16px rgba(13, 148, 136, 0.15);
+    --shadow-lg: 0 8px 32px rgba(13, 148, 136, 0.2);
+}
 
         * {
             margin: 0;
@@ -270,7 +270,7 @@
 
         .social-links a:hover {
             background: white;
-            color: var(--primary-purple);
+            color: var(--primary-blue);
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
@@ -295,11 +295,11 @@
             background: var(--gradient-2);
         }
 
-        .text-purple {
-            color: var(--primary-purple);
+        .text-blue {
+            color: var(--primary-blue);
         }
 
-        .btn-purple {
+        .btn-blue {
             background: var(--gradient-2);
             border: none;
             color: white;
@@ -314,7 +314,7 @@
             box-shadow: var(--shadow-md);
         }
 
-        .btn-purple:hover {
+        .btn-blue:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
             color: white;
@@ -342,7 +342,7 @@
 
         .back-to-top:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.4);
         }
 
         .back-to-top.show {
@@ -356,7 +356,7 @@
         /* Responsive */
         @media (max-width: 991px) {
             .navbar-collapse {
-                background: rgba(124, 58, 237, 0.95);
+                background: rgba(0, 188, 212, 0.95);
                 backdrop-filter: blur(10px);
                 margin-top: 1rem;
                 padding: 1rem;

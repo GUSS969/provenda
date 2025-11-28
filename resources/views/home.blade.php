@@ -979,4 +979,4 @@
         observer.observe(el);
     });
 </script>
-@endsection
+@endsection 
