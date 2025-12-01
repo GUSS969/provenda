@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Session;
 class AuthController extends Controller
 {
     /**
-     * Show Login Form
+     * ============================
+     * SHOW LOGIN FORM
+     * ============================
      */
     public function showLoginForm()
     {
@@ -24,7 +26,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Process Login
+     * ============================
+     * LOGIN PROCESS
+     * ============================
      */
     public function login(Request $request)
     {
@@ -39,21 +43,20 @@ class AuthController extends Controller
             'password.min' => 'Password minimal 3 karakter'
         ]);
 
-        // Cari penyelenggara berdasarkan email
+        // Cari data penyelenggara
         $penyelenggara = Penyelenggara::where('email', $request->email)->first();
 
-        // Cek apakah penyelenggara ditemukan
+        // Jika email tidak ditemukan
         if (!$penyelenggara) {
             return back()->with('error', 'Email tidak terdaftar')->withInput();
         }
 
-        // Cek password
-        // UNTUK TESTING: Pakai plain text comparison
-        // UNTUK PRODUCTION: Pakai Hash::check()
-        
-        // Coba dulu plain text (kalau password di DB belum di-hash)
+        /**
+         * Cek password
+         * - Coba plain text (buat testing)
+         * - Kalau tidak cocok, pakai Hash::check
+         */
         if ($request->password !== $penyelenggara->password) {
-            // Kalau gagal, coba pakai hash
             if (!Hash::check($request->password, $penyelenggara->password)) {
                 return back()->with('error', 'Password salah')->withInput();
             }
@@ -64,17 +67,67 @@ class AuthController extends Controller
         Session::put('penyelenggara_nama', $penyelenggara->nama);
         Session::put('penyelenggara_email', $penyelenggara->email);
 
-        // Redirect ke dashboard dengan pesan sukses
         return redirect()->route('penyelenggara.dashboard')
                         ->with('success', 'Selamat datang, ' . $penyelenggara->nama);
     }
 
     /**
-     * Logout
+     * ============================
+     * SHOW REGISTER FORM
+     * ============================
+     */
+    public function showRegisterForm()
+    {
+        if (Session::has('penyelenggara_id')) {
+            return redirect()->route('penyelenggara.dashboard');
+        }
+
+        return view('penyelenggara.auth.register');
+    }
+
+    /**
+     * ============================
+     * REGISTER PROCESS
+     * ============================
+     */
+    public function register(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:penyelenggaras,email',
+            'password' => 'required|min:3|confirmed',
+        ], [
+            'nama.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.required' => 'Password wajib diisi',
+            'password.confirmed' => 'Konfirmasi password tidak cocok',
+        ]);
+
+        // Simpan data baru
+        $penyelenggara = Penyelenggara::create([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // selalu hash
+        ]);
+
+        // Auto login setelah registrasi
+        Session::put('penyelenggara_id', $penyelenggara->id);
+        Session::put('penyelenggara_nama', $penyelenggara->nama);
+        Session::put('penyelenggara_email', $penyelenggara->email);
+
+        return redirect()->route('penyelenggara.dashboard')
+                        ->with('success', 'Akun berhasil dibuat! Selamat datang, ' . $penyelenggara->nama);
+    }
+
+    /**
+     * ============================
+     * LOGOUT PROCESS
+     * ============================
      */
     public function logout()
     {
-        // Hapus session penyelenggara
         Session::forget('penyelenggara_id');
         Session::forget('penyelenggara_nama');
         Session::forget('penyelenggara_email');
