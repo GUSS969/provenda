@@ -5,7 +5,7 @@
 
 <div class="card p-4">
 
-    <form action="{{ route('penyelenggaras.update', $penyelenggara->id) }}" method="POST">
+    <form action="{{ route('admin.penyelenggaras.update', $penyelenggara->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -47,7 +47,7 @@
         </div>
 
         <button class="btn btn-primary">Update</button>
-        <a href="{{ route('penyelenggaras.index') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('admin.penyelenggaras.index') }}" class="btn btn-secondary">Batal</a>
 
     </form>
 </div>

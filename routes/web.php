@@ -14,6 +14,8 @@ use App\Http\Controllers\admin\InteraksiEventController;
 use App\Http\Controllers\admin\StatistikPromosiController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\penyelenggara\AuthController as PenyelenggaraAuth;
+use App\Http\Controllers\penyelenggara\DashboardController as PenyelenggaraDashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +24,12 @@ use App\Http\Controllers\user\UserController;
 | File: routes/web.php
 | 
 | Struktur Routing:
-| 1. USER ROUTES     → / (Public, Tanpa Auth)
-| 2. AUTH ROUTES     → /login (Guest Only)
-| 3. ADMIN ROUTES    → /admin/* (Protected, Auth Required)
-| 4. FALLBACK        → Redirect ke homepage
+| 1. USER ROUTES               → / (Public, Tanpa Auth)
+| 2. AUTH ROUTES (ADMIN)       → /login (Guest Only)
+| 3. ADMIN ROUTES              → /admin/* (Protected, Auth Required)
+| 4. AUTH ROUTES (PENYELENGGARA) → /penyelenggara/login (Guest Only)
+| 5. PENYELENGGARA ROUTES      → /penyelenggara/* (Protected, Session Auth)
+| 6. FALLBACK                  → Redirect ke homepage
 |
 */
 
@@ -49,17 +53,17 @@ Route::name('user.')->group(function () {
 });
 
 // ============================================================================
-// AUTH ROUTES (Login - Guest Only)
+// AUTH ROUTES - ADMIN (Login - Guest Only)
 // ============================================================================
 // Prefix: /
 // Akses: Hanya untuk yang belum login
 // Redirect: Jika sudah login akan di-redirect
 // ============================================================================
 
-// Form Login
+// Form Login Admin
 Route::get('login', [AuthController::class, 'login'])->name('login');
 
-// Proses Login
+// Proses Login Admin
 Route::post('login', [AuthController::class, 'loginPost'])->name('login.post');
 
 // ============================================================================
@@ -122,6 +126,75 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         request()->session()->regenerateToken();
         return redirect()->route('login')->with('success', 'Berhasil logout');
     })->name('logout');
+});
+
+// ============================================================================
+// AUTH ROUTES - PENYELENGGARA (Login - Guest Only)
+// ============================================================================
+// Prefix: /penyelenggara
+// Akses: Hanya untuk yang belum login (guest)
+// Redirect: Jika sudah login akan di-redirect ke dashboard
+// ============================================================================
+
+Route::prefix('penyelenggara')->name('penyelenggara.')->group(function () {
+    
+    // ------------------------------------------------------------------------
+    // LOGIN PENYELENGGARA
+    // ------------------------------------------------------------------------
+    // URL: /penyelenggara/login (GET)
+    // Controller: penyelenggara\AuthController@showLoginForm
+    // ------------------------------------------------------------------------
+    Route::get('login', [PenyelenggaraAuth::class, 'showLoginForm'])->name('login');
+    
+    // ------------------------------------------------------------------------
+    // PROSES LOGIN PENYELENGGARA
+    // ------------------------------------------------------------------------
+    // URL: /penyelenggara/login (POST)
+    // Controller: penyelenggara\AuthController@login
+    // ------------------------------------------------------------------------
+    Route::post('login', [PenyelenggaraAuth::class, 'login'])->name('login.submit');
+});
+
+// ============================================================================
+// PENYELENGGARA ROUTES (Dashboard - Protected)
+// ============================================================================
+// Prefix: /penyelenggara
+// Akses: Hanya untuk penyelenggara yang sudah login
+// Middleware: penyelenggara.auth (Session-based)
+// ============================================================================
+
+Route::prefix('penyelenggara')->name('penyelenggara.')->middleware('penyelenggara.auth')->group(function () {
+    
+    // ------------------------------------------------------------------------
+    // DASHBOARD PENYELENGGARA
+    // ------------------------------------------------------------------------
+    // URL: /penyelenggara/dashboard
+    // Controller: penyelenggara\DashboardController@index
+    // ------------------------------------------------------------------------
+    Route::get('dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
+    
+    // ------------------------------------------------------------------------
+    // LOGOUT PENYELENGGARA
+    // ------------------------------------------------------------------------
+    // URL: /penyelenggara/logout (POST)
+    // Controller: penyelenggara\AuthController@logout
+    // ------------------------------------------------------------------------
+    Route::post('logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');
+    
+    // ------------------------------------------------------------------------
+    // EVENT MANAGEMENT (Coming Soon)
+    // ------------------------------------------------------------------------
+    // Route::resource('events', PenyelenggaraEventController::class);
+    
+    // ------------------------------------------------------------------------
+    // STATISTICS (Coming Soon)
+    // ------------------------------------------------------------------------
+    // Route::get('statistics', [PenyelenggaraDashboard::class, 'statistics'])->name('statistics');
+    
+    // ------------------------------------------------------------------------
+    // SETTINGS (Coming Soon)
+    // ------------------------------------------------------------------------
+    // Route::get('settings', [PenyelenggaraDashboard::class, 'settings'])->name('settings');
 });
 
 // ============================================================================
