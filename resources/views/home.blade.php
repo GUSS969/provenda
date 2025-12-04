@@ -950,7 +950,7 @@
             <p class="cta-subtitle">
                 Bergabunglah dengan ribuan penyelenggara event yang telah mempercayai kami
             </p>
-            <a href="{{ route('user.events') }}" class="btn-cta">
+            <a href="{{ route('penyelenggara.dashboard') }}" class="btn-cta">
                 <i class="ti ti-rocket"></i>
                 Mulai Sekarang
             </a>
