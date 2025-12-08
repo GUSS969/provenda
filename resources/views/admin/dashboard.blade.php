@@ -5,7 +5,6 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('admin/assets/css/dashboard.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
-
 @endpush
 
 @section('content')
@@ -218,16 +217,16 @@
                                             <!-- Image -->
                                             <div class="event-image">
                                                 @if ($ev->poster)
-                                                    <img src="{{ asset('storage/event/' . $ev->poster) }}"
-                                                        alt="{{ $ev->nama_event }}"
-                                                        onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
+                                                    <img src="{{ $ev->poster ? route('poster.show', $ev->poster) : 'https://via.placeholder.com/400x250?text=No+Image' }}"
+                                                        alt="{{ $ev->nama_event }}" class="img-fluid"
+                                                        style="width:100%;height:200px;object-fit:cover;">
                                                 @else
-                                                    <div class="no-image">
-                                                        <i class="ti ti-photo"></i>
-                                                        <span>No Image</span>
-                                                    </div>
+                                                    <img src="https://via.placeholder.com/400x250?text=No+Image"
+                                                        class="img-fluid"
+                                                        style="width:100%;height:200px;object-fit:cover;">
                                                 @endif
                                             </div>
+
 
                                             <!-- Conten #t -->
                                             <div class="event-content">

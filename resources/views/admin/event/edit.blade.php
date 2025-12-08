@@ -48,48 +48,56 @@
                         <!-- NAMA EVENT -->
                         <div class="col-md-12">
                             <label class="form-label required"><i class="ti ti-writing me-1"></i>Nama Event</label>
-                            <input type="text" name="nama_event" class="form-control" value="{{ $event->nama_event }}" required>
+                            <input type="text" name="nama_event" class="form-control" value="{{ $event->nama_event }}"
+                                required>
                         </div>
 
                         <!-- KATEGORI -->
-                        <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-category me-1"></i>Kategori Event</label>
-                            <select name="kategori_event" class="form-select" required>
-                                <option value="Festival" {{ $event->kategori_event == 'Festival' ? 'selected' : '' }}>Festival</option>
-                                <option value="Pameran" {{ $event->kategori_event == 'Pameran' ? 'selected' : '' }}>Pameran</option>
-                                <option value="Seminar" {{ $event->kategori_event == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                                <option value="Workshop" {{ $event->kategori_event == 'Workshop' ? 'selected' : '' }}>Workshop</option>
-                                <option value="Konser" {{ $event->kategori_event == 'Konser' ? 'selected' : '' }}>Konser</option>
-                                <option value="Olahraga" {{ $event->kategori_event == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
-                                <option value="Budaya" {{ $event->kategori_event == 'Budaya' ? 'selected' : '' }}>Budaya</option>
-                                <option value="Kuliner" {{ $event->kategori_event == 'Kuliner' ? 'selected' : '' }}>Kuliner</option>
-                                <option value="Lainnya" {{ $event->kategori_event == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                            </select>
-                        </div>
+                        <select name="kategori" class="form-control" required>
+                            <option value="" disabled>Pilih Kategori</option>
+                            <option value="Olahraga"
+                                {{ old('kategori', $event->kategori) == 'Olahraga' ? 'selected' : '' }}>
+                                Olahraga
+                            </option>
+                            <option value="Festival"
+                                {{ old('kategori', $event->kategori) == 'Festival' ? 'selected' : '' }}>
+                                Festival
+                            </option>
+                            <option value="Budaya" {{ old('kategori', $event->kategori) == 'Budaya' ? 'selected' : '' }}>
+                                Budaya
+                            </option>
+                            <option value="UMKM" {{ old('kategori', $event->kategori) == 'UMKM' ? 'selected' : '' }}>
+                                UMKM
+                            </option>
+                        </select>
+
 
                         <!-- STATUS -->
                         <div class="col-md-6">
                             <label class="form-label required"><i class="ti ti-circle-dot me-1"></i>Status</label>
                             <select name="status" class="form-select" required>
                                 <option value="aktif" {{ $event->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                <option value="nonaktif" {{ $event->status == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                                <option value="nonaktif" {{ $event->status == 'nonaktif' ? 'selected' : '' }}>Nonaktif
+                                </option>
                             </select>
                         </div>
 
                         <!-- TANGGAL -->
-                        <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-calendar-event me-1"></i>Tanggal Mulai</label>
-                            <input type="date" name="tanggal_mulai" class="form-control" value="{{ $event->tanggal_mulai }}" required>
+                        <div class="col-md-12">
+                            <label class="form-label required">
+                                <i class="ti ti-calendar-event me-1"></i>Tanggal Event
+                            </label>
+                            <input type="date" name="tanggal_event"
+                                class="form-control @error('tanggal_event') is-invalid @enderror"
+                                value="{{ $event->tanggal_event }}" required>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-calendar-check me-1"></i>Tanggal Selesai</label>
-                            <input type="date" name="tanggal_selesai" class="form-control" value="{{ $event->tanggal_selesai }}" required>
-                        </div>
+
 
                         <!-- LOKASI -->
                         <div class="col-md-12">
                             <label class="form-label required"><i class="ti ti-map-pin me-1"></i>Lokasi</label>
-                            <input type="text" name="lokasi" class="form-control" value="{{ $event->lokasi }}" required>
+                            <input type="text" name="lokasi" class="form-control" value="{{ $event->lokasi }}"
+                                required>
                         </div>
 
                         <!-- PENYELENGGARA -->
@@ -98,44 +106,38 @@
                             <select name="penyelenggara_id" class="form-select">
                                 <option value="">Pilih Penyelenggara</option>
                                 @foreach ($penyelenggaras as $p)
-                                    <option value="{{ $p->id }}" {{ $event->penyelenggara_id == $p->id ? 'selected' : '' }}>{{ $p->nama }}</option>
+                                    <option value="{{ $p->id }}"
+                                        {{ $event->penyelenggara_id == $p->id ? 'selected' : '' }}>{{ $p->nama }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <!-- ADMIN -->
-                        <div class="col-md-6">
-                            <label class="ti ti-user-shield me-1"></i>Admin</label>
-                            <select name="id_admin" class="form-select">
-                                <option value="">Pilih Admin</option>
-                                @foreach ($admins as $a)
-                                    <option value="{{ $a->id }}" {{ $event->id_admin == $a->id ? 'selected' : '' }}>{{ $a->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
+                        <!-- POSTER EVENT -->
+                        <div class="mb-3">
+                            <label class="form-label">Poster Event (Opsional)</label>
 
-                        <!-- UPLOAD AREA + PREVIEW -->
-                        <div class="col-md-12">
-                            <label class="form-label"><i class="ti ti-photo me-1"></i>Poster Event</label>
-
-                            <div class="upload-area" id="uploadArea" onclick="document.getElementById('posterInput').click()">
-                                <input type="file" name="poster" id="posterInput" class="d-none" accept="image/*" onchange="previewImage()">
-
-                                <div id="uploadPlaceholder" class="upload-placeholder {{ $event->poster ? 'd-none' : '' }}">
-                                    <i class="ti ti-cloud-upload"></i>
-                                    <p class="mb-1">Klik atau drag & drop untuk upload poster</p>
-                                    <small class="text-muted">JPG, PNG atau JPEG (Max: 2MB)</small>
-                                </div>
-
-                                <div id="imagePreview" class="image-preview {{ $event->poster ? '' : 'd-none' }}">
-                                    @if ($event->poster)
-                                        <img id="previewImg" src="{{ asset('storage/' . $event->poster) }}" alt="Poster Lama">
-                                    @else
-                                        <img id="previewImg" class="d-none">
-                                    @endif
-                                </div>
+                            <div class="border rounded p-3 text-center w-100" id="poster-preview">
+                                @if ($event->poster)
+                                    <img src="{{ asset('storage/' . $event->poster) }}" alt="Poster Event"
+                                        class="img-fluid" style="max-height: 200px; object-fit: contain;">
+                                    <p class="mt-2">Klik untuk pilih poster baru</p>
+                                @else
+                                    <p>Klik untuk pilih poster</p>
+                                @endif
+                                <p class="text-muted small">JPG, PNG atau JPEG (Max: 2MB)</p>
                             </div>
+
+                            <input type="file" name="poster" id="poster" class="d-none" accept="image/*"
+                                onchange="document.getElementById('poster-preview').innerHTML = this.files[0]?.name ?? '';">
                         </div>
+
+                        <script>
+                            document.getElementById('poster-preview')
+                                .addEventListener('click', () => document.getElementById('poster').click());
+                        </script>
+
 
                         <!-- DESKRIPSI -->
                         <div class="col-md-12">
@@ -147,7 +149,8 @@
 
                     <div class="row mt-4">
                         <div class="col-12 text-end">
-                            <a href="{{ route('admin.events.index') }}" class="btn btn-secondary"><i class="ti ti-arrow-left me-2"></i>Kembali</a>
+                            <a href="{{ route('admin.events.index') }}" class="btn btn-secondary"><i
+                                    class="ti ti-arrow-left me-2"></i>Kembali</a>
                             <button class="btn btn-primary"><i class="ti ti-device-floppy me-2"></i>Update Event</button>
                         </div>
                     </div>
@@ -158,161 +161,104 @@
 
     </div>
 
-<style>
-.form-label {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
-    font-size: 14px;
-}
 
-.form-label.required::after {
-    content: " *";
-    color: #dc3545;
-}
-
-.form-label i {
-    color: #667eea;
-}
-
-.form-control, .form-select {
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    padding: 0.625rem 0.875rem;
-    font-size: 14px;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
-}
-
-.current-image img {
-    border-radius: 8px;
-}
-
-.upload-area {
-    border: 2px dashed #dee2e6;
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-}
-
-.upload-area:hover {
-    border-color: #667eea;
-    background: #f0f3ff;
-}
-
-.upload-placeholder i {
-    font-size: 48px;
-    color: #667eea;
-}
-
-.image-preview {
-    position: relative;
-    display: inline-block;
-}
-
-.image-preview img {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn-remove {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #dc3545;
-    color: white;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-}
-
-.btn-remove:hover {
-    background: #c82333;
-    transform: scale(1.1);
-}
-</style>
-
-<script>
-const uploadArea = document.getElementById('uploadArea');
-const posterInput = document.getElementById('posterInput');
-const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-const imagePreview = document.getElementById('imagePreview');
-const previewImg = document.getElementById('previewImg');
-
-uploadArea.addEventListener('click', function() {
-    posterInput.click();
-});
-
-uploadArea.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    this.style.borderColor = '#667eea';
-    this.style.background = '#f0f3ff';
-});
-
-uploadArea.addEventListener('dragleave', function(e) {
-    e.preventDefault();
-    this.style.borderColor = '#dee2e6';
-    this.style.background = '#f8f9fa';
-});
-
-uploadArea.addEventListener('drop', function(e) {
-    e.preventDefault();
-    this.style.borderColor = '#dee2e6';
-    this.style.background = '#f8f9fa';
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        posterInput.files = files;
-        previewImage(posterInput);
-    }
-});
-
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        
-        if (file.size > 2048000) {
-            alert('Ukuran file terlalu besar! Maksimal 2MB');
-            input.value = '';
-            return;
+    <style>
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-size: 14px;
         }
-        
-        if (!file.type.match('image/(jpeg|jpg|png)')) {
-            alert('Format file harus JPG, JPEG, atau PNG!');
-            input.value = '';
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            uploadPlaceholder.classList.add('d-none');
-            imagePreview.classList.remove('d-none');
-        }
-        reader.readAsDataURL(file);
-    }
-}
 
-function removeImage() {
-    posterInput.value = '';
-    previewImg.src = '';
-    uploadPlaceholder.classList.remove('d-none');
-    imagePreview.classList.add('d-none');
-}
-</script>
+        .form-label.required::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .upload-area {
+            border: 2px dashed #cfd4da;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+            background: #fdfdfd;
+            width: 260px;
+            margin: auto;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f7f9ff;
+        }
+
+        .upload-placeholder i {
+            font-size: 38px;
+            color: #667eea;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 260px;
+            margin: auto;
+        }
+
+        .image-preview img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+        }
+
+        .btn-remove {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        const uploadArea = document.getElementById("uploadArea");
+        const posterInput = document.getElementById("posterInput");
+        const uploadPlaceholder = document.getElementById("uploadPlaceholder");
+        const imagePreview = document.getElementById("imagePreview");
+        const previewImg = document.getElementById("previewImg");
+
+        uploadArea.addEventListener("click", () => posterInput.click());
+
+        function previewImage() {
+            if (posterInput.files && posterInput.files[0]) {
+                const file = posterInput.files[0];
+                if (file.size > 2048000) {
+                    alert("Ukuran file terlalu besar! Maksimal 2MB");
+                    posterInput.value = "";
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = e => {
+                    previewImg.src = e.target.result;
+                    uploadPlaceholder.classList.add("d-none");
+                    imagePreview.classList.remove("d-none");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage() {
+            posterInput.value = "";
+            previewImg.src = "";
+            uploadPlaceholder.classList.remove("d-none");
+            imagePreview.classList.add("d-none");
+        }
+    </script>
 
 @endsection

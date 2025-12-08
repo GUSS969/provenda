@@ -21,18 +21,18 @@ class DashboardController extends Controller
         if (!$penyelenggara) {
             Session::flush();
             return redirect()->route('penyelenggara.login')
-                           ->with('error', 'Penyelenggara tidak ditemukan');
+                           ->with('error', 'Silakan login terlebih dahulu');
         }
 
         // Total event milik penyelenggara ini
         $totalEvents = Event::where('penyelenggara_id', $penyelenggara->id)->count();
         
-        // Event aktif (mendatang)
+        // Event aktif (tanggal ≥ hari ini)
         $activeEvents = Event::where('penyelenggara_id', $penyelenggara->id)
                             ->where('tanggal_event', '>=', Carbon::now()->format('Y-m-d'))
                             ->count();
         
-        // Event selesai
+        // Event selesai (tanggal < hari ini)
         $completedEvents = Event::where('penyelenggara_id', $penyelenggara->id)
                                 ->where('tanggal_event', '<', Carbon::now()->format('Y-m-d'))
                                 ->count();
@@ -43,20 +43,20 @@ class DashboardController extends Controller
                               ->whereYear('tanggal_event', Carbon::now()->year)
                               ->count();
 
-        // Recent Events (5 terbaru)
+        // 5 event terbaru
         $recentEvents = Event::where('penyelenggara_id', $penyelenggara->id)
                             ->orderBy('created_at', 'desc')
                             ->take(5)
                             ->get();
 
-        // Upcoming Events (5 mendatang)
+        // 5 event mendatang
         $upcomingEvents = Event::where('penyelenggara_id', $penyelenggara->id)
                                ->where('tanggal_event', '>=', Carbon::now()->format('Y-m-d'))
                                ->orderBy('tanggal_event', 'asc')
                                ->take(5)
                                ->get();
 
-        // Data untuk chart - Event per bulan dalam 6 bulan terakhir
+        // Chart: 6 bulan terakhir
         $chartLabels = [];
         $chartData = [];
         
@@ -82,5 +82,16 @@ class DashboardController extends Controller
             'chartLabels',
             'chartData'
         ));
+    }
+
+    public function eventSaya()
+    {
+        $penyelenggaraId = Session::get('penyelenggara_id');
+
+        $events = Event::where('penyelenggara_id', $penyelenggaraId)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
+
+        return view('penyelenggara.event.index', compact('events'));
     }
 }

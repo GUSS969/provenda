@@ -93,7 +93,7 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
     ->group(function () {
 
     Route::get('dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
-
+    Route::get('/event-saya', [DashboardController::class, 'eventSaya'])->name('event_saya');
     Route::post('logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');
 });
 
@@ -104,3 +104,21 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
 Route::fallback(function () {
     return redirect()->route('user.home');
 });
+/* ============================================================================
+   SECURE POSTER ROUTE (Serve File dari Storage Private)
+============================================================================ */
+
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
+
+Route::get('/poster/{filename}', function ($filename) {
+
+    $path = Storage::path('posters/'.$filename);
+
+    if (!File::exists($path)) {
+        return redirect('https://via.placeholder.com/400x250?text=No+Image');
+    }
+
+    return Response::file($path);
+
+})->name('poster.show');

@@ -62,20 +62,28 @@
                             <label class="form-label required">
                                 <i class="ti ti-category me-1"></i>Kategori Event
                             </label>
-                            <select name="kategori_event" class="form-select @error('kategori_event') is-invalid @enderror"
-                                required>
+                            <select name="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
                                 <option value="">Pilih Kategori</option>
-                                <option value="Festival" {{ old('kategori_event') == 'Festival' ? 'selected' : '' }}>Festival</option>
-                                <option value="Pameran" {{ old('kategori_event') == 'Pameran' ? 'selected' : '' }}>Pameran</option>
-                                <option value="Seminar" {{ old('kategori_event') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                                <option value="Workshop" {{ old('kategori_event') == 'Workshop' ? 'selected' : '' }}>Workshop</option>
-                                <option value="Konser" {{ old('kategori_event') == 'Konser' ? 'selected' : '' }}>Konser</option>
-                                <option value="Olahraga" {{ old('kategori_event') == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
-                                <option value="Budaya" {{ old('kategori_event') == 'Budaya' ? 'selected' : '' }}>Budaya</option>
-                                <option value="Kuliner" {{ old('kategori_event') == 'Kuliner' ? 'selected' : '' }}>Kuliner</option>
-                                <option value="Lainnya" {{ old('kategori_event') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                <option value="Festival" {{ old('kategori') == 'Festival' ? 'selected' : '' }}>
+                                    Festival</option>
+                                <option value="Pameran" {{ old('kategori') == 'Pameran' ? 'selected' : '' }}>Pameran
+                                </option>
+                                <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar
+                                </option>
+                                <option value="Workshop" {{ old('kategori') == 'Workshop' ? 'selected' : '' }}>
+                                    Workshop</option>
+                                <option value="Konser" {{ old('kategori') == 'Konser' ? 'selected' : '' }}>Konser
+                                </option>
+                                <option value="Olahraga" {{ old('kategori') == 'Olahraga' ? 'selected' : '' }}>
+                                    Olahraga</option>
+                                <option value="Budaya" {{ old('kategori') == 'Budaya' ? 'selected' : '' }}>Budaya
+                                </option>
+                                <option value="Kuliner" {{ old('kategori') == 'Kuliner' ? 'selected' : '' }}>Kuliner
+                                </option>
+                                <option value="Lainnya" {{ old('kategori') == 'Lainnya' ? 'selected' : '' }}>Lainnya
+                                </option>
                             </select>
-                            @error('kategori_event')
+                            @error('kategori')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -86,7 +94,8 @@
                             <select name="status" class="form-select @error('status') is-invalid @enderror" required>
                                 <option value="">Pilih Status</option>
                                 <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                                <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif
+                                </option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -94,19 +103,15 @@
                         </div>
 
                         <!-- TANGGAL -->
-                        <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-calendar-event me-1"></i>Tanggal Mulai</label>
-                            <input type="date" name="tanggal_mulai"
-                                class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                                value="{{ old('tanggal_mulai') }}" required>
+                        <div class="col-md-12">
+                            <label class="form-label required">
+                                <i class="ti ti-calendar-event me-1"></i>Tanggal Event
+                            </label>
+                            <input type="date" name="tanggal_event"
+                                class="form-control @error('tanggal_event') is-invalid @enderror"
+                                value="{{ old('tanggal_event') }}" required>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label required"><i class="ti ti-calendar-check me-1"></i>Tanggal Selesai</label>
-                            <input type="date" name="tanggal_selesai"
-                                class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                                value="{{ old('tanggal_selesai') }}" required>
-                        </div>
 
                         <!-- LOKASI -->
                         <div class="col-md-12">
@@ -118,7 +123,7 @@
                         <!-- PENYELENGGARA -->
                         <div class="col-md-6">
                             <label class="ti ti-users me-1"></i>Penyelenggara</label>
-                            <select name="penyelenggara_id" class="form-select" >
+                            <select name="penyelenggara_id" class="form-select">
                                 <option value="">Pilih Penyelenggara</option>
                                 @foreach ($penyelenggaras as $p)
                                     <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -126,68 +131,59 @@
                             </select>
                         </div>
 
-                        <!-- ADMIN -->
-                        <div class="col-md-6">
-                            <label class="ti ti-user-shield me-1"></i>Admin</label>
-                            <select name="id_admin" class="form-select" >
-                                <option value="">Pilih Admin</option>
-                                @foreach ($admins as $a)
-                                    <option value="{{ $a->id }}">{{ $a->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
 
                         <!-- UPLOAD POSTER TANPA TOMBOL MERAH -->
-                        <div class="col-md-12">
+                        <div class="mb-3">
                             <label class="form-label">
-                                <i class="ti ti-photo me-1"></i>Poster Event
-                                <small class="text-muted">(Opsional - Max: 2MB, Format: JPG, PNG, JPEG)</small>
+                                Poster Event <small class="text-muted">(Opsional - Max: 2MB, Format: JPG, PNG, JPEG)</small>
                             </label>
 
-                            <div class="upload-area" id="uploadArea"
-                                onclick="document.getElementById('posterInput').click()">
+                            <div class="upload-area text-center p-4 rounded border border-2" style="border-style: dashed;">
 
                                 <input type="file" name="poster" id="posterInput"
-                                    class="d-none" accept="image/jpeg,image/png,image/jpg" onchange="previewImage()">
+                                    class="form-control-file mb-2 custom-file-input"
+                                    accept="image/jpeg,image/png,image/jpg">
 
-                                <div id="uploadPlaceholder" class="upload-placeholder">
-                                    <i class="ti ti-cloud-upload"></i>
-                                    <p class="mb-1">Klik atau drag & drop untuk upload poster</p>
-                                    <small class="text-muted">JPG, PNG atau JPEG (Max: 2MB)</small>
-                                </div>
-
-                                
+                                <p class="text-muted mb-1">Klik atau pilih file untuk upload poster</p>
+                                <small class="text-muted">JPG, PNG atau JPEG (Max: 2MB)</small>
                             </div>
                         </div>
 
-                        <!-- DESKRIPSI -->
-                        <div class="col-md-12">
-                            <label class="form-label required"><i class="ti ti-file-text me-1"></i>Deskripsi</label>
-                            <textarea name="deskripsi" rows="5" class="form-control" required>{{ old('deskripsi') }}</textarea>
-                            <small class="text-muted">
-                                <i class="ti ti-info-circle me-1"></i>
-                                Jelaskan detail event, agenda, dan informasi penting lainnya
-                            </small>
-                        </div>
+
+
 
                     </div>
+            </div>
 
-                    <!-- BUTTONS -->
-                    <div class="row mt-4">
-                        <div class="col-12 text-end">
-                            <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">
-                                <i class="ti ti-arrow-left me-2"></i>Kembali
-                            </a>
-                            <button class="btn btn-primary">
-                                <i class="ti ti-device-floppy me-2"></i>Simpan Event
-                            </button>
-                        </div>
-                    </div>
+            <!-- DESKRIPSI -->
+            <div class="col-md-12">
+                <label class="form-label required"><i class="ti ti-file-text me-1"></i>Deskripsi</label>
+                <textarea name="deskripsi" rows="5" class="form-control" required>{{ old('deskripsi') }}</textarea>
+                <small class="text-muted">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Jelaskan detail event, agenda, dan informasi penting lainnya
+                </small>
+            </div>
 
-                </form>
+        </div>
 
+        <!-- BUTTONS -->
+        <div class="row mt-4">
+            <div class="col-12 text-end">
+                <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">
+                    <i class="ti ti-arrow-left me-2"></i>Kembali
+                </a>
+                <button class="btn btn-primary">
+                    <i class="ti ti-device-floppy me-2"></i>Simpan Event
+                </button>
             </div>
         </div>
+
+        </form>
+
+    </div>
+    </div>
 
     </div>
 

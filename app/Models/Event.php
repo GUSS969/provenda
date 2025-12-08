@@ -18,7 +18,6 @@ class Event extends Model
         'status',
         'poster',
         'penyelenggara_id',
-        'id_admin',
     ];
 
     public function penyelenggara()

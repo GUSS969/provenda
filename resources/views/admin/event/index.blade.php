@@ -18,12 +18,11 @@
 
     <div class="card p-4">
 
-        <div class="flex justify-between items-center mb-4">
-            <h5 class="font-bold">Daftar Event</h5>
-
-            <a href="{{ route('admin.events.create') }}"
-               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-               + Tambah Event
+        {{-- Header title + tombol sejajar --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="font-bold mb-0">Daftar Event</h5>
+            <a href="{{ route('admin.events.create') }}" class="btn btn-primary">
+                + Tambah Event
             </a>
         </div>
 
@@ -40,36 +39,34 @@
 
             <tbody>
                 @foreach ($events as $event)
-                <tr>
-                    <td>{{ $event->nama_event }}</td>
+                    <tr>
+                        <td>{{ $event->nama_event }}</td>
 
-                    <td>
-                        {{ $event->tanggal_mulai }} -
-                        {{ $event->tanggal_selesai }}
-                    </td>
+                        <td>
+                            {{ $event->tanggal_event ? \Carbon\Carbon::parse($event->tanggal_event)->format('d-m-Y') : '-' }}
+                        </td>
 
-                    <td>
-                        <span class="badge bg-{{ $event->status == 'aktif' ? 'success' : 'danger' }}">
-                            {{ ucfirst($event->status) }}
-                        </span>
-                    </td>
+                        <td>
+                            <span class="badge bg-{{ $event->status == 'aktif' ? 'success' : 'danger' }}">
+                                {{ ucfirst($event->status) }}
+                            </span>
+                        </td>
 
-                    <td>{{ $event->penyelenggara->nama ?? '-' }}</td>
+                        <td>{{ $event->penyelenggara->nama ?? '-' }}</td>
 
-                    <td>
-                        <a href="{{ route('admin.events.edit', $event->id) }}"
-                           class="btn btn-sm btn-warning">Edit</a>
-
-                        <form action="{{ route('admin.events.destroy', $event->id) }}"
-                              method="POST" class="inline-block"
-                              onsubmit="return confirm('Yakin hapus event ini?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Hapus</button>
-                        </form>
-                    </td>
-
-                </tr>
+                        <td>
+                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-sm btn-warning">
+                                Edit
+                            </a>
+                            <form action="{{ route('admin.events.destroy', $event->id) }}" 
+                                  method="POST" class="d-inline"
+                                  onsubmit="return confirm('Yakin hapus event ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

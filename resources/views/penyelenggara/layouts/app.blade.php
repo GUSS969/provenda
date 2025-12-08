@@ -197,7 +197,8 @@
                 <i class="ti ti-layout-dashboard"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="{{ route('penyelenggara.event_saya') }}"
+                class="menu-item {{ request()->routeIs('penyelenggara.event_saya') ? 'active' : '' }}">
                 <i class="ti ti-calendar-event"></i>
                 <span>Event Saya</span>
             </a>
@@ -212,14 +213,6 @@
             <a href="#" class="menu-item">
                 <i class="ti ti-users"></i>
                 <span>Peserta</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="ti ti-ticket"></i>
-                <span>Tiket</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="ti ti-wallet"></i>
-                <span>Keuangan</span>
             </a>
             <a href="#" class="menu-item">
                 <i class="ti ti-settings"></i>
