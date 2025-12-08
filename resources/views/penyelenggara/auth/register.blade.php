@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi Penyelenggara - PROVENDA</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -14,208 +16,258 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            background: #eef4ff;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
         }
 
-        .card {
-            background: #fff;
+        .container {
             width: 100%;
-            max-width: 460px;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: fade 0.5s ease-in-out;
+            max-width: 1250px;
+            background: #fff;
+            display: flex;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0, 94, 255, 0.12);
         }
 
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h3 {
+        /* ===== LEFT SECTION ===== */
+        .left {
+            flex: 1;
+            background: linear-gradient(160deg, #028eff, #005bef);
+            color: #fff;
+            padding: 70px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #212529;
-            font-weight: 700;
+        }
+
+        .left .icon-box {
+            font-size: 85px;
+            padding: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .18);
+            margin-bottom: 25px;
+        }
+
+        .left h1 {
+            font-size: 38px;
+            font-weight: 900;
+        }
+
+        .left p {
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .feature-list {
+            margin-top: 28px;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        .feature-list li {
+            margin: 12px 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ===== RIGHT SECTION ===== */
+        .right {
+            flex: 1.1;
+            padding: 60px 55px;
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #1d1d1d;
         }
 
         .subtitle {
-            text-align: center;
+            font-size: 15px;
             color: #6c757d;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-danger {
-            background: #f8d7da;
-            color: #842029;
-            border: 1px solid #f5c2c7;
-        }
-
-        .alert-success {
-            background: #d1e7dd;
-            color: #0f5132;
-            border: 1px solid #badbcc;
+            margin-bottom: 25px;
         }
 
         label {
+            margin-top: 18px;
             font-size: 14px;
-            color: #333;
-            margin-top: 16px;
-            display: block;
             font-weight: 600;
+            color: #2d2d2d;
+            display: block;
         }
 
         input {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            font-size: 15px;
+            padding: 14px;
             margin-top: 6px;
-            outline: none;
-            transition: .2s;
-            font-family: "Poppins", sans-serif;
+            border-radius: 12px;
+            font-size: 15px;
+            border: 1.8px solid #ced6e0;
+            transition: .25s;
         }
 
         input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102,126,234,.15);
-        }
-
-        .error-text {
-            color: #dc3545;
-            font-size: 13px;
-            margin-top: 6px;
-            display: block;
+            border-color: #006dff;
+            box-shadow: 0 0 0 5px rgba(0, 110, 255, .15);
         }
 
         button {
             width: 100%;
-            margin-top: 24px;
-            padding: 14px 0;
+            margin-top: 28px;
+            padding: 16px;
+            border-radius: 14px;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
             cursor: pointer;
-            transition: .3s;
-            box-shadow: 0 8px 20px rgba(102,126,234,.4);
+            transition: .25s ease;
+            box-shadow: 0 8px 25px rgba(0, 120, 255, .32);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(102,126,234,.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 120, 255, .4);
         }
 
-        button:active {
-            transform: translateY(0);
+        .alert {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
         }
 
-        .login-link {
-            text-align: center;
+        .alert-danger {
+            background: #ffe0e4;
+            color: #a30d1e;
+        }
+
+        .alert-success {
+            background: #d6f5df;
+            color: #146b3a;
+        }
+
+        .login {
             margin-top: 20px;
             font-size: 14px;
-            color: #6c757d;
         }
 
-        .login-link a {
-            color: #667eea;
+        .login a {
+            color: #007bff;
+            font-weight: bold;
             text-decoration: none;
-            font-weight: 600;
         }
 
-        .login-link a:hover {
+        .login a:hover {
             text-decoration: underline;
         }
 
-        .back-link {
-            text-align: center;
-            margin-top: 15px;
+        .back {
+            margin-top: 12px;
             font-size: 14px;
         }
 
-        .back-link a {
+        .back a {
             color: #6c757d;
             text-decoration: none;
         }
 
-        .back-link a:hover {
-            color: #667eea;
+        .back a:hover {
+            color: #007bff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 950px) {
+            .container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+
+            .left {
+                display: none;
+            }
+
+            body {
+                padding: 0;
+            }
+
+            .right {
+                padding: 40px 30px;
+            }
         }
     </style>
 
 </head>
+
 <body>
 
-    <div class="card">
-        <h3>Registrasi Penyelenggara 🎉</h3>
-        <p class="subtitle">Bergabunglah dengan PROVENDA sekarang</p>
+    <div class="container">
 
-        @if(session('error'))
-        <div class="alert alert-danger">
-            ⚠️ {{ session('error') }}
-        </div>
-        @endif
+        <div class="left">
+            <div>
+                <div class="icon-box"><i class="fas fa-calendar-day"></i></div>
+                <h1>PROVENDA</h1>
+                <p>Platform Promosi Event Terbaik di Bengkalis</p>
 
-        @if(session('success'))
-        <div class="alert alert-success">
-            ✅ {{ session('success') }}
-        </div>
-        @endif
-
-        <form action="{{ route('penyelenggara.register.submit') }}" method="POST">
-            @csrf
-
-            <label>Nama Lengkap</label>
-            <input type="text" name="name" value="{{ old('name') }}" placeholder="Masukkan nama lengkap" required>
-            @error('name')
-            <span class="error-text">{{ $message }}</span>
-            @enderror
-
-            <label>Email</label>
-            <input type="email" name="email" value="{{ old('email') }}" placeholder="contoh@email.com" required>
-            @error('email')
-            <span class="error-text">{{ $message }}</span>
-            @enderror
-
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Minimal 6 karakter" required>
-            @error('password')
-            <span class="error-text">{{ $message }}</span>
-            @enderror
-
-            <label>Konfirmasi Password</label>
-            <input type="password" name="password_confirmation" placeholder="Ketik ulang password" required>
-
-            <button type="submit">Daftar Sekarang</button>
-
-            <div class="login-link">
-                Sudah punya akun? <a href="{{ route('penyelenggara.login') }}">Login di sini</a>
+                <ul class="feature-list">
+                    <li><i class="fas fa-bullhorn"></i> Promosikan event ke ribuan audience</li>
+                    <li><i class="fas fa-chart-line"></i> Dashboard modern dan lengkap</li>
+                    <li><i class="fas fa-shield-alt"></i> Aman & terpercaya</li>
+                </ul>
             </div>
+        </div>
 
-            <div class="back-link">
-                <a href="{{ route('user.home') }}">← Kembali ke Beranda</a>
-            </div>
-        </form>
+        <div class="right">
+
+            <h2>Daftar Sekarang ✨</h2>
+            <p class="subtitle">Buat akun untuk mengelola event Anda</p>
+
+            @if(session('error'))
+                <div class="alert alert-danger">⚠️ {{ session('error') }}</div>
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success">🎉 {{ session('success') }}</div>
+            @endif
+
+            <form action="{{ route('penyelenggara.register.submit') }}" method="POST">
+                @csrf
+
+                <label>Nama Lengkap</label>
+                <input type="text" name="name" value="{{ old('name') }}" placeholder="Masukkan nama lengkap" required>
+
+                <label>Email</label>
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required>
+
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Minimal 6 karakter" required>
+
+                <label>Konfirmasi Password</label>
+                <input type="password" name="password_confirmation" placeholder="Ketik ulang password" required>
+
+                <button type="submit">Daftar Sekarang</button>
+
+                <div class="login">
+                    Sudah punya akun? <a href="{{ route('penyelenggara.login') }}">Login di sini</a>
+                </div>
+
+                <div class="back">
+                    <a href="{{ route('user.home') }}">← Kembali ke Beranda</a>
+                </div>
+
+            </form>
+        </div>
+
     </div>
 
 </body>

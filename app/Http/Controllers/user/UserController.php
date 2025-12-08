@@ -13,23 +13,23 @@ class UserController extends Controller
     /**
      * Homepage - Landing page untuk pengunjung
      */
-   public function index()
-{
-    // Hitung statistik
-    $totalEvents = Event::count();
-    $totalOrganizers = Penyelenggara::count();
-    
-    // Hitung event mendatang (tanggal >= hari ini)
-    $upcomingEvents = Event::where('tanggal_event', '>=', Carbon::now()->format('Y-m-d'))->count();
-    
-    // Ambil 3 event terbaru untuk featured events
-    $featuredEvents = Event::with('penyelenggara')
-        ->orderBy('id', 'desc')
-        ->limit(3)
-        ->get();
+    public function index()
+    {
+        // Hitung statistik
+        $totalEvents = Event::count();
+        $totalOrganizers = Penyelenggara::count();
+        
+        // Hitung event mendatang (tanggal >= hari ini)
+        $upcomingEvents = Event::where('tanggal_event', '>=', Carbon::now()->format('Y-m-d'))->count();
+        
+        // Ambil 3 event terbaru untuk featured events
+        $featuredEvents = Event::with('penyelenggara')
+            ->orderBy('id', 'desc')
+            ->limit(3)
+            ->get();
 
-    return view('home', compact('totalEvents', 'totalOrganizers', 'upcomingEvents', 'featuredEvents'));
-}
+        return view('home', compact('totalEvents', 'totalOrganizers', 'upcomingEvents', 'featuredEvents'));
+    }
 
     /**
      * Daftar semua event dengan filter & search
@@ -88,8 +88,10 @@ class UserController extends Controller
      */
     public function showEvent($id)
     {
-        // Ambil event dengan relasi penyelenggara
-        $event = Event::with('penyelenggara')->findOrFail($id);
+        // Ambil event dengan relasi penyelenggara dan hitung pendaftar UMKM
+        $event = Event::with('penyelenggara')
+            ->withCount('umkmRegistrations') // Hitung jumlah pendaftar UMKM
+            ->findOrFail($id);
         
         // Ambil 3 event serupa (kategori sama, kecuali event ini)
         $relatedEvents = Event::with('penyelenggara')

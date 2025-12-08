@@ -66,9 +66,90 @@
                     <div class="card-body p-4">
                         <h3 class="fw-bold mb-4">Tentang Event</h3>
                         <p style="white-space: pre-line;">{{ $event->deskripsi }}</p>
-                        
+
+                        <!-- 🔥 TAMBAHAN: Form Pendaftaran UMKM -->
+                        @if($event->for_umkm)
+                        <div class="card border-0 shadow-sm mt-4">
+                            <div class="card-body">
+                                <h4 class="fw-bold text-success">Pendaftaran UMKM</h4>
+                                
+                                <!-- Info Jumlah Pendaftar -->
+                                <div class="mb-3">
+                                    <strong>Jumlah Pendaftar:</strong> {{ $event->umkm_registrations_count }} 
+                                    @if($event->max_umkm_participants)
+                                        dari {{ $event->max_umkm_participants }}
+                                    @endif
+                                </div>
+
+                                <!-- Status Kuota -->
+                                @if($event->max_umkm_participants && $event->umkm_registrations_count >= $event->max_umkm_participants)
+                                    <div class="alert alert-danger">Kuota UMKM sudah penuh.</div>
+                                @else
+                                    <div class="alert alert-success">Masih terbuka untuk pendaftaran UMKM.</div>
+                                @endif
+
+                                <p>Event ini khusus untuk pelaku UMKM. Daftarkan UMKM kamu di sini!</p>
+
+                                @if(session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
+
+                                @if(session('error'))
+                                    <div class="alert alert-danger">{{ session('error') }}</div>
+                                @endif
+
+                                <form action="{{ route('user.event.daftar.umkm', ['event' => $event->id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+
+                                    <div class="mb-3">
+                                        <label>Nama UMKM</label>
+                                        <input type="text" name="nama_umkm" class="form-control" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Nama Pemilik</label>
+                                        <input type="text" name="pemilik" class="form-control" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Email (Opsional)</label>
+                                        <input type="email" name="email" class="form-control">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>No WhatsApp (untuk kontak)</label>
+                                        <input type="text" name="no_wa" class="form-control" placeholder="081234567890" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Kategori UMKM</label>
+                                        <select name="kategori" class="form-select" required>
+                                            <option value="">-- Pilih Kategori --</option>
+                                            <option value="makanan">Makanan & Minuman</option>
+                                            <option value="fashion">Fashion</option>
+                                            <option value="kerajinan">Kerajinan Tangan</option>
+                                            <option value="jasa">Jasa</option>
+                                            <option value="lainnya">Lainnya</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Deskripsi Singkat (Opsional)</label>
+                                        <textarea name="deskripsi" class="form-control" rows="3"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success w-100">
+                                        <i class="ti ti-check"></i> Daftar ke Event
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        @endif
+                        <!-- 🔥 END TAMBAHAN -->
+
                         <hr class="my-4">
-                        
+
                         <h5 class="fw-bold mb-3">Detail Event</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">

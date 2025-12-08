@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -18,6 +21,9 @@ use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\penyelenggara\AuthController as PenyelenggaraAuth;
 use App\Http\Controllers\penyelenggara\DashboardController as PenyelenggaraDashboard;
 
+// 🔥 CONTROLLER BARU UNTUK PENDAFTARAN UMKM KE EVENT
+use App\Http\Controllers\EventUMKMController;
+
 /*
 |--------------------------------------------------------------------------
 | PROVENDA - ROUTES CONFIGURATION
@@ -32,6 +38,9 @@ Route::name('user.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('home');
     Route::get('/events', [UserController::class, 'events'])->name('events');
     Route::get('/events/{id}', [UserController::class, 'showEvent'])->name('event.show');
+
+    // 🔥 Route pendaftaran UMKM ke event tertentu
+    Route::post('/event/{event}/daftar-umkm', [EventUMKMController::class, 'register'])->name('event.daftar.umkm');
 });
 
 /* ============================================================================
@@ -68,18 +77,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     })->name('logout');
 });
 
-
 /* ============================================================================
    AUTH ROUTES - PENYELENGGARA (LOGIN + REGISTER)
 ============================================================================ */
 
 Route::prefix('penyelenggara')->name('penyelenggara.')->group(function () {
-
     // LOGIN
     Route::get('login', [PenyelenggaraAuth::class, 'showLoginForm'])->name('login');
     Route::post('login', [PenyelenggaraAuth::class, 'login'])->name('login.submit');
 
-    // REGISTER (🔥 BARU DITAMBAHKAN)
+    // REGISTER
     Route::get('register', [PenyelenggaraAuth::class, 'showRegisterForm'])->name('register');
     Route::post('register', [PenyelenggaraAuth::class, 'register'])->name('register.submit');
 });
@@ -93,9 +100,26 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
     ->group(function () {
 
     Route::get('dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
-    Route::get('/event-saya', [DashboardController::class, 'eventSaya'])->name('event_saya');
+
+    // 🔥 Opsional: Tambahkan route event saya jika dibutuhkan di UI penyelenggara
+    // Route::get('/event-saya', [PenyelenggaraDashboard::class, 'eventSaya'])->name('event_saya');
+
     Route::post('logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');
 });
+
+/* ============================================================================
+   SECURE POSTER ROUTE (Serve File dari Storage Private)
+============================================================================ */
+
+Route::get('/poster/{filename}', function ($filename) {
+    $path = Storage::path('posters/' . $filename);
+
+    if (!File::exists($path)) {
+        return redirect('https://via.placeholder.com/400x250?text=No+Image');
+    }
+
+    return Response::file($path);
+})->name('poster.show');
 
 /* ============================================================================
    FALLBACK ROUTE
@@ -104,21 +128,3 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
 Route::fallback(function () {
     return redirect()->route('user.home');
 });
-/* ============================================================================
-   SECURE POSTER ROUTE (Serve File dari Storage Private)
-============================================================================ */
-
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\File;
-
-Route::get('/poster/{filename}', function ($filename) {
-
-    $path = Storage::path('posters/'.$filename);
-
-    if (!File::exists($path)) {
-        return redirect('https://via.placeholder.com/400x250?text=No+Image');
-    }
-
-    return Response::file($path);
-
-})->name('poster.show');
