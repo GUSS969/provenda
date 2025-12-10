@@ -100,6 +100,7 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
     ->group(function () {
 
     Route::get('dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
+    Route::get('/event-saya', [DashboardController::class, 'eventSaya'])->name('event_saya');
 
     // 🔥 Opsional: Tambahkan route event saya jika dibutuhkan di UI penyelenggara
     // Route::get('/event-saya', [PenyelenggaraDashboard::class, 'eventSaya'])->name('event_saya');

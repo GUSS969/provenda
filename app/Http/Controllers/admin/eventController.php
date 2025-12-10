@@ -13,7 +13,7 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::with(['penyelenggara', 'admin'])->get();
+        $events = Event::with(['penyelenggara'])->get();
         return view('admin.event.index', compact('events'));
     }
 
