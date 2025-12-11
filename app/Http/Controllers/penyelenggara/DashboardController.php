@@ -5,6 +5,7 @@ namespace App\Http\Controllers\penyelenggara;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Penyelenggara;
+use App\Models\UmkmRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
@@ -43,6 +44,11 @@ class DashboardController extends Controller
                               ->whereYear('tanggal_event', Carbon::now()->year)
                               ->count();
 
+        // 🔥 TAMBAHAN: Total pendaftar UMKM untuk event milik penyelenggara ini
+        $totalUmkmRegistrations = UmkmRegistration::whereHas('event', function ($q) use ($penyelenggara) {
+            $q->where('penyelenggara_id', $penyelenggara->id);
+        })->count();
+
         // 5 event terbaru
         $recentEvents = Event::where('penyelenggara_id', $penyelenggara->id)
                             ->orderBy('created_at', 'desc')
@@ -77,6 +83,7 @@ class DashboardController extends Controller
             'activeEvents',
             'completedEvents',
             'monthlyEvents',
+            'totalUmkmRegistrations', // 🔥 TAMBAHKAN INI
             'recentEvents',
             'upcomingEvents',
             'chartLabels',

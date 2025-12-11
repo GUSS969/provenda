@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Event Promo - Jasa Promosi Event Daerah' }}</title>
+    <title>{{ $title ?? 'Provenda - Jasa Promosi Event Daerah' }}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,17 +18,17 @@
     
     <!-- Custom CSS -->
     <style>
-     :root {
-    --primary-teal: #0D9488;
-    --primary-orange: #F97316;
-    --primary-light: #14B8A6;
-    --secondary-coral: #FB923C;
-    --gradient-1: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
-    --gradient-2: linear-gradient(135deg, #0D9488 0%, #06B6D4 100%);
-    --shadow-sm: 0 2px 8px rgba(13, 148, 136, 0.1);
-    --shadow-md: 0 4px 16px rgba(13, 148, 136, 0.15);
-    --shadow-lg: 0 8px 32px rgba(13, 148, 136, 0.2);
-}
+        :root {
+            --primary-teal: #0D9488;
+            --primary-orange: #F97316;
+            --primary-light: #14B8A6;
+            --secondary-coral: #FB923C;
+            --gradient-1: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+            --gradient-2: linear-gradient(135deg, #0D9488 0%, #06B6D4 100%);
+            --shadow-sm: 0 2px 8px rgba(13, 148, 136, 0.1);
+            --shadow-md: 0 4px 16px rgba(13, 148, 136, 0.15);
+            --shadow-lg: 0 8px 32px rgba(13, 148, 136, 0.2);
+        }
 
         * {
             margin: 0;
@@ -132,6 +132,52 @@
             color: white !important;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
+        }
+
+        /* Tombol Daftar di Navbar */
+        .btn-register {
+            background: transparent !important;
+            color: white !important;
+            border: 2px solid white !important;
+            padding: 8px 20px !important;
+            border-radius: 30px !important;
+            margin-left: 10px !important;
+            font-weight: 700 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-register:hover {
+            background: white !important;
+            color: var(--primary-teal) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .btn-register::after {
+            display: none !important;
+        }
+
+        /* Tombol Login di Navbar (TRANSPARAN) */
+        .btn-login {
+            background: transparent !important;
+            color: white !important;
+            border: 2px solid white !important;
+            padding: 8px 20px !important;
+            border-radius: 30px !important;
+            margin-left: 10px !important;
+            font-weight: 700 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-login:hover {
+            background: white !important;
+            color: var(--primary-teal) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .btn-login::after {
+            display: none !important;
         }
 
         /* Main Content */
@@ -270,7 +316,7 @@
 
         .social-links a:hover {
             background: white;
-            color: var(--primary-blue);
+            color: var(--primary-teal);
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
@@ -296,7 +342,7 @@
         }
 
         .text-blue {
-            color: var(--primary-blue);
+            color: var(--primary-teal);
         }
 
         .btn-blue {
@@ -342,7 +388,7 @@
 
         .back-to-top:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.4);
+            box-shadow: 0 10px 30px rgba(13, 148, 136, 0.4);
         }
 
         .back-to-top.show {
@@ -356,7 +402,7 @@
         /* Responsive */
         @media (max-width: 991px) {
             .navbar-collapse {
-                background: rgba(0, 188, 212, 0.95);
+                background: rgba(13, 148, 136, 0.95);
                 backdrop-filter: blur(10px);
                 margin-top: 1rem;
                 padding: 1rem;
@@ -370,6 +416,14 @@
 
             .nav-link:hover {
                 background: rgba(255, 255, 255, 0.1);
+            }
+
+            .btn-register,
+            .btn-login {
+                margin: 10px 0 !important;
+                display: block !important;
+                text-align: center !important;
+                width: 100% !important;
             }
         }
 
@@ -422,7 +476,7 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('user.home') }}">
                 <i class="ti ti-calendar-event"></i>
-                <span>Event Promo</span>
+                <span>Provenda</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -449,6 +503,16 @@
                             <i class="ti ti-phone"></i> Kontak
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-register" href="{{ route('penyelenggara.register') }}">
+                            <i class="ti ti-user-plus"></i> Daftar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-login" href="{{ route('penyelenggara.login') }}">
+                            <i class="ti ti-login"></i> Login
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -472,7 +536,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <h5>
                             <i class="ti ti-calendar-event"></i>
-                            Event Promo
+                            Provenda
                         </h5>
                         <p>
                             Platform terpercaya untuk promosi event daerah Anda. Jangkau lebih banyak peserta 
@@ -548,15 +612,15 @@
                         <ul class="contact-info">
                             <li>
                                 <i class="ti ti-phone"></i>
-                                <span>+62 812-3456-7890</span>
+                                <span>+62 812-6454-2530</span>
                             </li>
                             <li>
                                 <i class="ti ti-mail"></i>
-                                <span>info@eventpromo.com</span>
+                                <span>Provenda.com</span>
                             </li>
                             <li>
                                 <i class="ti ti-map-pin"></i>
-                                <span>Jawa Timur, Indonesia</span>
+                                <span>Bengkalis, Indonesia</span>
                             </li>
                             <li>
                                 <i class="ti ti-clock"></i>
@@ -569,7 +633,7 @@
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <p>&copy; 2024 Event Promo - Jasa Promosi Event Daerah. All rights reserved.</p>
+                <p>&copy; 2024 Provenda - Jasa Promosi Event Daerah. All rights reserved.</p>
             </div>
         </div>
     </footer>

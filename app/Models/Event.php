@@ -18,7 +18,7 @@ class Event extends Model
         'status',
         'poster',
         'penyelenggara_id',
-        // 'id_admin', // ❌ Dihapus karena tidak ada di tabel events milik temanmu
+    
     ];
 
     public function penyelenggara()
@@ -26,10 +26,6 @@ class Event extends Model
         return $this->belongsTo(Penyelenggara::class);
     }
 
-    // public function admin() // ❌ Di-comment atau dihapus karena id_admin tidak ada
-    // {
-    //     return $this->belongsTo(Admin::class, 'id_admin');
-    // }
 
     public function interaksi()
     {

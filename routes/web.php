@@ -98,15 +98,22 @@ Route::prefix('penyelenggara')->name('penyelenggara.')->group(function () {
 Route::prefix('penyelenggara')->name('penyelenggara.')
     ->middleware('penyelenggara.auth')
     ->group(function () {
-
-    Route::get('dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
-    Route::get('/event-saya', [DashboardController::class, 'eventSaya'])->name('event_saya');
-
-    // 🔥 Opsional: Tambahkan route event saya jika dibutuhkan di UI penyelenggara
-    // Route::get('/event-saya', [PenyelenggaraDashboard::class, 'eventSaya'])->name('event_saya');
-
-    Route::post('logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');
-});
+        // Dashboard
+        Route::get('/dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
+        
+        // Event Saya
+        Route::get('/event-saya', [App\Http\Controllers\penyelenggara\EventController::class, 'eventSaya'])->name('event_saya');
+        
+        // Buat Event Baru
+        Route::get('/events/create', [App\Http\Controllers\penyelenggara\EventController::class, 'create'])->name('events.create');
+        Route::post('/events', [App\Http\Controllers\penyelenggara\EventController::class, 'store'])->name('events.store');
+        
+        // Lihat Pendaftar UMKM
+        Route::get('/pendaftar-umkm', [App\Http\Controllers\penyelenggara\EventController::class, 'umkmRegistrations'])->name('umkm.registrations');
+        
+        // Logout
+        Route::post('/logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');
+    });
 
 /* ============================================================================
    SECURE POSTER ROUTE (Serve File dari Storage Private)

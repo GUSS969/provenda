@@ -73,20 +73,28 @@
                             <div class="card-body">
                                 <h4 class="fw-bold text-success">Pendaftaran UMKM</h4>
                                 
-                                <!-- Info Jumlah Pendaftar -->
-                                <div class="mb-3">
-                                    <strong>Jumlah Pendaftar:</strong> {{ $event->umkm_registrations_count }} 
-                                    @if($event->max_umkm_participants)
-                                        dari {{ $event->max_umkm_participants }}
-                                    @endif
-                                </div>
+                                <!-- Info Jumlah Pendaftar & Stand Tersedia -->
+<div class="mb-3">
+    <strong>Jumlah Pendaftar:</strong> {{ $event->umkm_registrations_count }} 
+    @if($event->max_umkm_participants)
+        dari {{ $event->max_umkm_participants }} stand
+    @endif
+</div>
 
-                                <!-- Status Kuota -->
-                                @if($event->max_umkm_participants && $event->umkm_registrations_count >= $event->max_umkm_participants)
-                                    <div class="alert alert-danger">Kuota UMKM sudah penuh.</div>
-                                @else
-                                    <div class="alert alert-success">Masih terbuka untuk pendaftaran UMKM.</div>
-                                @endif
+<!-- Total Stand Tersedia -->
+@if($event->max_umkm_participants)
+    <div class="mb-3">
+        <strong>Stand Tersedia:</strong> 
+        {{ $event->max_umkm_participants - $event->umkm_registrations_count }} dari {{ $event->max_umkm_participants }} stand
+    </div>
+@endif
+
+<!-- Status Kuota -->
+@if($event->max_umkm_participants && $event->umkm_registrations_count >= $event->max_umkm_participants)
+    <div class="alert alert-danger">Kuota UMKM sudah penuh.</div>
+@else
+    <div class="alert alert-success">Masih terbuka untuk pendaftaran UMKM.</div>
+@endif
 
                                 <p>Event ini khusus untuk pelaku UMKM. Daftarkan UMKM kamu di sini!</p>
 

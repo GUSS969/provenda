@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Penyelenggara - @yield('title', 'PROVENDA')</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Tabler Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary-teal: #0D9488;
@@ -181,6 +182,7 @@
 
     @stack('styles')
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -193,7 +195,8 @@
         </div>
 
         <div class="sidebar-menu">
-            <a href="{{ route('penyelenggara.dashboard') }}" class="menu-item {{ request()->routeIs('penyelenggara.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('penyelenggara.dashboard') }}"
+                class="menu-item {{ request()->routeIs('penyelenggara.dashboard') ? 'active' : '' }}">
                 <i class="ti ti-layout-dashboard"></i>
                 <span>Dashboard</span>
             </a>
@@ -210,9 +213,10 @@
                 <i class="ti ti-chart-line"></i>
                 <span>Statistik</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="{{ route('penyelenggara.umkm.registrations') }}"
+                class="menu-item {{ request()->routeIs('penyelenggara.umkm.registrations') ? 'active' : '' }}">
                 <i class="ti ti-users"></i>
-                <span>Peserta</span>
+                <span>Peserta UMKM</span>
             </a>
             <a href="#" class="menu-item">
                 <i class="ti ti-settings"></i>
@@ -247,7 +251,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     @stack('scripts')
 </body>
+
 </html>

@@ -87,29 +87,40 @@ class AuthController extends Controller
 
     /**
      * ============================
-     * REGISTER PROCESS
+     * REGISTER PROCESS (FIXED!)
      * ============================
      */
     public function register(Request $request)
     {
         // Validasi input
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:255',
             'email' => 'required|email|unique:penyelenggaras,email',
-            'password' => 'required|min:3|confirmed',
+            'telepon' => 'required|string|min:10|max:15',
+            'alamat' => 'required|string|min:10',
+            'password' => 'required|min:6|confirmed',
         ], [
-            'nama.required' => 'Nama wajib diisi',
-            'email.required' => 'Email wajib diisi',
+            'name.required' => 'Nama harus diisi',
+            'name.min' => 'Nama minimal 3 karakter',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Format email tidak valid',
             'email.unique' => 'Email sudah terdaftar',
-            'password.required' => 'Password wajib diisi',
+            'telepon.required' => 'Nomor telepon harus diisi',
+            'telepon.min' => 'Nomor telepon minimal 10 digit',
+            'alamat.required' => 'Alamat harus diisi',
+            'alamat.min' => 'Alamat minimal 10 karakter',
+            'password.required' => 'Password harus diisi',
+            'password.min' => 'Password minimal 6 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
         ]);
 
         // Simpan data baru
         $penyelenggara = Penyelenggara::create([
-            'nama' => $request->nama,
+            'nama' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // selalu hash
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'password' => Hash::make($request->password),
         ]);
 
         // Auto login setelah registrasi

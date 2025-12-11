@@ -2,28 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Penyelenggara extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'nama',
         'email',
-        'username',
-        'password',
-        'no_hp',
+        'telepon',
         'alamat',
-        'status',
-        'admin_id',
+        'password',
     ];
 
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class);
-    }
-
-    public function events()
-    {
-        return $this->hasMany(Event::class);
-    }
+    protected $hidden = [
+        'password',
+    ];
 }

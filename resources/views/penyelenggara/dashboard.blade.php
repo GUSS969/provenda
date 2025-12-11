@@ -303,13 +303,19 @@
         </div>
     </div>
 
+    <!-- 🔥 PERUBAHAN: Ganti "Total Peserta" jadi "Total Peserta UMKM" -->
     <div class="stat-card purple">
         <div class="stat-header">
             <div>
-                <p class="stat-label">Total Peserta</p>
-                <h2 class="stat-value">0</h2>
+                <p class="stat-label">Total Peserta UMKM</p>
+                <h2 class="stat-value">{{ $totalUmkmRegistrations }}</h2>
                 <p class="stat-trend">
-                    <i class="ti ti-users"></i> Segera hadir
+                    <i class="ti ti-users"></i> 
+                    @if($totalUmkmRegistrations > 0)
+                        {{ $totalUmkmRegistrations }} yang terdaftar
+                    @else
+                        Segera hadir
+                    @endif
                 </p>
             </div>
             <div class="stat-icon purple">
@@ -321,23 +327,23 @@
 
 <!-- Quick Actions -->
 <div class="quick-actions">
-    <a href="#" class="action-btn">
+    <a href="{{ route('penyelenggara.events.create') }}" class="action-btn">
         <i class="ti ti-plus-circle"></i>
         <h6>Buat Event Baru</h6>
     </a>
-    <a href="#" class="action-btn">
-        <i class="ti ti-chart-bar"></i>
-        <h6>Lihat Laporan</h6>
+    <a href="{{ route('penyelenggara.umkm.registrations') }}" class="action-btn">
+        <i class="ti ti-users"></i>
+        <h6>Lihat Pendaftar UMKM</h6>
     </a>
-    <a href="#" class="action-btn">
-        <i class="ti ti-ticket"></i>
-        <h6>Kelola Tiket</h6>
+    <a href="{{ route('penyelenggara.event_saya') }}" class="action-btn">
+        <i class="ti ti-calendar"></i>
+        <h6>Event Saya</h6>
     </a>
     <a href="#" class="action-btn">
         <i class="ti ti-settings"></i>
         <h6>Pengaturan</h6>
     </a>
-</div>
+</div>x
 
 <!-- Content Grid -->
 <div class="content-grid">
@@ -348,7 +354,7 @@
                 <i class="ti ti-calendar"></i>
                 Event Terbaru
             </h5>
-            <a href="#" style="color: var(--primary-teal); text-decoration: none; font-weight: 600;">Lihat Semua</a>
+            <a href="{{ route('penyelenggara.event_saya') }}" style="color: var(--primary-teal); text-decoration: none; font-weight: 600;">Lihat Semua</a>
         </div>
         <div class="card-body">
             @if($recentEvents->count() > 0)
@@ -384,7 +390,7 @@
                 <i class="ti ti-clock"></i>
                 Event Mendatang
             </h5>
-            <a href="#" style="color: var(--primary-teal); text-decoration: none; font-weight: 600;">Lihat Semua</a>
+            <a href="{{ route('penyelenggara.event_saya') }}" style="color: var(--primary-teal); text-decoration: none; font-weight: 600;">Lihat Semua</a>
         </div>
         <div class="card-body">
             @if($upcomingEvents->count() > 0)

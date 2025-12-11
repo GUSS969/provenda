@@ -82,6 +82,23 @@
         .right {
             flex: 1.1;
             padding: 60px 55px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar */
+        .right::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .right::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .right::-webkit-scrollbar-thumb {
+            background: #028eff;
+            border-radius: 10px;
         }
 
         h2 {
@@ -105,7 +122,7 @@
             display: block;
         }
 
-        input {
+        input, textarea {
             width: 100%;
             padding: 14px;
             margin-top: 6px;
@@ -113,11 +130,18 @@
             font-size: 15px;
             border: 1.8px solid #ced6e0;
             transition: .25s;
+            font-family: "Poppins", sans-serif;
         }
 
-        input:focus {
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        input:focus, textarea:focus {
             border-color: #006dff;
             box-shadow: 0 0 0 5px rgba(0, 110, 255, .15);
+            outline: none;
         }
 
         button {
@@ -155,6 +179,12 @@
         .alert-success {
             background: #d6f5df;
             color: #146b3a;
+        }
+
+        .error-text {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
         }
 
         .login {
@@ -243,15 +273,42 @@
             <form action="{{ route('penyelenggara.register.submit') }}" method="POST">
                 @csrf
 
-                <label>Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name') }}" placeholder="Masukkan nama lengkap" required>
+                <!-- Nama Lengkap -->
+                <label>Nama Lengkap / Organisasi</label>
+                <input type="text" name="name" value="{{ old('name') }}" placeholder="Contoh: Event Organizer Bengkalis" required>
+                @error('name')
+                <div class="error-text">{{ $message }}</div>
+                @enderror
 
+                <!-- Email -->
                 <label>Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required>
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com" required>
+                @error('email')
+                <div class="error-text">{{ $message }}</div>
+                @enderror
 
+                <!-- Nomor Telepon (BARU) -->
+                <label>Nomor Telepon</label>
+                <input type="text" name="telepon" value="{{ old('telepon') }}" placeholder="08123456789" required>
+                @error('telepon')
+                <div class="error-text">{{ $message }}</div>
+                @enderror
+
+                <!-- Alamat (BARU) -->
+                <label>Alamat</label>
+                <textarea name="alamat" placeholder="Jl. Contoh No. 1, Bengkalis, Riau" required>{{ old('alamat') }}</textarea>
+                @error('alamat')
+                <div class="error-text">{{ $message }}</div>
+                @enderror
+
+                <!-- Password -->
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Minimal 6 karakter" required>
+                @error('password')
+                <div class="error-text">{{ $message }}</div>
+                @enderror
 
+                <!-- Konfirmasi Password -->
                 <label>Konfirmasi Password</label>
                 <input type="password" name="password_confirmation" placeholder="Ketik ulang password" required>
 
