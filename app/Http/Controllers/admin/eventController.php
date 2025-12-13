@@ -2,125 +2,136 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Penyelenggara;
-use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
 
 class EventController extends Controller
 {
+    /**
+     * Display a listing of events
+     */
     public function index()
-    {
-        $events = Event::with(['penyelenggara'])->get();
-        return view('admin.event.index', compact('events'));
-    }
+{
+    $events = Event::with('penyelenggara')->paginate(10);
+    
+    return view('admin.events.index', compact('events'));
+}
 
+    /**
+     * Show the form for creating a new event
+     */
     public function create()
     {
-        $penyelenggaras = Penyelenggara::all();
-        $admins = Admin::all();
-        return view('admin.event.create', compact('penyelenggaras', 'admins'));
+        $penyelenggaras = Penyelenggara::orderBy('nama', 'asc')->get();
+        
+        return view('admin.events.create', compact('penyelenggaras'));
     }
 
+    /**
+     * Store a newly created event
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_event' => 'required',
+        $validated = $request->validate([
+            'penyelenggara_id' => 'required|exists:penyelenggaras,id',
+            'nama_event' => 'required|string|max:255',
             'tanggal_event' => 'required|date',
-            'lokasi' => 'required',
-            'deskripsi' => 'required',
-            'kategori' => 'required',
-            'status' => 'required',
-            'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'lokasi' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:100',
+            'deskripsi' => 'nullable|string',
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'open_registration' => 'nullable|boolean',
+            'max_participants' => 'nullable|integer|min:1',
+            'registration_info' => 'nullable|string',
         ]);
-
-        $data = $request->only([
-            'nama_event',
-            'tanggal_event',
-            'lokasi',
-            'deskripsi',
-            'kategori',
-            'status',
-            'penyelenggara_id',
-        ]);
-
+        
+        $validated['open_registration'] = $request->has('open_registration') ? 1 : 0;
+        
         if ($request->hasFile('poster')) {
-            $filename = time() . '.' . $request->poster->extension();
-            $request->poster->storeAs('posters', $filename);
-            $data['poster'] = $filename;
+            $posterPath = $request->file('poster')->store('posters', 'local');
+            $validated['poster'] = $posterPath;
         }
-
-        Event::create($data);
-
-        return redirect()->route('admin.events.index')->with('success', 'Event berhasil ditambahkan!');
+        
+        Event::create($validated);
+        
+        return redirect()->route('admin.events.index')
+                         ->with('success', 'Event berhasil dibuat!');
     }
 
-    public function edit($id)
+    /**
+     * Display the specified event
+     */
+    public function show(string $id)
+    {
+        $event = Event::with('penyelenggara', 'umkmRegistrations')->findOrFail($id);
+        
+        return view('admin.events.show', compact('event'));
+    }
+
+    /**
+     * Show the form for editing the specified event
+     */
+    public function edit(string $id)
     {
         $event = Event::findOrFail($id);
-        $penyelenggaras = Penyelenggara::all();
-        $admins = Admin::all();
-        return view('admin.event.edit', compact('event', 'penyelenggaras', 'admins'));
+        $penyelenggaras = Penyelenggara::orderBy('nama', 'asc')->get();
+        
+        return view('admin.events.edit', compact('event', 'penyelenggaras'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified event
+     */
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'nama_event' => 'required',
+        $validated = $request->validate([
+            'penyelenggara_id' => 'required|exists:penyelenggaras,id',
+            'nama_event' => 'required|string|max:255',
             'tanggal_event' => 'required|date',
-            'lokasi' => 'required',
-            'deskripsi' => 'required',
-            'kategori' => 'required',
-            'status' => 'required',
-            'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'lokasi' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:100',
+            'deskripsi' => 'nullable|string',
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'open_registration' => 'nullable|boolean',
+            'max_participants' => 'nullable|integer|min:1',
+            'registration_info' => 'nullable|string',
         ]);
-
+        
+        $validated['open_registration'] = $request->has('open_registration') ? 1 : 0;
         
         $event = Event::findOrFail($id);
-        
-        $data = $request->only([
-            'nama_event',
-            'tanggal_event',
-            'lokasi',
-            'deskripsi',
-            'kategori',
-            'status',
-            'penyelenggara_id',
-        ]);
         
         if ($request->hasFile('poster')) {
-            if ($event->poster) {
-                Storage::delete('posters/' . $event->poster);
+            if ($event->poster && \Storage::exists($event->poster)) {
+                \Storage::delete($event->poster);
             }
-
-            $filename = time() . '.' . $request->poster->extension();
-            $file = $request->poster->storeAs('posters', $filename);
-            $data['poster'] = $filename;
+            
+            $posterPath = $request->file('poster')->store('posters', 'local');
+            $validated['poster'] = $posterPath;
         }
-
-        $event->update($data);
-
-        return redirect()->route('admin.events.index')->with('success', 'Event berhasil diperbarui!');
+        
+        $event->update($validated);
+        
+        return redirect()->route('admin.events.index')
+                         ->with('success', 'Event berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified event
+     */
+    public function destroy(string $id)
     {
         $event = Event::findOrFail($id);
-
-        if ($event->poster) {
-            Storage::disk('public')->delete('posters/' . $event->poster);
+        
+        if ($event->poster && \Storage::exists($event->poster)) {
+            \Storage::delete($event->poster);
         }
-
+        
         $event->delete();
-
-        return redirect()->route('admin.events.index')->with('success', 'Event berhasil dihapus!');
-    }
-    public function show($id)
-    {
-        $event = Event::findOrFail($id);
-
-        return view('admin.event.show', compact('event'));
+        
+        return redirect()->route('admin.events.index')
+                         ->with('success', 'Event berhasil dihapus!');
     }
 }

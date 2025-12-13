@@ -10,7 +10,8 @@ class PenyelenggaraController extends Controller
 {
     public function index()
     {
-        $penyelenggaras = Penyelenggara::with('admin')->get();
+        $penyelenggaras = Penyelenggara::paginate(10);
+
         return view('admin.penyelenggara.index', compact('penyelenggaras'));
     }
 
@@ -23,25 +24,25 @@ class PenyelenggaraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama'      => 'required',
-            'email'     => 'required|email|unique:penyelenggaras',
-            'password'  => 'required|min:5',
-            'no_hp'     => 'required',
-            'alamat'    => 'required',
-            'admin_id'  => 'required',
+            'nama' => 'required',
+            'email' => 'required|email|unique:penyelenggaras',
+            'password' => 'required|min:5',
+            'no_hp' => 'required',
+            'alamat' => 'required',
+            'admin_id' => 'required',
         ]);
 
         Penyelenggara::create([
-            'nama'      => $request->nama,
-            'email'     => $request->email,
-            'password'  => bcrypt($request->password), // WAJIB hashing
-            'no_hp'     => $request->no_hp,
-            'alamat'    => $request->alamat,
-            'admin_id'  => $request->admin_id,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => bcrypt($request->password), // WAJIB hashing
+            'no_hp' => $request->no_hp,
+            'alamat' => $request->alamat,
+            'admin_id' => $request->admin_id,
         ]);
 
         return redirect()->route('penyelenggaras.index')
-                         ->with('success', 'Penyelenggara berhasil ditambahkan');
+            ->with('success', 'Penyelenggara berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -56,19 +57,19 @@ class PenyelenggaraController extends Controller
         $penyelenggara = Penyelenggara::findOrFail($id);
 
         $request->validate([
-            'nama'      => 'required',
-            'email'     => 'required|email|unique:penyelenggaras,email,' . $penyelenggara->id,
-            'no_hp'     => 'required',
-            'alamat'    => 'required',
-            'admin_id'  => 'required',
+            'nama' => 'required',
+            'email' => 'required|email|unique:penyelenggaras,email,' . $penyelenggara->id,
+            'no_hp' => 'required',
+            'alamat' => 'required',
+            'admin_id' => 'required',
         ]);
 
         $data = [
-            'nama'      => $request->nama,
-            'email'     => $request->email,
-            'no_hp'     => $request->no_hp,
-            'alamat'    => $request->alamat,
-            'admin_id'  => $request->admin_id,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'alamat' => $request->alamat,
+            'admin_id' => $request->admin_id,
         ];
 
         // update password hanya jika tidak kosong
@@ -79,7 +80,7 @@ class PenyelenggaraController extends Controller
         $penyelenggara->update($data);
 
         return redirect()->route('penyelenggaras.index')
-                         ->with('success', 'Penyelenggara berhasil diperbarui');
+            ->with('success', 'Penyelenggara berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -87,6 +88,6 @@ class PenyelenggaraController extends Controller
         Penyelenggara::findOrFail($id)->delete();
 
         return redirect()->route('penyelenggaras.index')
-                         ->with('success', 'Penyelenggara berhasil dihapus');
+            ->with('success', 'Penyelenggara berhasil dihapus');
     }
 }

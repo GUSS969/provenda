@@ -5,65 +5,105 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\UmkmRegistration;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class EventUMKMController extends Controller
 {
-    public function register(Request $request, $eventId)
+    /**
+     * Register UMKM ke event
+     */
+    public function register(Request $request, Event $event)
     {
         // Validasi input
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'nama_umkm' => 'required|string|max:255',
             'pemilik' => 'required|string|max:255',
+            'email' => 'nullable|email',
             'no_wa' => 'required|string|max:20',
-            'kategori' => 'required|in:makanan,fashion,kerajinan,jasa,lainnya',
-            'deskripsi' => 'nullable|string|max:1000',
+            'kategori' => 'required|string',
+            'deskripsi' => 'nullable|string',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        // Cek apakah event buka pendaftaran
+        if (!$event->open_registration) {
+            return back()->with('error', 'Pendaftaran untuk event ini sudah ditutup.');
         }
 
-        // Cari event
-        $event = Event::findOrFail($eventId);
-
-        // Cek apakah event memang khusus UMKM
-        if (!$event->for_umkm) {
-            return back()->withErrors(['error' => 'Event ini tidak terbuka untuk UMKM.']);
+        // Cek kuota
+        if ($event->max_participants) {
+            $registered = $event->umkmRegistrations->count();
+            if ($registered >= $event->max_participants) {
+                return back()->with('error', 'Maaf, kuota pendaftaran sudah penuh!');
+            }
         }
 
-        // Cek apakah event masih aktif (belum selesai)
-        if (\Carbon\Carbon::parse($event->tanggal_event)->isPast()) {
-            return back()->withErrors(['error' => 'Pendaftaran untuk event ini sudah ditutup.']);
-        }
+        // Generate Stand Number Otomatis
+        $standNumber = $this->generateStandNumber($event->id);
 
-        // Cek kuota UMKM (jika ada)
-        if ($event->max_umkm_participants && $event->umkmRegistrations()->count() >= $event->max_umkm_participants) {
-            return back()->withErrors(['error' => 'Kuota UMKM sudah penuh.']);
-        }
-
-        // Cek apakah UMKM dengan nama dan WA yang sama sudah terdaftar
-        $existingRegistration = $event->umkmRegistrations()
-            ->where('no_wa', $request->no_wa)
-            ->orWhere(function ($query) use ($request) {
-                $query->where('nama_umkm', $request->nama_umkm);
-            })
-            ->first();
-
-        if ($existingRegistration) {
-            return back()->withErrors(['error' => 'UMKM ini sudah terdaftar ke event ini.']);
-        }
-
-        // Simpan data pendaftaran
-        $event->umkmRegistrations()->create([
-            'nama_umkm' => $request->nama_umkm,
-            'pemilik' => $request->pemilik,
-            'email' => $request->email ?? null,
-            'no_wa' => $request->no_wa,
-            'kategori' => $request->kategori,
-            'deskripsi' => $request->deskripsi ?? null,
+        // Simpan pendaftaran
+        $registration = UmkmRegistration::create([
+            'event_id' => $event->id,
+            'nama_umkm' => $validated['nama_umkm'],
+            'pemilik' => $validated['pemilik'],
+            'email' => $validated['email'],
+            'no_wa' => $validated['no_wa'],
+            'kategori' => $validated['kategori'],
+            'deskripsi' => $validated['deskripsi'],
+            'stand_number' => $standNumber,
         ]);
 
-        return back()->with('success', 'Pendaftaran UMKM berhasil! Tunggu info selanjutnya dari penyelenggara.');
+        // Redirect ke halaman sukses
+        return redirect()->route('user.event.registration.success', $registration->id);
+    }
+
+    /**
+     * Tampilkan halaman sukses setelah pendaftaran
+     */
+    public function showSuccess($id)
+    {
+        $registration = UmkmRegistration::with('event')->findOrFail($id);
+        
+        return view('events.registration-success', compact('registration'));
+    }
+
+    /**
+     * Generate Stand Number Otomatis
+     * Format: A-01, A-02, ... A-99, B-01, dst
+     */
+    private function generateStandNumber($eventId)
+    {
+        $lastRegistration = UmkmRegistration::where('event_id', $eventId)
+                                            ->whereNotNull('stand_number')
+                                            ->orderBy('id', 'desc')
+                                            ->first();
+
+        if (!$lastRegistration || !$lastRegistration->stand_number) {
+            return 'A-01'; // Stand pertama
+        }
+
+        // Parse nomor terakhir (misal: A-01)
+        $parts = explode('-', $lastRegistration->stand_number);
+        
+        if (count($parts) !== 2) {
+            return 'A-01'; // Fallback jika format salah
+        }
+        
+        $letter = $parts[0];
+        $number = intval($parts[1]);
+
+        // Increment nomor
+        if ($number < 99) {
+            $number++;
+            return $letter . '-' . str_pad($number, 2, '0', STR_PAD_LEFT);
+        } else {
+            // Pindah ke huruf berikutnya
+            if ($letter == 'Z') {
+                $letter = 'AA';
+            } else if (strlen($letter) == 2) {
+                $letter = chr(ord($letter[0]) + 1) . 'A';
+            } else {
+                $letter = chr(ord($letter) + 1);
+            }
+            return $letter . '-01';
+        }
     }
 }

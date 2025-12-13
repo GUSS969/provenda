@@ -200,32 +200,44 @@
                 <i class="ti ti-layout-dashboard"></i>
                 <span>Dashboard</span>
             </a>
+            
             <a href="{{ route('penyelenggara.event_saya') }}"
-                class="menu-item {{ request()->routeIs('penyelenggara.event_saya') ? 'active' : '' }}">
+                class="menu-item {{ request()->routeIs('penyelenggara.event_saya') || request()->routeIs('penyelenggara.events.*') ? 'active' : '' }}">
                 <i class="ti ti-calendar-event"></i>
                 <span>Event Saya</span>
             </a>
-            <a href="#" class="menu-item">
+            
+            <a href="{{ route('penyelenggara.events.create') }}"
+                class="menu-item {{ request()->routeIs('penyelenggara.events.create') ? 'active' : '' }}">
                 <i class="ti ti-plus-circle"></i>
                 <span>Buat Event Baru</span>
             </a>
-            <a href="#" class="menu-item">
+            
+            <a href="{{ route('penyelenggara.statistik') }}"
+                class="menu-item {{ request()->routeIs('penyelenggara.statistik') ? 'active' : '' }}">
                 <i class="ti ti-chart-line"></i>
                 <span>Statistik</span>
             </a>
+            
             <a href="{{ route('penyelenggara.umkm.registrations') }}"
                 class="menu-item {{ request()->routeIs('penyelenggara.umkm.registrations') ? 'active' : '' }}">
                 <i class="ti ti-users"></i>
                 <span>Peserta UMKM</span>
             </a>
-            <a href="#" class="menu-item">
+            
+            <a href="{{ route('penyelenggara.pengaturan') }}"
+                class="menu-item {{ request()->routeIs('penyelenggara.pengaturan') ? 'active' : '' }}">
                 <i class="ti ti-settings"></i>
                 <span>Pengaturan</span>
             </a>
-            <a href="#" class="menu-item">
-                <i class="ti ti-logout"></i>
-                <span>Logout</span>
-            </a>
+            
+            <form action="{{ route('penyelenggara.logout') }}" method="POST" style="margin: 0;">
+                @csrf
+                <button type="submit" class="menu-item" style="width: 100%; border: none; background: none; text-align: left; cursor: pointer;">
+                    <i class="ti ti-logout"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
         </div>
     </div>
 
@@ -236,11 +248,11 @@
             <h1 class="topbar-title">@yield('page-title', 'Dashboard')</h1>
             <div class="topbar-user">
                 <div class="user-info text-end">
-                    <h6>{{ $penyelenggara->nama ?? 'Penyelenggara' }}</h6>
+                    <h6>{{ $penyelenggara->nama_penyelenggara ?? 'Penyelenggara' }}</h6>
                     <p>{{ $penyelenggara->email ?? 'email@example.com' }}</p>
                 </div>
                 <div class="user-avatar">
-                    {{ strtoupper(substr($penyelenggara->nama ?? 'P', 0, 1)) }}
+                    {{ strtoupper(substr($penyelenggara->nama_penyelenggara ?? 'P', 0, 1)) }}
                 </div>
             </div>
         </div>

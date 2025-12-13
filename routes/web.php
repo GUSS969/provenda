@@ -39,8 +39,11 @@ Route::name('user.')->group(function () {
     Route::get('/events', [UserController::class, 'events'])->name('events');
     Route::get('/events/{id}', [UserController::class, 'showEvent'])->name('event.show');
 
-    // 🔥 Route pendaftaran UMKM ke event tertentu
+    // Route pendaftaran UMKM
     Route::post('/event/{event}/daftar-umkm', [EventUMKMController::class, 'register'])->name('event.daftar.umkm');
+    
+    // ✅ TAMBAH ROUTE INI
+    Route::get('/event/registration/success/{id}', [EventUMKMController::class, 'showSuccess'])->name('event.registration.success');
 });
 
 /* ============================================================================
@@ -101,15 +104,26 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
         // Dashboard
         Route::get('/dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
         
-        // Event Saya
+        // Event Saya (List)
         Route::get('/event-saya', [App\Http\Controllers\penyelenggara\EventController::class, 'eventSaya'])->name('event_saya');
         
-        // Buat Event Baru
+        // Event CRUD
         Route::get('/events/create', [App\Http\Controllers\penyelenggara\EventController::class, 'create'])->name('events.create');
         Route::post('/events', [App\Http\Controllers\penyelenggara\EventController::class, 'store'])->name('events.store');
+        Route::get('/events/{id}', [App\Http\Controllers\penyelenggara\EventController::class, 'show'])->name('events.show');
+        Route::get('/events/{id}/edit', [App\Http\Controllers\penyelenggara\EventController::class, 'edit'])->name('events.edit');
+        Route::put('/events/{id}', [App\Http\Controllers\penyelenggara\EventController::class, 'update'])->name('events.update');
+        Route::delete('/events/{id}', [App\Http\Controllers\penyelenggara\EventController::class, 'destroy'])->name('events.destroy');
         
         // Lihat Pendaftar UMKM
         Route::get('/pendaftar-umkm', [App\Http\Controllers\penyelenggara\EventController::class, 'umkmRegistrations'])->name('umkm.registrations');
+        
+        // Statistik
+        Route::get('/statistik', [App\Http\Controllers\penyelenggara\StatistikController::class, 'index'])->name('statistik');
+        
+        // Pengaturan
+        Route::get('/pengaturan', [App\Http\Controllers\penyelenggara\PengaturanController::class, 'index'])->name('pengaturan');
+        Route::put('/pengaturan', [App\Http\Controllers\penyelenggara\PengaturanController::class, 'update'])->name('pengaturan.update');
         
         // Logout
         Route::post('/logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');

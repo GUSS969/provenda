@@ -2,49 +2,67 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $table = 'events'; // <-- WAJIB agar tidak bentrok
+    use HasFactory;
 
     protected $fillable = [
         'nama_event',
-        'tanggal_mulai',
-        'tanggal_selesai',
+        'tanggal_event',
         'lokasi',
+        'kategori',
         'deskripsi',
-        'kategori_event',
-        'status',
         'poster',
         'penyelenggara_id',
-    
+        'open_registration',      // Tambahan baru
+        'max_participants',       // Tambahan baru
+        'registration_info',      // Tambahan baru
+    ];
+
+    protected $casts = [
+        'open_registration' => 'boolean',
+        'tanggal_event' => 'date',
     ];
 
     public function penyelenggara()
     {
-        return $this->belongsTo(Penyelenggara::class);
+        return $this->belongsTo(Penyelenggara::class, 'penyelenggara_id');
     }
 
-
-    public function interaksi()
-    {
-        return $this->hasMany(InteraksiEvent::class);
-    }
-
-    public function statistik()
-    {
-        return $this->hasMany(StatistikPromosi::class);
-    }
-
-    public function partisipasi()
-    {
-        return $this->hasMany(PartisipasiEvent::class);
-    }
-
-    // 🔥 Relasi ini tetap bisa digunakan jika tabel `umkm_registrations` ada dan berisi `event_id`
     public function umkmRegistrations()
     {
-        return $this->hasMany(UmkmRegistration::class);
+        return $this->hasMany(UmkmRegistration::class, 'event_id');
+    }
+    
+    // Helper method: Cek apakah pendaftaran masih dibuka
+    public function isRegistrationOpen()
+    {
+        if (!$this->open_registration) {
+            return false;
+        }
+        
+        // Cek apakah sudah penuh
+        if ($this->max_participants) {
+            $currentCount = $this->umkmRegistrations()->count();
+            if ($currentCount >= $this->max_participants) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    // Helper method: Hitung sisa kuota
+    public function remainingSlots()
+    {
+        if (!$this->max_participants) {
+            return null; // Unlimited
+        }
+        
+        $currentCount = $this->umkmRegistrations()->count();
+        return max(0, $this->max_participants - $currentCount);
     }
 }

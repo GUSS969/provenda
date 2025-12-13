@@ -103,4 +103,5 @@ class UserController extends Controller
 
         return view('events.show', compact('event', 'relatedEvents'));
     }
+    
 }

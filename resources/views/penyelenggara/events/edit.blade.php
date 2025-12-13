@@ -1,12 +1,12 @@
 @extends('penyelenggara.layouts.app')
 
-@section('page-title', 'Buat Event Baru')
+@section('page-title', 'Edit Event')
 
 @section('content')
 <div class="page-header">
     <h1 class="page-title">
-        <i class="ti ti-plus-circle"></i>
-        Buat Event Baru
+        <i class="ti ti-edit"></i>
+        Edit Event
     </h1>
     <a href="{{ route('penyelenggara.event_saya') }}" class="btn-secondary">
         <i class="ti ti-arrow-left"></i>
@@ -34,8 +34,9 @@
 @endif
 
 <div class="content-card">
-    <form action="{{ route('penyelenggara.events.store') }}" method="POST" enctype="multipart/form-data" class="event-form">
+    <form action="{{ route('penyelenggara.events.update', $event->id) }}" method="POST" enctype="multipart/form-data" class="event-form">
         @csrf
+        @method('PUT')
         
         <div class="form-section">
             <h3><i class="ti ti-info-circle"></i> Informasi Event</h3>
@@ -43,26 +44,26 @@
             <div class="form-group">
                 <label for="nama_event">Nama Event <span class="required">*</span></label>
                 <input type="text" id="nama_event" name="nama_event" class="form-control" 
-                       value="{{ old('nama_event') }}" placeholder="Contoh: Workshop Digital Marketing untuk UMKM" required>
+                       value="{{ old('nama_event', $event->nama_event) }}" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="tanggal_event">Tanggal Event <span class="required">*</span></label>
                     <input type="date" id="tanggal_event" name="tanggal_event" class="form-control" 
-                           value="{{ old('tanggal_event') }}" min="{{ date('Y-m-d') }}" required>
+                           value="{{ old('tanggal_event', $event->tanggal_event) }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="kategori">Kategori</label>
                     <select id="kategori" name="kategori" class="form-control">
                         <option value="">-- Pilih Kategori --</option>
-                        <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                        <option value="Workshop" {{ old('kategori') == 'Workshop' ? 'selected' : '' }}>Workshop</option>
-                        <option value="Pameran" {{ old('kategori') == 'Pameran' ? 'selected' : '' }}>Pameran</option>
-                        <option value="Festival" {{ old('kategori') == 'Festival' ? 'selected' : '' }}>Festival</option>
-                        <option value="Pelatihan" {{ old('kategori') == 'Pelatihan' ? 'selected' : '' }}>Pelatihan</option>
-                        <option value="Lainnya" {{ old('kategori') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        <option value="Seminar" {{ old('kategori', $event->kategori) == 'Seminar' ? 'selected' : '' }}>Seminar</option>
+                        <option value="Workshop" {{ old('kategori', $event->kategori) == 'Workshop' ? 'selected' : '' }}>Workshop</option>
+                        <option value="Pameran" {{ old('kategori', $event->kategori) == 'Pameran' ? 'selected' : '' }}>Pameran</option>
+                        <option value="Festival" {{ old('kategori', $event->kategori) == 'Festival' ? 'selected' : '' }}>Festival</option>
+                        <option value="Pelatihan" {{ old('kategori', $event->kategori) == 'Pelatihan' ? 'selected' : '' }}>Pelatihan</option>
+                        <option value="Lainnya" {{ old('kategori', $event->kategori) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
                 </div>
             </div>
@@ -70,31 +71,33 @@
             <div class="form-group">
                 <label for="lokasi">Lokasi <span class="required">*</span></label>
                 <input type="text" id="lokasi" name="lokasi" class="form-control" 
-                       value="{{ old('lokasi') }}" placeholder="Contoh: Hotel Kartika Sari, Bengkalis" required>
+                       value="{{ old('lokasi', $event->lokasi) }}" placeholder="Contoh: Hotel Kartika Sari, Bengkalis" required>
             </div>
 
             <div class="form-group">
                 <label for="deskripsi">Deskripsi Event</label>
                 <textarea id="deskripsi" name="deskripsi" class="form-control" rows="6" 
-                          placeholder="Jelaskan detail acara, materi yang akan dibahas, pembicara, dan informasi penting lainnya..." spellcheck="false">{{ old('deskripsi') }}</textarea>
-                <small class="form-text">Deskripsi yang detail akan menarik lebih banyak peserta UMKM</small>
+                          placeholder="Tulis deskripsi lengkap tentang event Anda..." spellcheck="false">{{ old('deskripsi', $event->deskripsi) }}</textarea>
+                <small class="form-text">Jelaskan detail acara, materi, pembicara, dan informasi penting lainnya</small>
             </div>
         </div>
 
         <div class="form-section">
             <h3><i class="ti ti-photo"></i> Poster Event</h3>
             
-            <div class="form-group">
-                <label for="poster">Upload Poster Event</label>
-                <input type="file" id="poster" name="poster" class="form-control" accept="image/*" onchange="previewPoster(event)">
-                <small class="form-text">Format: JPG, PNG, atau JPEG. Maksimal 2MB. Upload poster yang menarik untuk meningkatkan minat peserta.</small>
-            </div>
-
-            <div id="poster-preview" style="display: none; margin-top: 20px;">
-                <label style="display: block; font-weight: 600; margin-bottom: 10px; color: #333;">Preview Poster:</label>
-                <div style="display: flex; justify-content: center; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px dashed #dee2e6;">
-                    <img id="preview-image" src="" alt="Preview" style="max-width: 400px; max-height: 400px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+            @if($event->poster)
+            <div class="current-poster">
+                <label>Poster Saat Ini:</label>
+                <div class="poster-wrapper">
+                    <img src="{{ route('poster.show', basename($event->poster)) }}" alt="Current Poster" class="poster-preview">
                 </div>
+            </div>
+            @endif
+
+            <div class="form-group">
+                <label for="poster">Upload Poster Baru (Opsional)</label>
+                <input type="file" id="poster" name="poster" class="form-control" accept="image/*">
+                <small class="form-text">Format: JPG, PNG, atau JPEG. Maksimal 2MB. Biarkan kosong jika tidak ingin mengubah poster.</small>
             </div>
         </div>
 
@@ -103,7 +106,8 @@
             
             <div class="form-group">
                 <label class="switch-label">
-                    <input type="checkbox" name="open_registration" id="open_registration" value="1" checked>
+                    <input type="checkbox" name="open_registration" id="open_registration" value="1" 
+                           {{ old('open_registration', $event->open_registration ?? true) ? 'checked' : '' }}>
                     <span class="switch-text">Buka Pendaftaran UMKM</span>
                 </label>
                 <small class="form-text">Aktifkan untuk mengizinkan UMKM mendaftar ke event ini</small>
@@ -112,14 +116,18 @@
             <div class="form-group">
                 <label for="max_participants">Maksimal Peserta (Opsional)</label>
                 <input type="number" id="max_participants" name="max_participants" class="form-control" 
-                       value="{{ old('max_participants') }}" min="1" placeholder="Kosongkan jika tidak ada batas">
-                <small class="form-text">Biarkan kosong untuk kapasitas unlimited</small>
+                       value="{{ old('max_participants', $event->max_participants ?? '') }}" min="1" placeholder="Kosongkan jika tidak ada batas">
+                <small class="form-text">Biarkan kosong untuk kapasitas unlimited. 
+                    @if(isset($event->umkmRegistrations))
+                    Saat ini: <strong>{{ $event->umkmRegistrations->count() }} peserta</strong> terdaftar
+                    @endif
+                </small>
             </div>
 
             <div class="form-group">
                 <label for="registration_info">Informasi Pendaftaran (Opsional)</label>
                 <textarea id="registration_info" name="registration_info" class="form-control" rows="4" 
-                          placeholder="Contoh: Peserta wajib membawa KTP, NPWP UMKM, dan foto produk...">{{ old('registration_info') }}</textarea>
+                          placeholder="Contoh: Peserta wajib membawa KTP, NPWP UMKM, dan foto produk...">{{ old('registration_info', $event->registration_info ?? '') }}</textarea>
                 <small class="form-text">Info tambahan yang akan dilihat UMKM saat mendaftar</small>
             </div>
         </div>
@@ -127,7 +135,7 @@
         <div class="form-actions">
             <button type="submit" class="btn-primary">
                 <i class="ti ti-device-floppy"></i>
-                Buat Event
+                Simpan Perubahan
             </button>
             <a href="{{ route('penyelenggara.event_saya') }}" class="btn-secondary">
                 <i class="ti ti-x"></i>
@@ -261,6 +269,38 @@
         font-size: 13px;
         color: #6c757d;
         line-height: 1.5;
+    }
+
+    .current-poster {
+        margin-bottom: 25px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .current-poster label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .poster-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .poster-preview {
+        max-width: 400px;
+        max-height: 400px;
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        object-fit: contain;
     }
 
     .switch-label {
@@ -412,29 +452,14 @@
             width: 100%;
         }
 
+        .poster-preview {
+            max-width: 100%;
+        }
+
         .page-header {
             flex-direction: column;
             align-items: flex-start;
         }
     }
 </style>
-
-<script>
-function previewPoster(event) {
-    const file = event.target.files[0];
-    const previewDiv = document.getElementById('poster-preview');
-    const previewImg = document.getElementById('preview-image');
-    
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            previewDiv.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-    } else {
-        previewDiv.style.display = 'none';
-    }
-}
-</script>
 @endsection
