@@ -550,148 +550,150 @@
                 <div class="col-lg-8">
                     <div class="event-main-card">
                         <!-- Poster -->
-                        <div class="event-poster">
+                        <div class="event-image">
                             @if ($event->poster)
                                 <img src="{{ route('poster.show', $event->poster) }}" alt="{{ $event->nama_event }}"
-                                    style="width:100%;height:350px;object-fit:cover;border-radius:12px;">
+                                    class="img-fluid">
                             @else
-                                <div class="event-poster-placeholder">
+                                <div class="event-placeholder">
                                     <i class="ti ti-calendar-event"></i>
                                 </div>
                             @endif
-
-                            <span class="event-category-badge">
-                                <i class="ti ti-tag"></i> {{ $event->kategori ?? 'Umum' }}
-                            </span>
                         </div>
 
-                        <!-- Info -->
-                        <div class="event-info-section">
-                            <h1 class="event-title">{{ $event->nama_event }}</h1>
 
-                            <!-- Meta Bar -->
-                            <div class="event-meta-bar">
-                                <div class="meta-item">
-                                    <div class="meta-icon">
-                                        <i class="ti ti-calendar"></i>
-                                    </div>
-                                    <div class="meta-content">
-                                        <div class="meta-label">Tanggal Event</div>
-                                        <div class="meta-value">
-                                            {{ \Carbon\Carbon::parse($event->tanggal_event)->isoFormat('dddd, D MMMM YYYY') }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="meta-item">
-                                    <div class="meta-icon">
-                                        <i class="ti ti-clock"></i>
-                                    </div>
-                                    <div class="meta-content">
-                                        <div class="meta-label">Waktu</div>
-                                        <div class="meta-value">
-                                            {{ $event->waktu ?? '09:00 WIB' }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="meta-item">
-                                    <div class="meta-icon">
-                                        <i class="ti ti-map-pin"></i>
-                                    </div>
-                                    <div class="meta-content">
-                                        <div class="meta-label">Lokasi</div>
-                                        <div class="meta-value">{{ $event->lokasi }}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Description -->
-                            <div>
-                                <h2 class="section-title">
-                                    <i class="ti ti-info-circle"></i>
-                                    Tentang Event
-                                </h2>
-                                <div class="event-description">
-                                    {!! nl2br(e($event->deskripsi)) !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sidebar -->
-                <div class="col-lg-4">
-                    <!-- Organizer Info -->
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">
-                            <i class="ti ti-user"></i>
-                            Penyelenggara
-                        </h3>
-                        <div class="organizer-info">
-                            <div class="organizer-avatar">
-                                <i class="ti ti-building"></i>
-                            </div>
-                            <h4 class="organizer-name">
-                                {{ optional($event->penyelenggara)->nama ?? 'Penyelenggara Event' }}
-                            </h4>
-                            <p class="organizer-role">Event Organizer</p>
-
-                            <div class="organizer-contact">
-                                @if (optional($event->penyelenggara)->email)
-                                    <div class="contact-item">
-                                        <i class="ti ti-mail"></i>
-                                        <span>{{ $event->penyelenggara->email }}</span>
-                                    </div>
-                                @endif
-
-                                @if (optional($event->penyelenggara)->telepon)
-                                    <div class="contact-item">
-                                        <i class="ti ti-phone"></i>
-                                        <span>{{ $event->penyelenggara->telepon }}</span>
-                                    </div>
-                                @endif
-
-                                @if (optional($event->penyelenggara)->alamat)
-                                    <div class="contact-item">
-                                        <i class="ti ti-map-pin"></i>
-                                        <span>{{ $event->penyelenggara->alamat }}</span>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <button class="btn-share" onclick="shareEvent()">
-                                <i class="ti ti-share"></i>
-                                Bagikan Event
-                            </button>
-                        </div>
+                        <span class="event-category-badge">
+                            <i class="ti ti-tag"></i> {{ $event->kategori ?? 'Umum' }}
+                        </span>
                     </div>
 
-                    <!-- Quick Info -->
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">
-                            <i class="ti ti-info-square"></i>
-                            Informasi Cepat
-                        </h3>
-                        <div class="organizer-contact">
-                            <div class="contact-item">
-                                <i class="ti ti-calendar-event"></i>
-                                <span>
-                                    <strong>Dibuat:</strong><br>
-                                    {{ \Carbon\Carbon::parse($event->created_at)->isoFormat('D MMM YYYY') }}
-                                </span>
+                    <!-- Info -->
+                    <div class="event-info-section">
+                        <h1 class="event-title">{{ $event->nama_event }}</h1>
+
+                        <!-- Meta Bar -->
+                        <div class="event-meta-bar">
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="ti ti-calendar"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <div class="meta-label">Tanggal Event</div>
+                                    <div class="meta-value">
+                                        {{ \Carbon\Carbon::parse($event->tanggal_event)->isoFormat('dddd, D MMMM YYYY') }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="contact-item">
-                                <i class="ti ti-tag"></i>
-                                <span>
-                                    <strong>Kategori:</strong><br>
-                                    {{ $event->kategori ?? 'Umum' }}
-                                </span>
+
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="ti ti-clock"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <div class="meta-label">Waktu</div>
+                                    <div class="meta-value">
+                                        {{ $event->waktu ?? '09:00 WIB' }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="ti ti-map-pin"></i>
+                                </div>
+                                <div class="meta-content">
+                                    <div class="meta-label">Lokasi</div>
+                                    <div class="meta-value">{{ $event->lokasi }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <h2 class="section-title">
+                                <i class="ti ti-info-circle"></i>
+                                Tentang Event
+                            </h2>
+                            <div class="event-description">
+                                {!! nl2br(e($event->deskripsi)) !!}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Organizer Info -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">
+                        <i class="ti ti-user"></i>
+                        Penyelenggara
+                    </h3>
+                    <div class="organizer-info">
+                        <div class="organizer-avatar">
+                            <i class="ti ti-building"></i>
+                        </div>
+                        <h4 class="organizer-name">
+                            {{ optional($event->penyelenggara)->nama ?? 'Penyelenggara Event' }}
+                        </h4>
+                        <p class="organizer-role">Event Organizer</p>
+
+                        <div class="organizer-contact">
+                            @if (optional($event->penyelenggara)->email)
+                                <div class="contact-item">
+                                    <i class="ti ti-mail"></i>
+                                    <span>{{ $event->penyelenggara->email }}</span>
+                                </div>
+                            @endif
+
+                            @if (optional($event->penyelenggara)->telepon)
+                                <div class="contact-item">
+                                    <i class="ti ti-phone"></i>
+                                    <span>{{ $event->penyelenggara->telepon }}</span>
+                                </div>
+                            @endif
+
+                            @if (optional($event->penyelenggara)->alamat)
+                                <div class="contact-item">
+                                    <i class="ti ti-map-pin"></i>
+                                    <span>{{ $event->penyelenggara->alamat }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <button class="btn-share" onclick="shareEvent()">
+                            <i class="ti ti-share"></i>
+                            Bagikan Event
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Info -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">
+                        <i class="ti ti-info-square"></i>
+                        Informasi Cepat
+                    </h3>
+                    <div class="organizer-contact">
+                        <div class="contact-item">
+                            <i class="ti ti-calendar-event"></i>
+                            <span>
+                                <strong>Dibuat:</strong><br>
+                                {{ \Carbon\Carbon::parse($event->created_at)->isoFormat('D MMM YYYY') }}
+                            </span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="ti ti-tag"></i>
+                            <span>
+                                <strong>Kategori:</strong><br>
+                                {{ $event->kategori ?? 'Umum' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </section>
 

@@ -469,7 +469,6 @@
     <section class="events-grid">
         <div class="container">
             @if ($events->count() > 0)
-                <!-- Results Info -->
                 <div class="results-info">
                     <div class="results-count">
                         Menampilkan <strong>{{ $events->count() }}</strong> dari <strong>{{ $events->total() }}</strong>
@@ -477,41 +476,31 @@
                     </div>
                 </div>
 
-                <!-- Events Grid -->
                 <div class="row g-4">
                     @foreach ($events as $event)
                         <div class="col-lg-4 col-md-6">
                             <div class="event-card">
-                                <div class="event-image">
-    @if ($event->poster)
 
-        @php
-            // Ambil hanya nama filenya, walaupun database menyimpan path lengkap
-            $filename = pathinfo($event->poster, PATHINFO_BASENAME);
-        @endphp
-
-        <img src="{{ route('poster.show', $filename) }}"
-             alt="{{ $event->nama_event }}"
-             style="width:100%;height:200px;object-fit:cover;">
-
-    @else
-
-        <div class="event-placeholder">
-            <i class="ti ti-calendar-event"></i>
-        </div>
-
-    @endif
-</div>
+                                <!-- GAMBAR -->
+                                @if ($event->poster)
+                                    <img src="{{ route('poster.show', $event->poster) }}" alt="{{ $event->nama_event }}"
+                                        style="width:100%;height:200px;object-fit:cover;">
+                                @else
+                                    <div class="event-placeholder">
+                                        <i class="ti ti-calendar-event"></i>
+                                    </div>
+                                @endif
 
 
-                                    <span class="event-badge">{{ $event->kategori ?? 'Umum' }}</span>
-                                </div>
+                                <!-- BODY -->
                                 <div class="event-body">
                                     <h3 class="event-title">{{ $event->nama_event }}</h3>
+
                                     <div class="event-organizer">
                                         <i class="ti ti-user"></i>
                                         {{ optional($event->penyelenggara)->nama ?? 'Penyelenggara' }}
                                     </div>
+
                                     <div class="event-meta">
                                         <div class="event-meta-item">
                                             <i class="ti ti-calendar"></i>
@@ -522,19 +511,19 @@
                                             <span>{{ $event->lokasi }}</span>
                                         </div>
                                     </div>
-                                    <p class="event-description">
-                                        {{ Str::limit($event->deskripsi, 120) }}
-                                    </p>
+
+                                    <p class="event-description">{{ Str::limit($event->deskripsi, 120) }}</p>
+
                                     <a href="{{ route('user.event.show', $event->id) }}" class="btn-view-detail">
                                         <i class="ti ti-eye"></i> Lihat Detail
                                     </a>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                <!-- Pagination -->
                 <div class="pagination-wrapper">
                     {{ $events->links() }}
                 </div>
@@ -542,20 +531,9 @@
                 <div class="empty-state">
                     <i class="ti ti-calendar-off"></i>
                     <h3 class="empty-state-title">Event Tidak Ditemukan</h3>
-                    <p class="empty-state-text">
-                        @if (request('search') || request('kategori'))
-                            Tidak ada event yang sesuai dengan pencarian Anda. Coba kata kunci lain.
-                        @else
-                            Belum ada event yang tersedia saat ini. Silakan cek kembali nanti.
-                        @endif
-                    </p>
-                    @if (request('search') || request('kategori'))
-                        <a href="{{ route('user.events') }}" class="btn btn-purple mt-3">
-                            <i class="ti ti-refresh"></i> Reset Filter
-                        </a>
-                    @endif
                 </div>
             @endif
         </div>
     </section>
+
 @endsection

@@ -19,15 +19,23 @@
     <!-- Custom CSS -->
     <style>
         :root {
-            --primary-teal: #0D9488;
-            --primary-orange: #F97316;
-            --primary-light: #14B8A6;
-            --secondary-coral: #FB923C;
-            --gradient-1: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
-            --gradient-2: linear-gradient(135deg, #0D9488 0%, #06B6D4 100%);
-            --shadow-sm: 0 2px 8px rgba(13, 148, 136, 0.1);
-            --shadow-md: 0 4px 16px rgba(13, 148, 136, 0.15);
-            --shadow-lg: 0 8px 32px rgba(13, 148, 136, 0.2);
+            /* Warna Biru Cyan */
+            --primary-blue: #00BCD4;
+            --primary-dark: #0097A7;
+            --primary-light: #4DD0E1;
+            --secondary-blue: #00ACC1;
+            --accent-cyan: #26C6DA;
+
+            /* Gradients Biru */
+            --gradient-main: linear-gradient(135deg, #00BCD4 0%, #4DD0E1 50%, #26C6DA 100%);
+            --gradient-hero: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+            --gradient-button: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
+
+            /* Shadows dengan warna biru */
+            --shadow-sm: 0 2px 8px rgba(0, 188, 212, 0.15);
+            --shadow-md: 0 4px 16px rgba(0, 188, 212, 0.2);
+            --shadow-lg: 0 8px 32px rgba(0, 188, 212, 0.25);
+            --shadow-xl: 0 15px 40px rgba(0, 188, 212, 0.3);
         }
 
         * {
@@ -37,33 +45,42 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            color: #1f2937;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #2c3e50;
             overflow-x: hidden;
             background: #ffffff;
         }
 
-        /* Navbar Styling */
+        /* Navbar Styling - IMPROVED */
         .navbar {
-            background: var(--gradient-2);
-            padding: 1.2rem 0;
-            box-shadow: var(--shadow-md);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 188, 212, 0.15);
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            border-bottom: 2px solid rgba(0, 188, 212, 0.1);
         }
 
+        /* Saat scroll */
         .navbar.scrolled {
-            padding: 0.8rem 0;
-            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 0.7rem 0;
+            box-shadow: 0 6px 25px rgba(0, 188, 212, 0.2);
         }
 
         .navbar-brand {
             font-size: 1.6rem;
             font-weight: 800;
-            color: white !important;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: flex;
             align-items: center;
             gap: 0.6rem;
@@ -77,20 +94,27 @@
 
         .navbar-brand i {
             font-size: 2rem;
+            color: var(--primary-blue);
+            -webkit-text-fill-color: var(--primary-blue);
         }
 
         .navbar-toggler {
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--primary-blue);
             padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.25);
         }
 
         .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300BCD4' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            margin: 0 0.5rem;
+            color: #1f2937 !important;
+            margin: 0 0.3rem;
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.3s ease;
@@ -99,27 +123,30 @@
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            border-radius: 10px;
         }
 
         .nav-link i {
             font-size: 1.2rem;
+            color: var(--primary-blue);
         }
 
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%) scaleX(0);
             width: 80%;
             height: 3px;
-            background: white;
+            background: var(--gradient-main);
             border-radius: 10px;
             transition: transform 0.3s ease;
         }
 
         .nav-link:hover {
-            color: white !important;
+            color: var(--primary-blue) !important;
+            background: rgba(0, 188, 212, 0.08);
             transform: translateY(-2px);
         }
 
@@ -129,53 +156,32 @@
         }
 
         .nav-link.active {
-            color: white !important;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+            color: var(--primary-blue) !important;
+            background: rgba(0, 188, 212, 0.12);
         }
 
-        /* Tombol Daftar di Navbar */
-        .btn-register {
-            background: transparent !important;
-            color: white !important;
-            border: 2px solid white !important;
-            padding: 8px 20px !important;
-            border-radius: 30px !important;
-            margin-left: 10px !important;
-            font-weight: 700 !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .btn-register:hover {
-            background: white !important;
-            color: var(--primary-teal) !important;
-            transform: translateY(-3px) !important;
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3) !important;
-        }
-
-        .btn-register::after {
-            display: none !important;
-        }
-
-        /* Tombol Login di Navbar (TRANSPARAN) */
+        /* Tombol Daftar & Login di Navbar */
+        .btn-register,
         .btn-login {
-            background: transparent !important;
+            background: var(--gradient-button) !important;
             color: white !important;
-            border: 2px solid white !important;
-            padding: 8px 20px !important;
+            border: none !important;
+            padding: 10px 24px !important;
             border-radius: 30px !important;
-            margin-left: 10px !important;
+            margin-left: 8px !important;
             font-weight: 700 !important;
             transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
         }
 
+        .btn-register:hover,
         .btn-login:hover {
-            background: white !important;
-            color: var(--primary-teal) !important;
             transform: translateY(-3px) !important;
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4) !important;
+            background: linear-gradient(135deg, #0097A7 0%, #006064 100%) !important;
         }
 
+        .btn-register::after,
         .btn-login::after {
             display: none !important;
         }
@@ -187,7 +193,7 @@
 
         /* Footer Styling */
         .footer {
-            background: var(--gradient-2);
+            background: var(--gradient-hero);
             color: white;
             padding: 4rem 0 0;
             margin-top: 0;
@@ -316,7 +322,7 @@
 
         .social-links a:hover {
             background: white;
-            color: var(--primary-teal);
+            color: var(--primary-blue);
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
@@ -338,15 +344,15 @@
 
         /* Utility Classes */
         .gradient-bg {
-            background: var(--gradient-2);
+            background: var(--gradient-hero);
         }
 
         .text-blue {
-            color: var(--primary-teal);
+            color: var(--primary-blue);
         }
 
         .btn-blue {
-            background: var(--gradient-2);
+            background: var(--gradient-button);
             border: none;
             color: white;
             padding: 12px 35px;
@@ -373,7 +379,7 @@
             right: 30px;
             width: 50px;
             height: 50px;
-            background: var(--gradient-2);
+            background: var(--gradient-button);
             color: white;
             border: none;
             border-radius: 50%;
@@ -388,7 +394,7 @@
 
         .back-to-top:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(13, 148, 136, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.4);
         }
 
         .back-to-top.show {
@@ -402,11 +408,11 @@
         /* Responsive */
         @media (max-width: 991px) {
             .navbar-collapse {
-                background: rgba(13, 148, 136, 0.95);
-                backdrop-filter: blur(10px);
+                background: white;
                 margin-top: 1rem;
                 padding: 1rem;
                 border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 188, 212, 0.15);
             }
 
             .nav-link {
@@ -415,7 +421,7 @@
             }
 
             .nav-link:hover {
-                background: rgba(255, 255, 255, 0.1);
+                background: rgba(0, 188, 212, 0.1);
             }
 
             .btn-register,
@@ -474,9 +480,11 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('user.home') }}">
-                <i class="ti ti-calendar-event"></i>
-                <span>Provenda</span>
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img src="{{ asset('assets/img/logo.png') }}"
+                     alt="Logo"
+                     style="height: 60px; max-height: 60px; object-fit: contain; margin-right: 6px;">
+                <span style="font-size: 28px; font-weight: 700; margin-top: 2px;">Provenda</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -633,7 +641,7 @@
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <p>&copy; 2024 Provenda - Jasa Promosi Event Daerah. All rights reserved.</p>
+                <p>&copy; 2025 Provenda - Jasa Promosi Event Daerah. All rights reserved.</p>
             </div>
         </div>
     </footer>
