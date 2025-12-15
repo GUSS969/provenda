@@ -217,13 +217,11 @@
                                             <!-- Image -->
                                             <div class="event-image">
                                                 @if ($ev->poster)
-                                                    <img src="{{ $ev->poster ? route('poster.show', $ev->poster) : 'https://via.placeholder.com/400x250?text=No+Image' }}"
-                                                        alt="{{ $ev->nama_event }}" class="img-fluid"
-                                                        style="width:100%;height:200px;object-fit:cover;">
-                                                @else
-                                                    <img src="https://via.placeholder.com/400x250?text=No+Image"
-                                                        class="img-fluid"
-                                                        style="width:100%;height:200px;object-fit:cover;">
+                                                    <img src="{{ route('poster.show', basename($ev->poster)) }}"
+     alt="{{ $ev->nama_event }}"
+     class="img-fluid"
+     style="width:100%;height:200px;object-fit:cover;">
+
                                                 @endif
                                             </div>
 
