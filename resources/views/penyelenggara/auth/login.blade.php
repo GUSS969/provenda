@@ -551,7 +551,7 @@
         <div class="left">
             <div>
                 <div class="icon-box">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Provenda Logo">
+                    <img src="{{ asset('assets/img/logo.png') }}"  alt="Provenda Logo">
                 </div>
 
                 <h1>PROVENDA</h1>
@@ -571,12 +571,13 @@
             <h2>Selamat Datang! 👋</h2>
             <p class="subtitle">Login untuk mengelola event Anda</p>
 
-            <form action="#" method="POST" id="loginForm">
+            <form action="{{ route('penyelenggara.login.submit') }}" method="POST" id="loginForm">
+                @csrf
 
                 <label>Email <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-envelope left-icon"></i>
-                    <input type="email" name="email" id="email" placeholder="organizer@provenda.com" required autocomplete="email">
+                    <input type="email" name="email" id="email" placeholder="organizer@provenda.com" required value="{{ old('email') }}" autocomplete="email">
                 </div>
                 <div class="error-message" id="email-error"></div>
 
@@ -600,11 +601,11 @@
                 </div>
 
                 <div class="register">
-                    Belum punya akun? <a href="#">Daftar di sini</a>
+                    Belum punya akun? <a href="{{ route('penyelenggara.register') }}">Daftar di sini</a>
                 </div>
 
                 <div class="back">
-                    <a href="#">← Kembali ke Beranda</a>
+                    <a href="{{ route('user.home') }}">← Kembali ke Beranda</a>
                 </div>
 
             </form>
@@ -714,7 +715,12 @@
             });
 
             if (!isValid) {
-                alert('Mohon periksa kembali form Anda!');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Mohon periksa kembali form Anda!',
+                    confirmButtonColor: '#0ea5e9'
+                });
                 return;
             }
 
@@ -722,13 +728,37 @@
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
-            // Simulate form submission
-            setTimeout(() => {
-                alert('Login berhasil!');
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-            }, 1500);
+            // Submit form ke Laravel
+            this.submit();
         });
+
+        // Display Laravel errors/success messages
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Gagal',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#0ea5e9'
+            });
+        @endif
+
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#0ea5e9'
+            });
+        @endif
+
+        @if($errors->any())
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                html: '@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach',
+                confirmButtonColor: '#0ea5e9'
+            });
+        @endif
     </script>
 </body>
 </html>
