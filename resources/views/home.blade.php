@@ -1640,7 +1640,7 @@
                             <div class="event-card">
                                 <div class="event-image">
                                     @if ($event->poster)
-                                        <img src="{{ route('poster.show', $event->poster) }}" alt="{{ $event->nama_event }}">
+                                        <img src="{{ route('poster.show', basename($event->poster)) }}">
                                     @else
                                         <div style="width:100%;height:300px;background:var(--gradient-main);display:flex;align-items:center;justify-content:center;">
                                             <i class="ti ti-calendar-event" style="font-size:100px;color:white;"></i>
