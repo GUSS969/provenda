@@ -241,7 +241,7 @@
             margin-bottom: 8px;
         }
 
-        .input-wrapper i {
+        .input-wrapper .left-icon {
             position: absolute;
             left: 16px;
             top: 50%;
@@ -249,6 +249,7 @@
             color: #94a3b8;
             font-size: 16px;
             transition: color 0.3s;
+            pointer-events: none;
         }
 
         .input-wrapper input,
@@ -268,6 +269,27 @@
             min-height: 80px;
         }
 
+        /* Hide browser's default password reveal button */
+        .input-wrapper input[type="password"]::-ms-reveal,
+        .input-wrapper input[type="password"]::-ms-clear {
+            display: none;
+        }
+
+        .input-wrapper input[type="password"]::-webkit-credentials-auto-fill-button,
+        .input-wrapper input[type="password"]::-webkit-contacts-auto-fill-button {
+            visibility: hidden;
+            display: none !important;
+            pointer-events: none;
+            height: 0;
+            width: 0;
+            margin: 0;
+        }
+
+        .input-wrapper input[type="text"]::-ms-reveal,
+        .input-wrapper input[type="text"]::-ms-clear {
+            display: none;
+        }
+
         .input-wrapper input:focus,
         .input-wrapper textarea:focus {
             border-color: #0ea5e9;
@@ -276,15 +298,16 @@
             background: #fff;
         }
 
-        .input-wrapper input:focus ~ i {
+        .input-wrapper input:focus ~ .left-icon {
             color: #0ea5e9;
         }
 
-        /* Password Toggle */
-        .password-wrapper {
-            position: relative;
+        /* Password Wrapper - KHUSUS */
+        .password-wrapper input {
+            padding-right: 48px;
         }
 
+        /* Password Toggle - ICON MATA DI KANAN */
         .toggle-password {
             position: absolute;
             right: 16px;
@@ -292,13 +315,23 @@
             transform: translateY(-50%);
             cursor: pointer;
             color: #94a3b8;
-            font-size: 16px;
-            transition: color 0.3s;
+            font-size: 18px;
+            transition: all 0.3s;
             z-index: 10;
+            user-select: none;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .toggle-password:hover {
             color: #0ea5e9;
+        }
+
+        .toggle-password:active {
+            transform: translateY(-50%) scale(0.9);
         }
 
         /* Error Message */
@@ -432,16 +465,6 @@
             text-decoration: underline;
         }
 
-        /* Success Icon Animation */
-        @keyframes checkmark {
-            0% {
-                stroke-dashoffset: 100;
-            }
-            100% {
-                stroke-dashoffset: 0;
-            }
-        }
-
         /* ===== RESPONSIVE ===== */
         @media(max-width: 980px) {
             .container {
@@ -530,71 +553,52 @@
             <h2>Daftar Sekarang</h2>
             <p class="subtitle">Buat akun untuk mengelola event Anda</p>
 
-            @if ($errors->any())
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: '@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach',
-                        confirmButtonColor: '#0ea5e9'
-                    });
-                </script>
-            @endif
-
-            @if (session('success'))
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: '{{ session('success') }}',
-                        confirmButtonColor: '#0ea5e9'
-                    });
-                </script>
-            @endif
-
-            <form action="{{ route('penyelenggara.register.submit') }}" method="POST" id="registerForm">
-                @csrf
+            <form action="#" method="POST" id="registerForm">
 
                 <label>Nama Lengkap / Organisasi <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper">
-                    <i class="fas fa-user"></i>
-                    <input type="text" name="name" id="name" placeholder="Contoh: Event Organizer Bengkalis" required value="{{ old('name') }}">
+                    <i class="fas fa-user left-icon"></i>
+                    <input type="text" name="name" id="name" placeholder="Contoh: Event Organizer Bengkalis" required>
                 </div>
                 <div class="error-message" id="name-error"></div>
 
                 <label>Email <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" name="email" id="email" placeholder="email@example.com" required value="{{ old('email') }}">
+                    <i class="fas fa-envelope left-icon"></i>
+                    <input type="email" name="email" id="email" placeholder="email@example.com" required>
                 </div>
                 <div class="error-message" id="email-error"></div>
 
                 <label>Nomor Telepon <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper">
-                    <i class="fas fa-phone"></i>
-                    <input type="text" name="telepon" id="telepon" placeholder="08123456789" required value="{{ old('telepon') }}">
+                    <i class="fas fa-phone left-icon"></i>
+                    <input type="text" name="telepon" id="telepon" placeholder="08123456789" required>
                 </div>
                 <div class="error-message" id="telepon-error"></div>
 
                 <label>Alamat <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper">
-                    <textarea name="alamat" id="alamat" placeholder="Jl. Contoh No. 1, Bengkalis, Riau" required>{{ old('alamat') }}</textarea>
+                    <textarea name="alamat" id="alamat" placeholder="Jl. Contoh No. 1, Bengkalis, Riau" required></textarea>
                 </div>
                 <div class="error-message" id="alamat-error"></div>
 
                 <label>Password <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper password-wrapper">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" required>
-                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                    <i class="fas fa-lock left-icon"></i>
+                    <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" required autocomplete="new-password">
+                    <span class="toggle-password" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </span>
                 </div>
                 <div class="error-message" id="password-error"></div>
 
                 <label>Konfirmasi Password <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper password-wrapper">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ketik ulang password" required>
-                    <i class="fas fa-eye toggle-password" id="togglePasswordConfirm" onclick="togglePasswordVisibility('password_confirmation', 'togglePasswordConfirm')"></i>
+                    <i class="fas fa-lock left-icon"></i>
+                    <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ketik ulang password" required autocomplete="new-password">
+                    <span class="toggle-password" id="togglePasswordConfirm">
+                        <i class="fas fa-eye"></i>
+                    </span>
                 </div>
                 <div class="error-message" id="password-confirm-error"></div>
 
@@ -604,11 +608,11 @@
                 </button>
 
                 <div class="login">
-                    Sudah punya akun? <a href="{{ route('penyelenggara.login') }}">Login di sini</a>
+                    Sudah punya akun? <a href="#">Login di sini</a>
                 </div>
 
                 <div class="back">
-                    <a href="{{ route('user.home') }}">← Kembali ke Beranda</a>
+                    <a href="#">← Kembali ke Beranda</a>
                 </div>
 
             </form>
@@ -617,27 +621,61 @@
     </div>
 
     <script>
-        // Toggle Password Visibility
-        function togglePasswordVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
+        // Toggle Password Visibility - UNTUK PASSWORD
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePasswordBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            if (input.type === 'password') {
-                input.type = 'text';
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
             } else {
-                input.type = 'password';
+                passwordInput.type = 'password';
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
             }
-        }
+        });
+
+        // Toggle Password Visibility - UNTUK KONFIRMASI PASSWORD
+        const togglePasswordConfirmBtn = document.getElementById('togglePasswordConfirm');
+        const passwordConfirmInput = document.getElementById('password_confirmation');
+
+        togglePasswordConfirmBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const icon = this.querySelector('i');
+            
+            if (passwordConfirmInput.type === 'password') {
+                passwordConfirmInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordConfirmInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Prevent password inputs from triggering anything
+        passwordInput.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        passwordConfirmInput.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
         // Form Validation
         const form = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Real-time validation
         const inputs = {
             name: {
                 element: document.getElementById('name'),
@@ -744,12 +782,7 @@
             });
 
             if (!isValid) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Mohon periksa kembali form Anda!',
-                    confirmButtonColor: '#0ea5e9'
-                });
+                alert('Mohon periksa kembali form Anda!');
                 return;
             }
 
@@ -757,20 +790,12 @@
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
-            // Submit form
+            // Simulate form submission
             setTimeout(() => {
-                form.submit();
-            }, 500);
-        });
-
-        // Prevent double submission
-        let isSubmitting = false;
-        form.addEventListener('submit', function(e) {
-            if (isSubmitting) {
-                e.preventDefault();
-                return false;
-            }
-            isSubmitting = true;
+                alert('Registrasi berhasil!');
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }, 1500);
         });
     </script>
 </body>

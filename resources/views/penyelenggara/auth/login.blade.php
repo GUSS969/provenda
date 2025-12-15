@@ -244,7 +244,7 @@
             margin-bottom: 8px;
         }
 
-        .input-wrapper i {
+        .input-wrapper .left-icon {
             position: absolute;
             left: 16px;
             top: 50%;
@@ -252,6 +252,7 @@
             color: #94a3b8;
             font-size: 16px;
             transition: color 0.3s;
+            pointer-events: none;
         }
 
         .input-wrapper input {
@@ -264,6 +265,27 @@
             background: #f8fafc;
         }
 
+        /* Hide browser's default password reveal button */
+        .input-wrapper input[type="password"]::-ms-reveal,
+        .input-wrapper input[type="password"]::-ms-clear {
+            display: none;
+        }
+
+        .input-wrapper input[type="password"]::-webkit-credentials-auto-fill-button,
+        .input-wrapper input[type="password"]::-webkit-contacts-auto-fill-button {
+            visibility: hidden;
+            display: none !important;
+            pointer-events: none;
+            height: 0;
+            width: 0;
+            margin: 0;
+        }
+
+        .input-wrapper input[type="text"]::-ms-reveal,
+        .input-wrapper input[type="text"]::-ms-clear {
+            display: none;
+        }
+
         .input-wrapper input:focus {
             border-color: #0ea5e9;
             box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
@@ -271,15 +293,16 @@
             background: #fff;
         }
 
-        .input-wrapper input:focus ~ i {
+        .input-wrapper input:focus ~ .left-icon {
             color: #0ea5e9;
         }
 
-        /* Password Toggle */
-        .password-wrapper {
-            position: relative;
+        /* Password Wrapper - KHUSUS */
+        .password-wrapper input {
+            padding-right: 48px;
         }
 
+        /* Password Toggle - ICON MATA DI KANAN */
         .toggle-password {
             position: absolute;
             right: 16px;
@@ -287,13 +310,23 @@
             transform: translateY(-50%);
             cursor: pointer;
             color: #94a3b8;
-            font-size: 16px;
-            transition: color 0.3s;
+            font-size: 18px;
+            transition: all 0.3s;
             z-index: 10;
+            user-select: none;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .toggle-password:hover {
             color: #0ea5e9;
+        }
+
+        .toggle-password:active {
+            transform: translateY(-50%) scale(0.9);
         }
 
         /* Error Message */
@@ -538,21 +571,22 @@
             <h2>Selamat Datang! 👋</h2>
             <p class="subtitle">Login untuk mengelola event Anda</p>
 
-            <form action="{{ route('penyelenggara.login.submit') }}" method="POST" id="loginForm">
-                @csrf
+            <form action="#" method="POST" id="loginForm">
 
                 <label>Email <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" name="email" id="email" placeholder="organizer@provenda.com" required value="{{ old('email') }}" autocomplete="email">
+                    <i class="fas fa-envelope left-icon"></i>
+                    <input type="email" name="email" id="email" placeholder="organizer@provenda.com" required autocomplete="email">
                 </div>
                 <div class="error-message" id="email-error"></div>
 
                 <label>Password <span style="color:#ef4444;">*</span></label>
                 <div class="input-wrapper password-wrapper">
-                    <i class="fas fa-lock"></i>
+                    <i class="fas fa-lock left-icon"></i>
                     <input type="password" name="password" id="password" placeholder="Masukkan password Anda" required autocomplete="current-password">
-                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                    <span class="toggle-password" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </span>
                 </div>
                 <div class="error-message" id="password-error"></div>
 
@@ -566,11 +600,11 @@
                 </div>
 
                 <div class="register">
-                    Belum punya akun? <a href="{{ route('penyelenggara.register') }}">Daftar di sini</a>
+                    Belum punya akun? <a href="#">Daftar di sini</a>
                 </div>
 
                 <div class="back">
-                    <a href="{{ route('user.home') }}">← Kembali ke Beranda</a>
+                    <a href="#">← Kembali ke Beranda</a>
                 </div>
 
             </form>
@@ -579,21 +613,33 @@
     </div>
 
     <script>
-        // Toggle Password Visibility
-        function togglePasswordVisibility() {
-            const input = document.getElementById('password');
-            const icon = document.getElementById('togglePassword');
+        // Toggle Password Visibility - PERBAIKAN
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        // Event listener hanya untuk toggle button
+        togglePasswordBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            if (input.type === 'password') {
-                input.type = 'text';
+            const icon = this.querySelector('i');
+            
+            // Toggle type input
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
             } else {
-                input.type = 'password';
+                passwordInput.type = 'password';
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
             }
-        }
+        });
+
+        // Pastikan input password tidak trigger toggle
+        passwordInput.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
         // Form Validation
         const form = document.getElementById('loginForm');
@@ -668,12 +714,7 @@
             });
 
             if (!isValid) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Mohon periksa kembali form Anda!',
-                    confirmButtonColor: '#0ea5e9'
-                });
+                alert('Mohon periksa kembali form Anda!');
                 return;
             }
 
@@ -681,39 +722,13 @@
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
-            // Submit form
+            // Simulate form submission
             setTimeout(() => {
-                form.submit();
-            }, 500);
+                alert('Login berhasil!');
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }, 1500);
         });
-
-        // Display Laravel errors/success messages
-        @if(session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '{{ session('error') }}',
-                confirmButtonColor: '#0ea5e9'
-            });
-        @endif
-
-        @if(session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                confirmButtonColor: '#0ea5e9'
-            });
-        @endif
-
-        @if($errors->any())
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                html: '@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach',
-                confirmButtonColor: '#0ea5e9'
-            });
-        @endif
     </script>
 </body>
 </html>

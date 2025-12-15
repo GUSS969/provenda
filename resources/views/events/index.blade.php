@@ -42,7 +42,10 @@
             <div class="col-md-4 mb-4">
                 <div class="card border-0 shadow-sm h-100">
                     @if($event->poster)
-                    <img src="{{ route('poster.show', basename($event->poster)) }}" style="height: 250px; object-fit: cover;">
+                    <img src="{{ route('poster.show', basename($event->poster)) }}" 
+                         class="card-img-top" 
+                         alt="{{ $event->nama_event }}" 
+                         style="height: 250px; object-fit: cover;">
                     @else
                     <div class="card-img-top gradient-bg d-flex align-items-center justify-content-center" style="height: 250px;">
                         <i class="ti ti-calendar-event text-white" style="font-size: 5rem;"></i>
@@ -81,9 +84,47 @@
         <!-- Pagination -->
         @if($events->hasPages())
         <div class="d-flex justify-content-center mt-4">
-            {{ $events->links() }}
+            <nav aria-label="Page navigation">
+                {{ $events->links('pagination::bootstrap-5') }}
+            </nav>
         </div>
         @endif
     </div>
 </section>
+
+<style>
+/* Custom Pagination Styling */
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .page-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    margin: 0 2px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    color: #7c3aed;
+}
+
+.pagination .page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.25);
+}
+
+/* Fix icon size in pagination if using icons */
+.pagination svg {
+    width: 1em;
+    height: 1em;
+}
+</style>
 @endsection
