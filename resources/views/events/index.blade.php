@@ -42,7 +42,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card border-0 shadow-sm h-100">
                     @if($event->poster)
-                    <img src="{{ asset('storage/' . $event->poster) }}" class="card-img-top" alt="{{ $event->nama_event }}" style="height: 250px; object-fit: cover;">
+                    <img src="{{ route('poster.show', basename($event->poster)) }}" style="height: 250px; object-fit: cover;">
                     @else
                     <div class="card-img-top gradient-bg d-flex align-items-center justify-content-center" style="height: 250px;">
                         <i class="ti ti-calendar-event text-white" style="font-size: 5rem;"></i>
