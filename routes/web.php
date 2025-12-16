@@ -20,6 +20,7 @@ use App\Http\Controllers\user\UserController;
 
 use App\Http\Controllers\penyelenggara\AuthController as PenyelenggaraAuth;
 use App\Http\Controllers\penyelenggara\DashboardController as PenyelenggaraDashboard;
+use App\Http\Controllers\penyelenggara\UmkmVerificationController;
 
 // 🔥 CONTROLLER BARU UNTUK PENDAFTARAN UMKM KE EVENT
 use App\Http\Controllers\EventUMKMController;
@@ -41,7 +42,7 @@ Route::name('user.')->group(function () {
 
     // Route pendaftaran UMKM
     Route::post('/event/{event}/daftar-umkm', [EventUMKMController::class, 'register'])->name('event.daftar.umkm');
-    
+
     // ✅ TAMBAH ROUTE INI
     Route::get('/event/registration/success/{id}', [EventUMKMController::class, 'showSuccess'])->name('event.registration.success');
 });
@@ -58,6 +59,12 @@ Route::post('login', [AuthController::class, 'loginPost'])->name('login.post');
 ============================================================================ */
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    // APPROVE & REJECT UMKM
+    Route::post('umkms/{id}/approve', [UMKMController::class, 'approve'])
+        ->name('umkms.approve');
+
+    Route::post('umkms/{id}/reject', [UMKMController::class, 'reject'])
+        ->name('umkms.reject');
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -103,10 +110,10 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
     ->group(function () {
         // Dashboard
         Route::get('/dashboard', [PenyelenggaraDashboard::class, 'index'])->name('dashboard');
-        
+
         // Event Saya (List)
         Route::get('/event-saya', [App\Http\Controllers\penyelenggara\EventController::class, 'eventSaya'])->name('event_saya');
-        
+
         // Event CRUD
         Route::get('/events/create', [App\Http\Controllers\penyelenggara\EventController::class, 'create'])->name('events.create');
         Route::post('/events', [App\Http\Controllers\penyelenggara\EventController::class, 'store'])->name('events.store');
@@ -114,17 +121,22 @@ Route::prefix('penyelenggara')->name('penyelenggara.')
         Route::get('/events/{id}/edit', [App\Http\Controllers\penyelenggara\EventController::class, 'edit'])->name('events.edit');
         Route::put('/events/{id}', [App\Http\Controllers\penyelenggara\EventController::class, 'update'])->name('events.update');
         Route::delete('/events/{id}', [App\Http\Controllers\penyelenggara\EventController::class, 'destroy'])->name('events.destroy');
-        
+
         // Lihat Pendaftar UMKM
         Route::get('/pendaftar-umkm', [App\Http\Controllers\penyelenggara\EventController::class, 'umkmRegistrations'])->name('umkm.registrations');
-        
+        // APPROVE & REJECT UMKM OLEH PENYELENGGARA
+        Route::post('/umkm/{id}/approve', [UmkmVerificationController::class, 'approve'])
+            ->name('umkm.approve');
+
+        Route::post('/umkm/{id}/reject', [UmkmVerificationController::class, 'reject'])
+            ->name('umkm.reject');
         // Statistik
         Route::get('/statistik', [App\Http\Controllers\penyelenggara\StatistikController::class, 'index'])->name('statistik');
-        
+
         // Pengaturan
         Route::get('/pengaturan', [App\Http\Controllers\penyelenggara\PengaturanController::class, 'index'])->name('pengaturan');
         Route::put('/pengaturan', [App\Http\Controllers\penyelenggara\PengaturanController::class, 'update'])->name('pengaturan.update');
-        
+
         // Logout
         Route::post('/logout', [PenyelenggaraAuth::class, 'logout'])->name('logout');
     });

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UmkmRegistration extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'event_id',
         'nama_umkm',
@@ -13,7 +16,9 @@ class UmkmRegistration extends Model
         'email',
         'no_wa',
         'kategori',
-        'deskripsi'
+        'deskripsi',
+        'stand_number',
+        'status',
     ];
 
     public function event()

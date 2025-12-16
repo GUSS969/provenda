@@ -2,97 +2,63 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Models\UMKM;
-use App\Models\Admin;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Models\UmkmRegistration;
+use Illuminate\Http\Request;
+
 class UMKMController extends Controller
 {
     public function index()
     {
-        $data = UMKM::with('admin')->get();
-        return view('admin.umkm.index', compact('data'));
+        $umkms = UmkmRegistration::with('event.penyelenggara')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.umkm.index', compact('umkms'));
     }
 
-    public function create()
+    public function show($id)
     {
-        $admins = Admin::all();
-        return view('admin.umkm.create', compact('admins'));
+        $umkm = UmkmRegistration::with('event.penyelenggara')->findOrFail($id);
+        return view('admin.umkm.show', compact('umkm'));
     }
 
-    public function store(Request $request)
+    // ===============================
+    // ✅ APPROVE UMKM
+    // ===============================
+    public function approve($id)
     {
-        $request->validate([
-            'nama_umkm' => 'required',
-            'nama_pemilik' => 'required',
-            'alamat' => 'required',
-            'no_hp' => 'required',
-            'email' => 'required|email|unique:umkms',
-            'password' => 'required|min:5',
-            'status' => 'required',
-            'admin_id' => 'required'
-        ]);
-
-        UMKM::create([
-            'nama_umkm'   => $request->nama_umkm,
-            'nama_pemilik' => $request->nama_pemilik,
-            'alamat'      => $request->alamat,
-            'no_hp'       => $request->no_hp,
-            'email'       => $request->email,
-            'password'    => Hash::make($request->password),
-            'status'      => $request->status,
-            'admin_id'    => $request->admin_id,
-        ]);
-
-        return redirect()->route('umkms.index')->with('success', 'UMKM berhasil ditambahkan!');
-    }
-
-    public function edit($id)
-    {
-        $umkm = UMKM::findOrFail($id);
-        $admins = Admin::all();
-        return view('admin.umkm.edit', compact('umkm', 'admins'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_umkm' => 'required',
-            'nama_pemilik' => 'required',
-            'alamat' => 'required',
-            'no_hp' => 'required',
-            'email' => 'required|email',
-            'status' => 'required',
-            'admin_id' => 'required'
-        ]);
-
-        $umkm = UMKM::findOrFail($id);
-
-        // Update basic data
+        $umkm = UmkmRegistration::findOrFail($id);
         $umkm->update([
-            'nama_umkm' => $request->nama_umkm,
-            'nama_pemilik' => $request->nama_pemilik,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'email' => $request->email,
-            'status' => $request->status,
-            'admin_id' => $request->admin_id,
+            'status' => 'approved'
         ]);
 
-        // Update password jika diisi
-        if ($request->password) {
-            $umkm->update([
-                'password' => Hash::make($request->password)
-            ]);
-        }
-
-        return redirect()->route('umkms.index')->with('success', 'UMKM berhasil diperbarui!');
+        return back()->with('success', 'UMKM berhasil disetujui');
     }
+
+    // ===============================
+    // ❌ REJECT UMKM
+    // ===============================
+    public function reject($id)
+    {
+        $umkm = UmkmRegistration::findOrFail($id);
+        $umkm->update([
+            'status' => 'rejected'
+        ]);
+
+        return back()->with('success', 'UMKM berhasil ditolak');
+    }
+
+    // ❌ DISABLE CREATE / STORE / EDIT
+    public function create() { abort(404); }
+    public function store(Request $r) { abort(404); }
+    public function edit($id) { abort(404); }
+    public function update(Request $r, $id) { abort(404); }
 
     public function destroy($id)
     {
-        UMKM::findOrFail($id)->delete();
-        return redirect()->route('umkms.index')->with('success', 'UMKM berhasil dihapus!');
+        UmkmRegistration::findOrFail($id)->delete();
+        return redirect()->route('admin.umkms.index')
+            ->with('success', 'Data UMKM berhasil dihapus');
     }
 }

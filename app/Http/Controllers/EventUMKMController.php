@@ -16,10 +16,10 @@ class EventUMKMController extends Controller
         // Validasi input
         $validated = $request->validate([
             'nama_umkm' => 'required|string|max:255',
-            'pemilik' => 'required|string|max:255',
-            'email' => 'nullable|email',
-            'no_wa' => 'required|string|max:20',
-            'kategori' => 'required|string',
+            'pemilik'   => 'required|string|max:255',
+            'email'     => 'nullable|email',
+            'no_wa'     => 'required|string|max:20',
+            'kategori'  => 'required|string',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -30,80 +30,63 @@ class EventUMKMController extends Controller
 
         // Cek kuota
         if ($event->max_participants) {
-            $registered = $event->umkmRegistrations->count();
+            $registered = $event->umkmRegistrations()->count();
             if ($registered >= $event->max_participants) {
                 return back()->with('error', 'Maaf, kuota pendaftaran sudah penuh!');
             }
         }
 
-        // Generate Stand Number Otomatis
+        // Generate Stand Number
         $standNumber = $this->generateStandNumber($event->id);
 
-        // Simpan pendaftaran
+        // SIMPAN UMKM (🔥 STATUS PENDING 🔥)
         $registration = UmkmRegistration::create([
-            'event_id' => $event->id,
-            'nama_umkm' => $validated['nama_umkm'],
-            'pemilik' => $validated['pemilik'],
-            'email' => $validated['email'],
-            'no_wa' => $validated['no_wa'],
-            'kategori' => $validated['kategori'],
-            'deskripsi' => $validated['deskripsi'],
+            'event_id'     => $event->id,
+            'nama_umkm'    => $validated['nama_umkm'],
+            'pemilik'      => $validated['pemilik'],
+            'email'        => $validated['email'],
+            'no_wa'        => $validated['no_wa'],
+            'kategori'     => $validated['kategori'],
+            'deskripsi'    => $validated['deskripsi'],
             'stand_number' => $standNumber,
+            'status'       => 'pending', // ⬅️ WAJIB
         ]);
 
-        // Redirect ke halaman sukses
         return redirect()->route('user.event.registration.success', $registration->id);
     }
 
     /**
-     * Tampilkan halaman sukses setelah pendaftaran
+     * Halaman sukses
      */
     public function showSuccess($id)
     {
         $registration = UmkmRegistration::with('event')->findOrFail($id);
-        
         return view('events.registration-success', compact('registration'));
     }
 
     /**
-     * Generate Stand Number Otomatis
-     * Format: A-01, A-02, ... A-99, B-01, dst
+     * Generate Stand Number
      */
     private function generateStandNumber($eventId)
     {
-        $lastRegistration = UmkmRegistration::where('event_id', $eventId)
-                                            ->whereNotNull('stand_number')
-                                            ->orderBy('id', 'desc')
-                                            ->first();
+        $last = UmkmRegistration::where('event_id', $eventId)
+            ->whereNotNull('stand_number')
+            ->orderBy('id', 'desc')
+            ->first();
 
-        if (!$lastRegistration || !$lastRegistration->stand_number) {
-            return 'A-01'; // Stand pertama
+        if (!$last || !$last->stand_number) {
+            return 'A-01';
         }
 
-        // Parse nomor terakhir (misal: A-01)
-        $parts = explode('-', $lastRegistration->stand_number);
-        
-        if (count($parts) !== 2) {
-            return 'A-01'; // Fallback jika format salah
-        }
-        
-        $letter = $parts[0];
-        $number = intval($parts[1]);
+        [$letter, $number] = explode('-', $last->stand_number);
+        $number = (int) $number;
 
-        // Increment nomor
         if ($number < 99) {
-            $number++;
-            return $letter . '-' . str_pad($number, 2, '0', STR_PAD_LEFT);
-        } else {
-            // Pindah ke huruf berikutnya
-            if ($letter == 'Z') {
-                $letter = 'AA';
-            } else if (strlen($letter) == 2) {
-                $letter = chr(ord($letter[0]) + 1) . 'A';
-            } else {
-                $letter = chr(ord($letter) + 1);
-            }
-            return $letter . '-01';
+            return $letter . '-' . str_pad($number + 1, 2, '0', STR_PAD_LEFT);
         }
+
+        // naik huruf
+        $nextLetter = chr(ord($letter) + 1);
+        return $nextLetter . '-01';
     }
 }
