@@ -19,153 +19,210 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background: radial-gradient(circle at 20% 20%, #24273a, #0f111a 70%);
-            color: #fff;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            position: relative;
         }
 
-        /* Glow Orbs */
-        .orb {
+        /* Animated Background Pattern */
+        body::before {
+            content: '';
             position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.45;
-            animation: float 6s ease-in-out infinite alternate;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(30, 60, 114, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
         }
 
-        .orb1 {
-            width: 450px;
-            height: 450px;
-            background: #5c3bff;
-            top: -80px;
-            left: -100px;
+        body::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
         }
 
-        .orb2 {
-            width: 350px;
-            height: 350px;
-            background: #00d4ff;
-            bottom: -100px;
-            right: -80px;
-        }
-
-        .orb3 {
-            width: 250px;
-            height: 250px;
-            background: #ff3b6b;
-            top: 55%;
-            left: 55%;
-        }
-
-        @keyframes float {
-            from { transform: translateY(0px); }
-            to { transform: translateY(25px); }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.8; }
         }
 
         /* Premium Glass Card */
         .login-card {
             width: 420px;
-            padding: 40px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            padding: 40px 45px 45px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 30px 90px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.6) inset;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.15);
-            animation: fadeIn 1s ease;
+            animation: fadeInUp 0.8s ease;
             position: relative;
             z-index: 10;
         }
 
         .login-card img {
-            width: 60px;
+            width: 70px;
             margin-bottom: 15px;
-            filter: drop-shadow(0px 0px 8px rgba(255,255,255,0.3));
+            filter: drop-shadow(0px 4px 12px rgba(30, 60, 114, 0.3));
         }
 
         .login-card h2 {
-            font-size: 30px;
-            margin-bottom: 20px;
-            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #1e3c72;
+            letter-spacing: 0.5px;
         }
 
-        .login-card input {
+        .login-card .subtitle {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .login-card input[type="email"],
+        .login-card input[type="password"] {
             width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.12);
-            margin-bottom: 18px;
-            color: white;
-            font-size: 16px;
+            padding: 15px 20px;
+            border-radius: 16px;
+            border: 2px solid #e8ecf1;
+            background: #f8f9fb;
+            margin-bottom: 16px;
+            color: #333;
+            font-size: 15px;
             outline: none;
-            transition: 0.25s;
+            transition: all 0.3s ease;
+            font-family: "Poppins", sans-serif;
         }
 
-        .login-card input:focus {
-            border-color: #00d4ff;
-            background: rgba(255,255,255,0.18);
+        .login-card input[type="email"]:focus,
+        .login-card input[type="password"]:focus {
+            border-color: #2a5298;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.08);
         }
 
-        .login-card button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #6f4dff, #2aa4ff);
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.25s;
-            font-weight: 600;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
-        .login-card button:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+        .login-card input::placeholder {
+            color: #adb5bd;
         }
 
         .options {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 14px;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 22px;
             font-size: 14px;
-            color: #e0e0e0;
         }
 
-        a {
-            color: #00d4ff;
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #495057;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2a5298;
+        }
+
+        .options a {
+            color: #2a5298;
             text-decoration: none;
             font-weight: 500;
+            transition: all 0.3s;
         }
 
-        a:hover {
+        .options a:hover {
+            color: #1e3c72;
             text-decoration: underline;
         }
 
-        .bottom-link {
-            margin-top: 15px;
-            font-size: 14px;
-            opacity: 0.85;
+        .login-card button {
+            width: 100%;
+            padding: 17px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.35);
+            letter-spacing: 0.5px;
+            font-family: "Poppins", sans-serif;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .login-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(30, 60, 114, 0.4);
+        }
+
+        .login-card button:active {
+            transform: translateY(0);
+        }
+
+        .bottom-link {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .bottom-link a {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .bottom-link a:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .login-card {
+                width: 90%;
+                padding: 35px 30px;
+            }
+
+            .login-card h2 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
-
     <div class="login-card">
-        <img src="/admin/assets/images/logo.png" alt="Logo">
+        <img src="/assets/img/logo.png" alt="Logo">
 
         <h2>Admin Login</h2>
+        <p class="subtitle">Silakan login untuk mengakses dashboard</p>
 
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
@@ -174,15 +231,13 @@
             <input type="password" name="password" placeholder="Password" required />
 
             <div class="options">
-                <label><input type="checkbox" name="remember"> Remember me</label>
-                <a href="#">Forgot Password?</a>
+                <label>
+                    <input type="checkbox" name="remember"> 
+                    <span>Remember me</span>
+                </label>
             </div>
 
             <button type="submit">Login</button>
-
-            <div class="bottom-link">
-                Don't have an account? <a href="#">Create Account</a>
-            </div>
         </form>
     </div>
 

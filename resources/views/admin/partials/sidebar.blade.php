@@ -3,7 +3,8 @@
     <!-- Logo / Brand -->
     <div class="brand-section text-center py-4 px-3" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
         <div style="background: rgba(255,255,255,0.1); width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-            <i class="ti ti-building-store" style="font-size: 2.5rem; color: #fff;"></i>
+            <img src="{{ asset('assets/img/logo.png') }}" alt="Provenda Logo"
+                    style="height: 60px; max-height: 60px; object-fit: contain; margin-right: 6px;">
         </div>
         <h4 class="text-white fw-bold mb-1">PROVENDA</h4>
         <p class="text-white-50 small mb-0">Admin Panel</p>

@@ -188,8 +188,9 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('penyelenggara.dashboard') }}" class="sidebar-brand">
-                <i class="ti ti-calendar-event"></i>
-                <span>PROVENDA</span>
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Provenda Logo"
+                    style="height: 60px; max-height: 60px; object-fit: contain; margin-right: 6px;">
+                <span style="font-size: 28px; font-weight: 700; margin-top: 2px;">Provenda</span>
             </a>
             <p style="margin: 5px 0 0 0; font-size: 0.85rem; opacity: 0.9;">Dashboard Penyelenggara</p>
         </div>

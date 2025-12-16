@@ -6,8 +6,6 @@
     <title>Registrasi Penyelenggara - PROVENDA</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Sweet Alert 2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         * {
@@ -110,6 +108,13 @@
             object-fit: contain;
             filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
             animation: pulse 3s ease-in-out infinite;
+        }
+
+        .icon-box .fa-calendar-day {
+            font-size: 85px;
+            padding: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .3);
         }
 
         @keyframes pulse {
@@ -226,6 +231,38 @@
             font-size: 15px;
         }
 
+        /* Laravel Alert */
+        .alert {
+            margin-bottom: 20px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            color: #dc2626;
+            border-left: 4px solid #dc2626;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border-left: 4px solid #16a34a;
+        }
+
         label {
             margin-top: 18px;
             font-size: 14px;
@@ -233,6 +270,10 @@
             color: #334155;
             display: block;
             margin-bottom: 6px;
+        }
+
+        label .required {
+            color: #ef4444;
         }
 
         /* Input Wrapper with Icon */
@@ -261,33 +302,13 @@
             border: 2px solid #e2e8f0;
             transition: all 0.25s;
             background: #f8fafc;
+            font-family: "Poppins", sans-serif;
         }
 
         .input-wrapper textarea {
             padding: 14px;
             resize: vertical;
             min-height: 80px;
-        }
-
-        /* Hide browser's default password reveal button */
-        .input-wrapper input[type="password"]::-ms-reveal,
-        .input-wrapper input[type="password"]::-ms-clear {
-            display: none;
-        }
-
-        .input-wrapper input[type="password"]::-webkit-credentials-auto-fill-button,
-        .input-wrapper input[type="password"]::-webkit-contacts-auto-fill-button {
-            visibility: hidden;
-            display: none !important;
-            pointer-events: none;
-            height: 0;
-            width: 0;
-            margin: 0;
-        }
-
-        .input-wrapper input[type="text"]::-ms-reveal,
-        .input-wrapper input[type="text"]::-ms-clear {
-            display: none;
         }
 
         .input-wrapper input:focus,
@@ -302,12 +323,12 @@
             color: #0ea5e9;
         }
 
-        /* Password Wrapper - KHUSUS */
+        /* Password Wrapper */
         .password-wrapper input {
             padding-right: 48px;
         }
 
-        /* Password Toggle - ICON MATA DI KANAN */
+        /* Password Toggle */
         .toggle-password {
             position: absolute;
             right: 16px;
@@ -334,17 +355,13 @@
             transform: translateY(-50%) scale(0.9);
         }
 
-        /* Error Message */
-        .error-message {
+        /* Laravel Error Message */
+        .error-text {
             color: #ef4444;
             font-size: 13px;
             margin-top: 5px;
-            display: none;
-            animation: shake 0.3s;
-        }
-
-        .error-message.show {
             display: block;
+            animation: shake 0.3s;
         }
 
         @keyframes shake {
@@ -357,18 +374,6 @@
             75% {
                 transform: translateX(5px);
             }
-        }
-
-        .input-wrapper.error input,
-        .input-wrapper.error textarea {
-            border-color: #ef4444;
-            background: #fef2f2;
-        }
-
-        .input-wrapper.success input,
-        .input-wrapper.success textarea {
-            border-color: #10b981;
-            background: #f0fdf4;
         }
 
         button {
@@ -411,39 +416,6 @@
 
         button:active {
             transform: translateY(-1px);
-        }
-
-        button:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        button.loading .spinner {
-            display: block;
-        }
-
-        button.loading .btn-text {
-            display: none;
         }
 
         .login, .back {
@@ -503,9 +475,9 @@
                 padding: 30px 20px;
             }
 
-            .icon-box img {
-                width: 90px;
-                height: 90px;
+            .icon-box .fa-calendar-day {
+                font-size: 70px;
+                padding: 25px;
             }
 
             .right {
@@ -533,6 +505,7 @@
         <div class="left">
             <div>
                 <div class="icon-box">
+                    <!-- Bisa diganti dengan logo image jika ada -->
                     <img src="{{ asset('assets/img/logo.png') }}" alt="Provenda Logo">
                 </div>
 
@@ -553,66 +526,89 @@
             <h2>Daftar Sekarang</h2>
             <p class="subtitle">Buat akun untuk mengelola event Anda</p>
 
-            <form action="#" method="POST" id="registerForm">
+            <!-- Laravel Alert Messages -->
+            @if(session('error'))
+                <div class="alert alert-danger">⚠️ {{ session('error') }}</div>
+            @endif
 
-                <label>Nama Lengkap / Organisasi <span style="color:#ef4444;">*</span></label>
+            @if(session('success'))
+                <div class="alert alert-success">🎉 {{ session('success') }}</div>
+            @endif
+
+            <!-- Laravel Form with CSRF -->
+            <form action="{{ route('penyelenggara.register.submit') }}" method="POST">
+                @csrf
+
+                <!-- Nama Lengkap -->
+                <label>Nama Lengkap / Organisasi <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-user left-icon"></i>
-                    <input type="text" name="name" id="name" placeholder="Contoh: Event Organizer Bengkalis" required>
+                    <input type="text" name="name" value="{{ old('name') }}" placeholder="Contoh: Event Organizer Bengkalis" required>
                 </div>
-                <div class="error-message" id="name-error"></div>
+                @error('name')
+                <span class="error-text">{{ $message }}</span>
+                @enderror
 
-                <label>Email <span style="color:#ef4444;">*</span></label>
+                <!-- Email -->
+                <label>Email <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-envelope left-icon"></i>
-                    <input type="email" name="email" id="email" placeholder="email@example.com" required>
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com" required>
                 </div>
-                <div class="error-message" id="email-error"></div>
+                @error('email')
+                <span class="error-text">{{ $message }}</span>
+                @enderror
 
-                <label>Nomor Telepon <span style="color:#ef4444;">*</span></label>
+                <!-- Nomor Telepon -->
+                <label>Nomor Telepon <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-phone left-icon"></i>
-                    <input type="text" name="telepon" id="telepon" placeholder="08123456789" required>
+                    <input type="text" name="telepon" value="{{ old('telepon') }}" placeholder="08123456789" required>
                 </div>
-                <div class="error-message" id="telepon-error"></div>
+                @error('telepon')
+                <span class="error-text">{{ $message }}</span>
+                @enderror
 
-                <label>Alamat <span style="color:#ef4444;">*</span></label>
+                <!-- Alamat -->
+                <label>Alamat <span class="required">*</span></label>
                 <div class="input-wrapper">
-                    <textarea name="alamat" id="alamat" placeholder="Jl. Contoh No. 1, Bengkalis, Riau" required></textarea>
+                    <textarea name="alamat" placeholder="Jl. Contoh No. 1, Bengkalis, Riau" required>{{ old('alamat') }}</textarea>
                 </div>
-                <div class="error-message" id="alamat-error"></div>
+                @error('alamat')
+                <span class="error-text">{{ $message }}</span>
+                @enderror
 
-                <label>Password <span style="color:#ef4444;">*</span></label>
+                <!-- Password -->
+                <label>Password <span class="required">*</span></label>
                 <div class="input-wrapper password-wrapper">
                     <i class="fas fa-lock left-icon"></i>
                     <input type="password" name="password" id="password" placeholder="Minimal 6 karakter" required autocomplete="new-password">
-                    <span class="toggle-password" id="togglePassword">
+                    <span class="toggle-password" onclick="togglePassword('password', this)">
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
-                <div class="error-message" id="password-error"></div>
+                @error('password')
+                <span class="error-text">{{ $message }}</span>
+                @enderror
 
-                <label>Konfirmasi Password <span style="color:#ef4444;">*</span></label>
+                <!-- Konfirmasi Password -->
+                <label>Konfirmasi Password <span class="required">*</span></label>
                 <div class="input-wrapper password-wrapper">
                     <i class="fas fa-lock left-icon"></i>
                     <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ketik ulang password" required autocomplete="new-password">
-                    <span class="toggle-password" id="togglePasswordConfirm">
+                    <span class="toggle-password" onclick="togglePassword('password_confirmation', this)">
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
-                <div class="error-message" id="password-confirm-error"></div>
 
-                <button type="submit" id="submitBtn">
-                    <span class="btn-text">Daftar Sekarang</span>
-                    <div class="spinner"></div>
-                </button>
+                <button type="submit">Daftar Sekarang</button>
 
                 <div class="login">
-                    Sudah punya akun? <a href="#">Login di sini</a>
+                    Sudah punya akun? <a href="{{ route('penyelenggara.login') }}">Login di sini</a>
                 </div>
 
                 <div class="back">
-                    <a href="#">← Kembali ke Beranda</a>
+                    <a href="{{ route('user.home') }}">← Kembali ke Beranda</a>
                 </div>
 
             </form>
@@ -621,182 +617,21 @@
     </div>
 
     <script>
-        // Toggle Password Visibility - UNTUK PASSWORD
-        const togglePasswordBtn = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-
-        togglePasswordBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        // Toggle Password Visibility
+        function togglePassword(inputId, toggleBtn) {
+            const input = document.getElementById(inputId);
+            const icon = toggleBtn.querySelector('i');
             
-            const icon = this.querySelector('i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
+            if (input.type === 'password') {
+                input.type = 'text';
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
             } else {
-                passwordInput.type = 'password';
+                input.type = 'password';
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
-            }
-        });
-
-        // Toggle Password Visibility - UNTUK KONFIRMASI PASSWORD
-        const togglePasswordConfirmBtn = document.getElementById('togglePasswordConfirm');
-        const passwordConfirmInput = document.getElementById('password_confirmation');
-
-        togglePasswordConfirmBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const icon = this.querySelector('i');
-            
-            if (passwordConfirmInput.type === 'password') {
-                passwordConfirmInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordConfirmInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-
-        // Prevent password inputs from triggering anything
-        passwordInput.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
-        passwordConfirmInput.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Form Validation
-        const form = document.getElementById('registerForm');
-        const submitBtn = document.getElementById('submitBtn');
-
-        const inputs = {
-            name: {
-                element: document.getElementById('name'),
-                error: document.getElementById('name-error'),
-                validate: (value) => {
-                    if (!value) return 'Nama tidak boleh kosong';
-                    if (value.length < 3) return 'Nama minimal 3 karakter';
-                    return null;
-                }
-            },
-            email: {
-                element: document.getElementById('email'),
-                error: document.getElementById('email-error'),
-                validate: (value) => {
-                    if (!value) return 'Email tidak boleh kosong';
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(value)) return 'Format email tidak valid';
-                    return null;
-                }
-            },
-            telepon: {
-                element: document.getElementById('telepon'),
-                error: document.getElementById('telepon-error'),
-                validate: (value) => {
-                    if (!value) return 'Nomor telepon tidak boleh kosong';
-                    if (!/^[0-9]{10,13}$/.test(value)) return 'Nomor telepon harus 10-13 digit';
-                    return null;
-                }
-            },
-            alamat: {
-                element: document.getElementById('alamat'),
-                error: document.getElementById('alamat-error'),
-                validate: (value) => {
-                    if (!value) return 'Alamat tidak boleh kosong';
-                    if (value.length < 10) return 'Alamat minimal 10 karakter';
-                    return null;
-                }
-            },
-            password: {
-                element: document.getElementById('password'),
-                error: document.getElementById('password-error'),
-                validate: (value) => {
-                    if (!value) return 'Password tidak boleh kosong';
-                    if (value.length < 6) return 'Password minimal 6 karakter';
-                    return null;
-                }
-            },
-            password_confirmation: {
-                element: document.getElementById('password_confirmation'),
-                error: document.getElementById('password-confirm-error'),
-                validate: (value) => {
-                    const password = document.getElementById('password').value;
-                    if (!value) return 'Konfirmasi password tidak boleh kosong';
-                    if (value !== password) return 'Password tidak sama';
-                    return null;
-                }
-            }
-        };
-
-        // Add blur event listeners
-        Object.keys(inputs).forEach(key => {
-            const input = inputs[key];
-            input.element.addEventListener('blur', () => {
-                validateField(key);
-            });
-
-            input.element.addEventListener('input', () => {
-                if (input.error.classList.contains('show')) {
-                    validateField(key);
-                }
-            });
-        });
-
-        function validateField(fieldName) {
-            const field = inputs[fieldName];
-            const value = field.element.value.trim();
-            const errorMsg = field.validate(value);
-            
-            const wrapper = field.element.closest('.input-wrapper');
-            
-            if (errorMsg) {
-                field.error.textContent = errorMsg;
-                field.error.classList.add('show');
-                wrapper.classList.add('error');
-                wrapper.classList.remove('success');
-                return false;
-            } else {
-                field.error.classList.remove('show');
-                wrapper.classList.remove('error');
-                wrapper.classList.add('success');
-                return true;
             }
         }
-
-        // Form Submit
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            let isValid = true;
-            Object.keys(inputs).forEach(key => {
-                if (!validateField(key)) {
-                    isValid = false;
-                }
-            });
-
-            if (!isValid) {
-                alert('Mohon periksa kembali form Anda!');
-                return;
-            }
-
-            // Show loading
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
-
-            // Simulate form submission
-            setTimeout(() => {
-                alert('Registrasi berhasil!');
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-            }, 1500);
-        });
     </script>
 </body>
 </html>

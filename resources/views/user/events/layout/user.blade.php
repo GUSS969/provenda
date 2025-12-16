@@ -73,7 +73,7 @@
                     <ul class="list-unstyled">
                         <li style="margin-bottom: 10px;"><a href="{{ route('user.home') }}" style="color: rgba(255,255,255,0.85); text-decoration: none;">Beranda</a></li>
                         <li style="margin-bottom: 10px;"><a href="{{ route('user.events') }}" style="color: rgba(255,255,255,0.85); text-decoration: none;">Event</a></li>
-                        <li style="margin-bottom: 10px;"><a href="#tentang" style="color: rgba(255,255,255,0.85); text-decoration: none;">Tentang Kami</a></li>
+                        <li style="margin-bottom: 10px;"><a href="{{ route('user.tentang') }}" style="color: rgba(255,255,255,0.85); text-decoration: none;">Tentang Kami</a></li>
                         <li style="margin-bottom: 10px;"><a href="#kontak" style="color: rgba(255,255,255,0.85); text-decoration: none;">Kontak</a></li>
                     </ul>
                 </div>

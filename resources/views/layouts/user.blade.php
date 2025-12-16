@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Provenda - Jasa Promosi Event Daerah' }}</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Tabler Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Custom CSS -->
     <style>
         :root {
@@ -463,6 +464,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -476,14 +478,14 @@
 
     @stack('styles')
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a href="/" class="navbar-brand d-flex align-items-center">
-                <img src="{{ asset('assets/img/logo.png') }}"
-                     alt="Logo"
-                     style="height: 60px; max-height: 60px; object-fit: contain; margin-right: 6px;">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Provenda Logo"
+                    style="height: 60px; max-height: 60px; object-fit: contain; margin-right: 6px;">
                 <span style="font-size: 28px; font-weight: 700; margin-top: 2px;">Provenda</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -497,7 +499,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('events*') ? 'active' : '' }}" href="{{ route('user.events') }}">
+                        <a class="nav-link {{ request()->is('events*') ? 'active' : '' }}"
+                            href="{{ route('user.events') }}">
                             <i class="ti ti-calendar"></i> Event
                         </a>
                     </li>
@@ -542,12 +545,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 mb-4">
-                        <h5>
-                            <i class="ti ti-calendar-event"></i>
+                        <h5 style="display: flex; align-items: center;">
+                            <img src="{{ asset('assets/img/logo.png') }}" alt="Provenda Logo"
+                                style="width: 45px; height: 45px; margin-right: 10px; object-fit: contain;">
                             Provenda
                         </h5>
                         <p>
-                            Platform terpercaya untuk promosi event daerah Anda. Jangkau lebih banyak peserta 
+                            Platform terpercaya untuk promosi event daerah Anda. Jangkau lebih banyak peserta
                             dengan layanan promosi profesional kami yang telah dipercaya oleh ratusan penyelenggara.
                         </p>
                         <div class="social-links">
@@ -648,7 +652,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom JavaScript -->
     <script>
         // Navbar scroll effect
@@ -663,7 +667,7 @@
 
         // Back to Top Button
         const backToTopButton = document.getElementById('backToTop');
-        
+
         window.addEventListener('scroll', function() {
             if (window.scrollY > 300) {
                 backToTopButton.classList.add('show');
@@ -681,13 +685,13 @@
 
         // Smooth scrolling untuk anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     const navbarHeight = document.querySelector('.navbar').offsetHeight;
                     const targetPosition = target.offsetTop - navbarHeight;
-                    
+
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -707,7 +711,8 @@
             });
         });
     </script>
-    
+
     @stack('scripts')
 </body>
+
 </html>
