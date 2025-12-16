@@ -26,7 +26,7 @@
 
         <div class="mb-3">
             <label>No HP</label>
-            <input type="text" name="no_hp" class="form-control" value="{{ $penyelenggara->no_hp }}" required>
+            <input type="text" name="no_hp" class="form-control" value="{{ $penyelenggara->no_hp }}" >
         </div>
 
         <div class="mb-3">
@@ -34,19 +34,7 @@
             <textarea name="alamat" class="form-control" required>{{ $penyelenggara->alamat }}</textarea>
         </div>
 
-        <div class="mb-3">
-            <label>Admin Penanggung Jawab</label>
-            <select name="admin_id" class="form-control" required>
-                @foreach($admins as $a)
-                    <option value="{{ $a->id }}" 
-                        @if($a->id == $penyelenggara->admin_id) selected @endif>
-                        {{ $a->nama }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <button class="btn btn-primary">Update</button>
+        <a href="{{ route('admin.penyelenggaras.index') }}" class="btn btn-primary">Update</a>
         <a href="{{ route('admin.penyelenggaras.index') }}" class="btn btn-secondary">Batal</a>
 
     </form>

@@ -43,7 +43,6 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="mb-1 opacity-75">Buka UMKM</p>
-                            <h2 class="mb-0 fw-bold">{{ \App\Models\Event::where('open_registration', 1)->count() }}</h2>
                         </div>
                         <div class="opacity-50">
                             <i class="ti ti-users" style="font-size: 3rem;"></i>

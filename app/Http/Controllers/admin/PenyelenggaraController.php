@@ -17,8 +17,7 @@ class PenyelenggaraController extends Controller
 
     public function create()
     {
-        $admins = Admin::all(); // supaya admin_id bisa dipilih
-        return view('admin.penyelenggara.create', compact('admins'));
+        return view('admin.penyelenggara.create');
     }
 
     public function store(Request $request)
@@ -29,7 +28,6 @@ class PenyelenggaraController extends Controller
             'password' => 'required|min:5',
             'no_hp' => 'required',
             'alamat' => 'required',
-            'admin_id' => 'required',
         ]);
 
         Penyelenggara::create([
@@ -38,18 +36,16 @@ class PenyelenggaraController extends Controller
             'password' => bcrypt($request->password), // WAJIB hashing
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
-            'admin_id' => $request->admin_id,
         ]);
 
-        return redirect()->route('penyelenggaras.index')
+        return redirect()->route('admin.penyelenggaras.index')
             ->with('success', 'Penyelenggara berhasil ditambahkan');
     }
 
     public function edit($id)
     {
         $penyelenggara = Penyelenggara::findOrFail($id);
-        $admins = Admin::all(); // dropdown admin
-        return view('admin.penyelenggara.edit', compact('penyelenggara', 'admins'));
+        return view('admin.penyelenggara.edit', compact('penyelenggara'));
     }
 
     public function update(Request $request, $id)
@@ -61,7 +57,6 @@ class PenyelenggaraController extends Controller
             'email' => 'required|email|unique:penyelenggaras,email,' . $penyelenggara->id,
             'no_hp' => 'required',
             'alamat' => 'required',
-            'admin_id' => 'required',
         ]);
 
         $data = [
@@ -69,7 +64,6 @@ class PenyelenggaraController extends Controller
             'email' => $request->email,
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
-            'admin_id' => $request->admin_id,
         ];
 
         // update password hanya jika tidak kosong
@@ -79,7 +73,7 @@ class PenyelenggaraController extends Controller
 
         $penyelenggara->update($data);
 
-        return redirect()->route('penyelenggaras.index')
+        return redirect()->route('admin.penyelenggaras.index')
             ->with('success', 'Penyelenggara berhasil diperbarui');
     }
 
@@ -87,7 +81,7 @@ class PenyelenggaraController extends Controller
     {
         Penyelenggara::findOrFail($id)->delete();
 
-        return redirect()->route('penyelenggaras.index')
+        return redirect()->route('admin.penyelenggaras.index')
             ->with('success', 'Penyelenggara berhasil dihapus');
     }
 }
